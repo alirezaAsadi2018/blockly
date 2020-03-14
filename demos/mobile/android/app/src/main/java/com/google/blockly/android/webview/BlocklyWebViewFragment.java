@@ -17,10 +17,6 @@ import android.view.ViewGroup;
 import android.webkit.PermissionRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.blockly.android.webview.demo.MainActivity;
 
@@ -91,22 +87,22 @@ public class BlocklyWebViewFragment extends Fragment {
             System.out.println("Permission is granted");
         }
 
-        if(ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
-                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ){
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
 
-        if(ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
-                Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+                Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.GET_ACCOUNTS},
                     MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
         }
 
-        if(ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
-                Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+                Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.INTERNET},
                     MY_PERMISSIONS_REQUEST_INTERNET);
@@ -205,7 +201,7 @@ public class BlocklyWebViewFragment extends Fragment {
         checkPermissions();
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.addJavascriptInterface(new WebAppInterface(getContext()), "Android");
+        mWebView.addJavascriptInterface(new WebAppInterface(getContext(), (MainActivity) getActivity()), "Android");
         mWebView.loadUrl("file:///android_asset/blockly/webview.html");
         return mWebView;
     }

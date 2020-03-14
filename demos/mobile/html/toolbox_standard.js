@@ -366,5 +366,8 @@ BLOCKLY_TOOLBOX_XML['standard'] =
 + '</category>'
 + '<sep></sep>'
 + '<category name="Variables" colour="#a55b80" custom="VARIABLE"></category>'
++ '<category name = "Roobin_test" colour="#FF4500">'
++ '<button text="A button" callbackKey="myButtonPressed"></button>'
++ '</category>'
 + '<category name="Functions" colour="#995ba5" custom="PROCEDURE"></category>'
 +'</xml>'
