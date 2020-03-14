@@ -9,16 +9,17 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class WebAppInterface {
     Context mContext;
@@ -42,8 +43,7 @@ public class WebAppInterface {
      * Show a toast from the web page
      */
     @JavascriptInterface
-    public void showToast(String toast) {
-//        Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+    public void stt() {
         recorder();
     }
 
@@ -87,45 +87,93 @@ public class WebAppInterface {
         try {
             File f = new File(outputFile);
             if (f.exists()) {
+                Toast.makeText(mContext, "Playing Audio", Toast.LENGTH_LONG).show();
                 mediaPlayer.setDataSource(outputFile);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-                Toast.makeText(mContext, "Playing Audio", Toast.LENGTH_LONG).show();
-                //post to python code
 
 
-                HttpClient httpClient = HttpClientBuilder.create().build();
-                try (InputStream inputStream = new FileInputStream(outputFile)) {
-                    long fileSize = new File(outputFile).length();
-                    byte[] allBytes = new byte[(int) fileSize];
-                    int code = inputStream.read(allBytes);
-                    Base64 codec = new Base64();
-                    byte[] encoded = codec.encode(allBytes);
-                    String base64EncodedAudio = new String(encoded);
+                //use python code
+                String server_url = "http://alirezaasadi.pythonanywhere.com";
+                String id = postTOServer(server_url);
+                String text = getFromServer(server_url, id);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
-                    HttpPost request = new HttpPost("http://alirezaasadi.pythonanywhere.com/messages");
-                    StringEntity params = new StringEntity("details={\"message\":" +
-                            "\"" + base64EncodedAudio + "\"} ");
-                    request.addHeader("content-type", "application/x-www-form-urlencoded");
-                    request.setEntity(params);
-                    HttpResponse response = httpClient.execute(request);
-                    if (response.getStatusLine().getStatusCode() == 201) {
-                        Toast.makeText(mContext, "status is good!", Toast.LENGTH_SHORT).show();
-                    }
-                    //handle response here...
-
-                } catch (Exception ex) {
-
-                    //handle exception here
-
-                } finally {
-                    //Deprecated
-                    //httpClient.getConnectionManager().shutdown();
+    private String getFromServer(String server_url, String id) throws IOException {
+        //make GET
+        URL url = new URL(server_url + "/messages/" + id);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int responseCode = con.getResponseCode();
+        if (responseCode == 200) { // success
+            StringBuffer response = new StringBuffer();
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
                 }
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            String resultText = "";
+            for (String s : response.toString().split(",")) {
+                if (s.contains("message")) {
+                    resultText = s.split(":")[1].replaceAll("\"", "");
+                }
+            }
+            Toast.makeText(mContext, resultText, Toast.LENGTH_LONG).show();
+            return resultText;
+        } else {
+            System.out.println("GET request not worked");
+            return null;
         }
+    }
 
+    private String postTOServer(String server_url) throws IOException {
+        URL url = new URL(server_url + "/messages");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json; utf-8");
+        con.setRequestProperty("Accept", "application/json");
+        con.setDoOutput(true);
+
+        try (InputStream inputStream = new FileInputStream(outputFile)) {
+            long fileSize = new File(outputFile).length();
+            byte[] allBytes = new byte[(int) fileSize];
+            int code = inputStream.read(allBytes);
+
+            byte[] encodedBytes = Base64.encodeBase64(allBytes);
+            String base64EncodedAudio = new String(encodedBytes);
+
+            String jsonInputString = "{\"message\":" +
+                    "\"" + base64EncodedAudio + "\"} ";
+
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+            StringBuffer response = new StringBuffer();
+            String id = "";
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                for (String s : response.toString().split(",")) {
+                    if (s.contains("messageId")) {
+                        id = s.split(":")[1].replaceAll("\"", "");
+                    }
+                }
+            }
+            if (con.getResponseCode() == 201) {
+                Toast.makeText(mContext, "status is good!", Toast.LENGTH_SHORT).show();
+            }
+            con.disconnect();
+            return id;
+        }
     }
 }

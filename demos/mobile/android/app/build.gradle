@@ -47,5 +47,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    compile 'org.apache.httpcomponents:httpclient:4.5.12'
+    implementation 'commons-codec:commons-codec:1.10'
+//    implementation 'com.google.apis:google-api-services-speech:v1-rev109-1.25.0'
 }

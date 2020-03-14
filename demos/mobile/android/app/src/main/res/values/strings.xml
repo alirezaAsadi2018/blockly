@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Blockly WebView</string>
+    <string name="you_may_speak">You may speak now</string>
+    <string name="speech_not_supported">speech recognition not supported for your device!</string>
 </resources>
