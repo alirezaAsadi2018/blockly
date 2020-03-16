@@ -26,22 +26,18 @@ public class WebAppInterface {
     @JavascriptInterface
     public void stt() {
         try {
-            new Handler(mContext.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Intent mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa");
-                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
-                            mContext.getPackageName());
-                    Toast.makeText(mContext, R.string.you_may_speak, Toast.LENGTH_LONG).show();
-                    if (mSpeechRecognizerIntent.resolveActivity(mContext.getPackageManager()) != null)
-                        mainActivity.startActivityForResult(mSpeechRecognizerIntent, 10);
-                    else
-                        Toast.makeText(mContext, R.string.speech_not_supported, Toast.LENGTH_LONG).show();
-                }
-            });
+            Intent mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "fa-IR");
+            mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, R.string.you_may_speak);
+            mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
+                    mContext.getPackageName());
+            Toast.makeText(mContext, R.string.you_may_speak, Toast.LENGTH_LONG).show();
+            if (mSpeechRecognizerIntent.resolveActivity(mContext.getPackageManager()) != null)
+                mainActivity.startActivityForResult(mSpeechRecognizerIntent, 10);
+            else
+                Toast.makeText(mContext, R.string.speech_not_supported, Toast.LENGTH_LONG).show();
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }

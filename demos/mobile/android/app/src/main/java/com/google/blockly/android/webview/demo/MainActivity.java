@@ -29,9 +29,40 @@ public class MainActivity extends AppCompatActivity {
             case 10:
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    Toast.makeText(getApplicationContext(), result.get(0), Toast.LENGTH_LONG).show();
+                    String command = result.get(0);
+                    if (command.contains("آب و هوا") || command.contains("آب وهوا")
+                            || command.contains("اب و هوا") || command.contains("اب وهوا")) {
+                        Toast.makeText(getApplicationContext(), "weather", Toast.LENGTH_LONG).show();
+                        reportWeather();
+                    } else if (command.contains("آهنگ") || command.contains("اهنگ") || command.contains("موزیک")) {
+                        Toast.makeText(getApplicationContext(), "music", Toast.LENGTH_LONG).show();
+                        playMusic();
+                    } else if (command.contains("بازی")) {
+                        Toast.makeText(getApplicationContext(), "game", Toast.LENGTH_LONG).show();
+                        openGameMenu();
+                    } else if (command.contains("سلام")) {
+                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_LONG).show();
+                        askForName();
+                    }
+//                    Toast.makeText(getApplicationContext(), result.get(0), Toast.LENGTH_LONG).show();
                 }
                 break;
         }
+    }
+
+    private void askForName() {
+
+    }
+
+    private void openGameMenu() {
+
+    }
+
+    private void reportWeather() {
+
+    }
+
+    private void playMusic() {
+
     }
 }
