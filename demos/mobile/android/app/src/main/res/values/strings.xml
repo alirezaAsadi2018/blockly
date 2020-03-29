@@ -2,4 +2,20 @@
     <string name="app_name">Blockly WebView</string>
     <string name="you_may_speak">You may speak now</string>
     <string name="speech_not_supported">speech recognition not supported for your device!</string>
+    <string name="tts_greeting_ask_for_name">سلام. اسمِ شما چیه؟</string>
+    <string name="tts_weather_ask_for_city_name">اسمِ شهرتون رو بگید</string>
+    <string name="tts_greeting_hello">سلام</string>
+    <string name="tts_air_pollution">آلودگیِ هوا</string>
+    <string name="tts_weather_humidity">رُطوبتِ هوا</string>
+    <string name="tts_weather_temp">دمای هوا</string>
+    <string name="tts_weather_description">وضعیتِ آب و هوا</string>
+    <string name="degree_centigrade">درجه ی سانتی گراد</string>
+    <string name="good">خوب</string>
+    <string name="moderate">مُتَوَسِّط</string>
+    <string name="unhealthy_for_sensitive_groups">نامناسب برای افرادِ حسّاس</string>
+    <string name="unhealthy">نامُناسِب</string>
+    <string name="very_unhealthy">بسیار نامُناسِب</string>
+    <string name="hazardous">فاجعه بار</string>
+    <string name="city_name_not_found">شهرِ موردِ نظر یافت نشد</string>
+    <string name="weather_api_key">521daac643e52381dfd9c18688956964</string>
 </resources>
