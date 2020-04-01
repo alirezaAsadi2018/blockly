@@ -7,4 +7,5 @@ public interface Codes {
     int ASK_NAME_UTTERANCE_ID = 14;
     int ASK_CITY_UTTERANCE_ID = 15;
     int IDLE_UTTERANCE_ID = 16;
+    int INSTALL_TTS_DATA_CODE = 17;
 }

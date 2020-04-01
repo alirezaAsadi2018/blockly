@@ -19,6 +19,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.google.blockly.android.webview.demo.MainActivity;
+import com.google.blockly.android.webview.utility.DownloadController;
 
 import java.util.Objects;
 

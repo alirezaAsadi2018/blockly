@@ -1,11 +1,18 @@
 package com.google.blockly.android.webview.demo;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.ClientError;
@@ -18,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.blockly.android.webview.MediaPlayerService;
 import com.google.blockly.android.webview.R;
 import com.google.blockly.android.webview.utility.Codes;
+import com.google.blockly.android.webview.utility.STT;
 import com.google.blockly.android.webview.utility.TTS;
 
 import org.json.JSONException;
@@ -28,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The primary activity of the demo application. The activity embeds the
@@ -36,18 +45,50 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements Codes {
     private TTS mTtsInstance;
     private Boolean weatherApiIsOk = true;
+    private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
+
+
+    public void setIsSttButtonActive(boolean isSttButtonActive) {
+        this.isSttButtonActive.set(isSttButtonActive);
+    }
+
+    public AtomicBoolean getIsSttButtonActive() {
+        return isSttButtonActive;
+    }
+
+    public TTS getMTtsInstance() {
+        return mTtsInstance;
+    }
+
+    public void setMTtsInstance(TTS mTtsInstance) {
+        this.mTtsInstance = mTtsInstance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTtsInstance = new TTS(getApplicationContext(), this);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == STT_DO_COMMAND_CODE || requestCode == STT_GET_CITY_NAME
+                || requestCode == STT_GET_NAME) {
+            STT.getInstance().setIsListening(false);
+        }
+        if (requestCode == INSTALL_TTS_DATA_CODE) {
+            if (resultCode != RESULT_OK) {
+                showInstallTtsVoiceDataDialog();
+            } else {
+                new Handler().postDelayed(() -> {
+                    mTtsInstance.stop();
+                    mTtsInstance = null;
+                    setIsSttButtonActive(true);
+                }, 1000);
+            }
+        }
+
         if (resultCode == RESULT_OK && data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String text = Objects.requireNonNull(result).get(0);
@@ -56,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
                     if (text.contains("آب و هوا") || text.contains("آب وهوا")
                             || text.contains("اب و هوا") || text.contains("اب وهوا")) {
                         Toast.makeText(getApplicationContext(), "weather", Toast.LENGTH_LONG).show();
+                        STT.getInstance().setIsBusyAskingForInfo(true);
                         askForCityName();
                     } else if (text.contains("آهنگ") || text.contains("اهنگ") || text.contains("موزیک")) {
                         Toast.makeText(getApplicationContext(), "music", Toast.LENGTH_LONG).show();
@@ -65,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
                         openGameMenu();
                     } else if (text.contains("سلام")) {
                         Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_LONG).show();
+                        STT.getInstance().setIsBusyAskingForInfo(true);
                         askForName();
                     }
                     break;
@@ -76,8 +119,10 @@ public class MainActivity extends AppCompatActivity implements Codes {
                     reportWeather(text);
                     break;
             }
+        } else if (resultCode == RESULT_CANCELED) {
+            Log.i(MainActivity.class.getName(), "activity result cancelled!");
         } else {
-            Log.e(MainActivity.class.getName(), "Error in converting speech to text!");
+            Log.i(MainActivity.class.getName(), "result is null in activity results!");
         }
     }
 
@@ -243,8 +288,110 @@ public class MainActivity extends AppCompatActivity implements Codes {
 
 
     private void playMusic() {
-        Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
-        intent.setAction(MediaPlayerService.ACTION_PLAY);
-        startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
+            intent.setAction(MediaPlayerService.ACTION_PLAY);
+            startService(intent);
+        } else {
+            //TODO
+            // make another player
+            Toast.makeText(getApplicationContext(), R.string.music_player_not_supported,
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void showRestartDialog(DialogInterface.OnClickListener onNeutralButtonClickedListener,
+                                  DialogInterface.OnCancelListener onCancelListener,
+                                  final Runnable cleaningBeforeRestart) {
+        final Context mContext = getApplicationContext();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setMessage(R.string.tts_engine_loading);
+        dialogBuilder.setCancelable(true);
+        dialogBuilder.setPositiveButton(R.string.restart, (DialogInterface dialog, int id) -> {
+            Thread thread = new Thread(cleaningBeforeRestart);
+            // do cleaning before restart
+            thread.start();
+            try {
+                //wait for cleaning to be done
+                thread.join();
+                //restart the program
+                Intent i = new Intent(mContext, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(i);
+                dialog.cancel();
+            } catch (InterruptedException e) {
+                Log.e(this.getClass().getName(), "thread interrupted while doing " +
+                        "clean up before restart!", e);
+            }
+        });
+        dialogBuilder.setNeutralButton(R.string.close, onNeutralButtonClickedListener);
+        dialogBuilder.setOnCancelListener(onCancelListener);
+        dialogBuilder.create().show();
+    }
+
+    public void showInstallTtsVoiceDataDialog() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(R.string.you_dont_have_espeak_voice_data_installed);
+        builder1.setCancelable(false);
+
+        builder1.setPositiveButton(
+                R.string.install_voice_data, (DialogInterface dialog, int id) -> {
+                    dialog.cancel();
+                    Intent installIntent = new Intent();
+                    installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                    startActivityForResult(installIntent, INSTALL_TTS_DATA_CODE);
+                });
+
+        runOnUiThread(() -> {
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        });
+    }
+
+    public void showInstallEspeakDialog() {
+        final Context mContext = getApplicationContext();
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(R.string.you_dont_have_espeak_engine);
+        builder1.setCancelable(true);
+
+
+        builder1.setNeutralButton(R.string.close, (dialog, id) -> dialog.cancel());
+
+        builder1.setPositiveButton(
+                R.string.install_from_google_play, (DialogInterface dialog, int id) -> {
+                    dialog.cancel();
+                    try {
+                        Intent viewIntent =
+                                new Intent("android.intent.action.VIEW",
+                                        Uri.parse("market://details?id=com.redzoc.ramees.tts.espeak&hl=en"));
+                        startActivity(viewIntent);
+                    } catch (Exception e) {
+                        Toast.makeText(mContext, R.string.unable_to_connect,
+                                Toast.LENGTH_LONG).show();
+                        Log.e(this.getClass().getName(), "Unable to Connect to download url", e);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                R.string.install_directly, (DialogInterface dialog, int id) -> {
+                    dialog.cancel();
+                    try {
+                        String path = "https://bit.ly/33WrSMa"; // espeak download link from picofile
+                        Intent viewIntent =
+                                new Intent("android.intent.action.VIEW",
+                                        Uri.parse(path));
+                        startActivity(viewIntent);
+                    } catch (Exception e) {
+                        Toast.makeText(mContext, R.string.unable_to_connect,
+                                Toast.LENGTH_LONG).show();
+                        Log.e(this.getClass().getName(), "Unable to Connect to download url", e);
+                    }
+                });
+
+        runOnUiThread(() -> {
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        });
     }
 }

@@ -18,6 +18,10 @@ android {
     }
     productFlavors {
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 task copyBlocklyHtmlFile(type: Copy) {
@@ -49,6 +53,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'androidx.media:media:1.1.0'
-//    implementation "com.android.support:support-compat:${androidSupportVersion}"
-//    implementation 'androidx.media:media:1.0.0'
+//    implementation "com.google.android.material:material:1.1.0-alpha06"
+//    implementation 'com.google.android.material:material:1.0.0'
 }

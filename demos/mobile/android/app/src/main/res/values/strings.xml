@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Blockly WebView</string>
-    <string name="you_may_speak">You may speak now</string>
-    <string name="speech_not_supported">speech recognition not supported for your device!</string>
+    <string name="you_may_speak">میتوانید صحبت کنید</string>
+    <string name="speech_not_supported">دستگاه شما تشخیص صوت را پشتیبانی نمی کند</string>
     <string name="tts_greeting_ask_for_name">سلام. اسمِ شما چیه؟</string>
-    <string name="tts_weather_ask_for_city_name">اسمِ شهرتون رو بگید</string>
+    <string name="tts_weather_ask_for_city_name">لطفا، اسمِ شهرتون رو بگید</string>
     <string name="tts_greeting_hello">سلام</string>
     <string name="tts_air_pollution">آلودگیِ هوا</string>
     <string name="tts_weather_humidity">رُطوبتِ هوا</string>
@@ -11,11 +11,26 @@
     <string name="tts_weather_description">وضعیتِ آب و هوا</string>
     <string name="degree_centigrade">درجه ی سانتی گراد</string>
     <string name="good">خوب</string>
-    <string name="moderate">مُتَوَسِّط</string>
-    <string name="unhealthy_for_sensitive_groups">نامناسب برای افرادِ حسّاس</string>
+    <string name="moderate">مُتَوَسِط</string>
+    <string name="unhealthy_for_sensitive_groups">نامناسب برای افرادِ حساس</string>
     <string name="unhealthy">نامُناسِب</string>
     <string name="very_unhealthy">بسیار نامُناسِب</string>
     <string name="hazardous">فاجعه بار</string>
     <string name="city_name_not_found">شهرِ موردِ نظر یافت نشد</string>
+    <string name="music_player_not_supported">دستگاه شما موزیک پلیر را پشتیبانی نمی کند</string>
     <string name="weather_api_key">521daac643e52381dfd9c18688956964</string>
+    <string name="downloading">Downloading…</string>
+    <string name="title_file_download">APK is downloading</string>
+    <string name="storage_access_required">Storage access is required to downloading the file.</string>
+    <string name="storage_permission_denied">Storage permission request was denied.</string>
+    <string name="you_dont_have_espeak_engine">شما برنامه espeak را نصب نکرده اید. برای نصب یکی دو گزینه ی زیر را انتخاب کنبد: </string>
+    <string name="install_from_google_play">دانلود از گوگل پلی</string>
+    <string name="install_directly">دانلود مستقیم</string>
+    <string name="close">بستن</string>
+    <string name="espeak_available">espeak is installed</string>
+    <string name="unable_to_connect">نمی توان به صفحه دانلود وصل شد…</string>
+    <string name="tts_engine_loading">موتور گفتار درحال آماده سازی است… لطفا برنامه را دوباره راه اندازی کنید. درصورت حل نشدن مشکل espeak را دوباره نصب کنید.</string>
+    <string name="restart">راه اندازی مجدد</string>
+    <string name="you_dont_have_espeak_voice_data_installed">شما صوت فارسی موتور صوت را نصب نکرده اید. برای نصب دکمه زیر را بزنید:</string>
+    <string name="install_voice_data">نصب صوت فارسی</string>
 </resources>

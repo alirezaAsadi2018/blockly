@@ -210,7 +210,8 @@ public class MediaPlayerService extends Service {
         Notification.MediaStyle style = new Notification.MediaStyle();
         mManager = NotificationManagerCompat
                 .from(getApplicationContext());
-        MediaSession mediaSession = new MediaSession(getApplicationContext(), "simple player session");
+        MediaSession mediaSession = new MediaSession(getApplicationContext(),
+                "simple player session");
         Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                 R.drawable.ic_launcher_background);
         Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
