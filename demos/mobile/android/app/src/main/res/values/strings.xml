@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Blockly WebView</string>
+    <string name="app_name">Roobin</string>
     <string name="you_may_speak">میتوانید صحبت کنید</string>
     <string name="speech_not_supported">دستگاه شما تشخیص صوت را پشتیبانی نمی کند</string>
     <string name="tts_greeting_ask_for_name">سلام. اسمِ شما چیه؟</string>
@@ -33,4 +33,6 @@
     <string name="restart">راه اندازی مجدد</string>
     <string name="you_dont_have_espeak_voice_data_installed">شما صوت فارسی موتور صوت را نصب نکرده اید. برای نصب دکمه زیر را بزنید:</string>
     <string name="install_voice_data">نصب صوت فارسی</string>
+    <string name="speech_fa_lang_not_supported">موتور تشخیص صوت زبان فارسی را پشتیبانی نمی کند</string>
+    <string name="ds_internet_not_enabled">اینترنت شما وصل نیست</string>>
 </resources>

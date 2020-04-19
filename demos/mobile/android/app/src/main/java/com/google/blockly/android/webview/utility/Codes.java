@@ -8,4 +8,5 @@ public interface Codes {
     int ASK_CITY_UTTERANCE_ID = 15;
     int IDLE_UTTERANCE_ID = 16;
     int INSTALL_TTS_DATA_CODE = 17;
+    int REQUEST_AUDIO_PERMISSIONS = 18;
 }

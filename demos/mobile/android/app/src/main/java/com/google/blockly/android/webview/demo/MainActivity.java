@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        STT.getInstance().startLanguageReceiver(getApplicationContext());
     }
 
     @Override
@@ -96,17 +97,17 @@ public class MainActivity extends AppCompatActivity implements Codes {
                 case STT_DO_COMMAND_CODE: //STT action from js result -> getting a command
                     if (text.contains("آب و هوا") || text.contains("آب وهوا")
                             || text.contains("اب و هوا") || text.contains("اب وهوا")) {
-                        Toast.makeText(getApplicationContext(), "weather", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "weather", Toast.LENGTH_SHORT).show();
                         STT.getInstance().setIsBusyAskingForInfo(true);
                         askForCityName();
                     } else if (text.contains("آهنگ") || text.contains("اهنگ") || text.contains("موزیک")) {
-                        Toast.makeText(getApplicationContext(), "music", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "music", Toast.LENGTH_SHORT).show();
                         playMusic();
                     } else if (text.contains("بازی")) {
-                        Toast.makeText(getApplicationContext(), "game", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "game", Toast.LENGTH_SHORT).show();
                         openGameMenu();
                     } else if (text.contains("سلام")) {
-                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
                         STT.getInstance().setIsBusyAskingForInfo(true);
                         askForName();
                     }
