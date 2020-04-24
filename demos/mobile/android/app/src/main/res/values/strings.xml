@@ -34,5 +34,6 @@
     <string name="you_dont_have_espeak_voice_data_installed">شما صوت فارسی موتور صوت را نصب نکرده اید. برای نصب دکمه زیر را بزنید:</string>
     <string name="install_voice_data">نصب صوت فارسی</string>
     <string name="speech_fa_lang_not_supported">موتور تشخیص صوت زبان فارسی را پشتیبانی نمی کند</string>
-    <string name="ds_internet_not_enabled">اینترنت شما وصل نیست</string>>
+    <string name="ds_internet_not_enabled">اینترنت شما وصل نیست</string>
+    <string name="unable_to_get_voice_details" />>
 </resources>

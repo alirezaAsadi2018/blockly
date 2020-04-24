@@ -123,18 +123,23 @@ public class STT implements Codes {
      * Starts the language receiver
      */
     public void startLanguageReceiver(Context mContext) {
+        try {
+            Intent languageDetailsIntent = RecognizerIntent.getVoiceDetailsIntent(mContext);
+            if(languageDetailsIntent != null) {//there is no intent to handle voice details
+                languageDetailsIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+                LanguageReceiver languageReceiver = new LanguageReceiver();
+                languageReceiver.setOnLanguageDetailsListener((defaultLanguage, otherLanguages) -> {
+                    currentSpeechLanguage = defaultLanguage;
+                    supportedSpeechLanguages = otherLanguages;
+                });
 
-        Intent languageDetailsIntent = RecognizerIntent.getVoiceDetailsIntent(mContext);
-        languageDetailsIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        LanguageReceiver languageReceiver = new LanguageReceiver();
-        languageReceiver.setOnLanguageDetailsListener((defaultLanguage, otherLanguages) -> {
-            currentSpeechLanguage = defaultLanguage;
-            supportedSpeechLanguages = otherLanguages;
-        });
-
-        // Starting the broadcast receiver to get the language details
-        mContext.sendOrderedBroadcast(languageDetailsIntent, null,
-                languageReceiver, null, Activity.RESULT_OK, null, null);
+                // Starting the broadcast receiver to get the language details
+                mContext.sendOrderedBroadcast(languageDetailsIntent, null,
+                        languageReceiver, null, Activity.RESULT_OK, null, null);
+            }
+        }catch (Exception e) {
+            Log.e(this.getClass().getName(), "Unable to get VoiceDetailsIntent", e);
+        }
     }
 
     private boolean isNetworkAvailable(Context mContext) {

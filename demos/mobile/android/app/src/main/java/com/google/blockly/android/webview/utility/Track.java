@@ -6,13 +6,17 @@ public class Track {
     private int image;
 
     public Track(String title, String artist, int image) {
-        this.title = title;
-        this.artist = artist;
-        this.image = image;
+        setTitle(title);
+        setArtist(artist);
+        setImage(image);
     }
 
     public Track(String title) {
-        this.title = title;
+        this(title, null);
+    }
+
+    public Track(String title, String artist) {
+        this(title, artist, 0);
     }
 
 

@@ -1,10 +1,10 @@
 package com.google.blockly.android.webview.demo;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
@@ -69,6 +69,14 @@ public class MainActivity extends AppCompatActivity implements Codes {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         STT.getInstance().startLanguageReceiver(getApplicationContext());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
+        notificationManager.cancelAll();
     }
 
     @Override
@@ -289,16 +297,9 @@ public class MainActivity extends AppCompatActivity implements Codes {
 
 
     private void playMusic() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
-            intent.setAction(MediaPlayerService.ACTION_PLAY);
-            startService(intent);
-        } else {
-            //TODO
-            // make another player
-            Toast.makeText(getApplicationContext(), R.string.music_player_not_supported,
-                    Toast.LENGTH_LONG).show();
-        }
+        Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
+        intent.setAction(MediaPlayerService.ACTION_PLAY);
+        startService(intent);
     }
 
     public void showRestartDialog(DialogInterface.OnClickListener onNeutralButtonClickedListener,
