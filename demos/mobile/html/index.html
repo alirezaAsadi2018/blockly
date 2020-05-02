@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<meta charset="UTF-8">
+
 <!-- HTML file to host Blockly in a mobile WebView. -->
 <html>
 <head>
@@ -14,20 +16,60 @@
   </style>
     <script src="blockly_compressed.js"></script>
     <script src="blocks_compressed.js"></script>
+    <script src="javascript_compressed.js"></script>
+    <script src="python_compressed.js"></script>
     <!-- TODO: Select msg file based on locale. -->
-    <script src="msg/js/en.js"></script>
+    <script src="msg/js/fa.js"></script>
     <script src="toolbox_standard.js"></script>
 </head>
 <body>
-<div id="blocklyDiv"></div>
+<!--  TODO: Select msg file based on locale. -->
+<p>
+   <button onclick="showPython()">Show Python</button>
+   <button onclick="showJs()">Show JavaScript</button>
+   <button onclick="runJsCode()">Run JavaScript</button>
+</p>
+<div id="blocklyDiv" style="height: 550px;" ></div>
+
 <script type="text/javascript">
 <!--    var myWorkspace = Blockly.inject('blocklyDiv', {-->
 <!--          media: 'media/',-->
 <!--          toolbox: toolbox,-->
 <!--          zoom: {controls: true}-->
 <!--        });-->
+
+
+    function showPython() {
+      // Generate JavaScript code and display it.
+      Blockly.Python.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.Python.workspaceToCode(myWorkspace);
+      alert(code);
+    }
+
+    function showJs() {
+      // Generate JavaScript code and display it.
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+      alert(code);
+    }
+
+    function runJsCode() {
+      // Generate JavaScript code and run it.
+      window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      try {
+        eval(code);
+      } catch (e) {
+        alert(e);
+      }
+    }
+
     var myWorkspace = Blockly.inject('blocklyDiv', {
           media: 'media/',
+          rtl: true,
           toolbox: BLOCKLY_TOOLBOX_XML['standard'],
           zoom: {controls: true}
         });
