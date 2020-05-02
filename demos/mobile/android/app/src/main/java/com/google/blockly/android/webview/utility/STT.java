@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -63,7 +64,7 @@ public class STT implements Codes {
         if (getIsBusyAskingForInfo().get() || getIsListening().get()) {
             return;
         }
-        executorService.execute(() -> {
+//        executorService.execute(() -> {
             try {
                 if (isNetworkAvailable(mContext)) {
                     Intent mSpeechRecognizerIntent = new Intent(RecognizerIntent.
@@ -74,12 +75,15 @@ public class STT implements Codes {
                             mContext.getPackageName());
                     mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                             R.string.you_may_speak);
-                    if (supportedSpeechLanguages.contains(preferredLanguage)) {
+                    if (supportedSpeechLanguages != null && supportedSpeechLanguages.contains(
+                            preferredLanguage)) {
                         // Setting the speech language
                         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
                                 preferredLanguage);
                         mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
                                 preferredLanguage);
+                    } else if(supportedSpeechLanguages == null){
+                        //TODO
                     } else {
                         mainActivity.runOnUiThread(() ->
                                 Toast.makeText(mContext, R.string.speech_fa_lang_not_supported,
@@ -87,8 +91,7 @@ public class STT implements Codes {
                         //TODO
                         //make proper action here
                     }
-
-                    //another way is like this, but may cause error on some devices and I dono why!
+//                      another way is like this, but may cause error on some devices and I dono why!
 //                       if (mSpeechRecognizerIntent.resolveActivity(mContext.getPackageManager()) != null) {
                     if (isIntentAvailable(mSpeechRecognizerIntent, mContext)) {
                         mainActivity.startActivityForResult(mSpeechRecognizerIntent, requestCode);
@@ -99,6 +102,10 @@ public class STT implements Codes {
                         mainActivity.runOnUiThread(() ->
                                 Toast.makeText(mContext, R.string.speech_not_supported,
                                         Toast.LENGTH_LONG).show());
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://market.android.com/details?id=com.google.android.googlequicksearchbox"));
+//                                Uri.parse("https://market.android.com/details?id=com.prometheusinteractive.voice_launcher"));
+                        mainActivity.startActivity(browserIntent);
                     }
                 } else {
                     Log.e(getClass().getName(), mContext.getResources().getString(R.string.
@@ -110,12 +117,13 @@ public class STT implements Codes {
             } catch (IllegalStateException | ActivityNotFoundException e) {
                 Log.e(STT.class.getName(), e.getMessage(), e);
             }
-        });
+//        });
     }
 
     private boolean isIntentAvailable(Intent intent, Context mContext) {
         PackageManager pm = mContext.getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
+        System.out.println(activities);
         return activities.size() > 0;
     }
 

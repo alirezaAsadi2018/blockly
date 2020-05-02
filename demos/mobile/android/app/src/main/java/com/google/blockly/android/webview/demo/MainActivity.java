@@ -368,6 +368,10 @@ public class MainActivity extends AppCompatActivity implements Codes {
                                 new Intent("android.intent.action.VIEW",
                                         Uri.parse("market://details?id=com.redzoc.ramees.tts.espeak&hl=en"));
                         startActivity(viewIntent);
+                    }catch (android.content.ActivityNotFoundException e){
+                        //TODO
+                        //No Activity found to handle Intent { act=android.intent.action.VIEW dat=market://details?id=com.redzoc.ramees.tts.espeak&hl=en }
+                        //use another strategy
                     } catch (Exception e) {
                         Toast.makeText(mContext, R.string.unable_to_connect,
                                 Toast.LENGTH_LONG).show();

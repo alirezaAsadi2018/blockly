@@ -20,7 +20,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
 
+import com.google.blockly.android.webview.demo.MainActivity;
 import com.google.blockly.android.webview.utility.Codes;
 import com.google.blockly.android.webview.utility.Track;
 
@@ -48,6 +50,7 @@ public class MediaPlayerService extends Service implements Codes {
     private List<Track> mTrackList;
     private String currentMediaTitle = "Media Title";
     private String currentMediaArtist = "Media Artist";
+    private boolean isOngoing = true;
 
     public MediaPlayerService() {
 
@@ -102,18 +105,24 @@ public class MediaPlayerService extends Service implements Codes {
         intent.setAction(ACTION_STOP);
         PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),
                 1, intent, 0);
-
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent contentIntent = stackBuilder.getPendingIntent(0,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
 //        NotificationCompat.Builder builder = new NotificationCompat.
 //                Builder(getApplicationContext(), CHANNEL_ID);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 CHANNEL_ID)
-                .setOngoing(true)
+                .setOngoing(isOngoing)
                 .setLargeIcon(icon) // album artwork icon
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle(currentMediaTitle)
                 .setContentText(currentMediaArtist)
                 .setDeleteIntent(pendingIntent)
+                .setContentIntent(contentIntent)
                 .setOnlyAlertOnce(true)
                 .setShowWhen(false)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(
@@ -169,6 +178,7 @@ public class MediaPlayerService extends Service implements Codes {
                                  public void onPlay() {
                                      super.onPlay();
                                      Log.e("MediaPlayerService", "onPlay");
+                                     isOngoing = true;
                                      buildNotification(generateAction(android.R.drawable.
                                              ic_media_pause, "Pause", ACTION_PAUSE));
                                      if (!mMediaPlayer.isPlaying())
@@ -179,6 +189,7 @@ public class MediaPlayerService extends Service implements Codes {
                                  public void onPause() {
                                      super.onPause();
                                      Log.e("MediaPlayerService", "onPause");
+                                     isOngoing = false;
                                      buildNotification(generateAction(android.R.drawable.
                                              ic_media_play, "Play", ACTION_PLAY));
                                      if (mMediaPlayer.isPlaying())
