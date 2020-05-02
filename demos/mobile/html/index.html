@@ -15,7 +15,7 @@
   <script src="../../../blockly_compressed.js"></script>
   <script src="../../../blocks_compressed.js"></script>
   <!-- TODO: Select msg file based on locale. -->
-  <script src="../../../msg/js/en.js"></script>
+  <script src="../../../msg/js/fa.js"></script>
   <script src="toolbox_standard.js"></script>
 </head>
 <body>
@@ -23,6 +23,7 @@
   <script type="text/javascript">
     var workspacePlayground = Blockly.inject('blocklyDiv', {
           media: 'media/',
+	  rtl: true,
           toolbox: BLOCKLY_TOOLBOX_XML['standard'],
           zoom: {controls: true}
         });
