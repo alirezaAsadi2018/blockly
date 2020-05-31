@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2013 The Android Open Source Project
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,17 +22,13 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.example.blocklywebview.R;
 
 /**
  * Helper class to create JavaScript dialogs.
@@ -40,23 +36,23 @@ import com.example.blocklywebview.R;
  * Removes dialog title (page domain) and uses a larger prompt message area than original.
  */
 public class JsDialogHelper {
-    private static final String TAG = "JsDialogHelper";
-    // Dialog types
     /** An alert dialog, for console.alert(..). */
-    public static final int ALERT   = 1;
+    public static final int ALERT = 1;
+    // Dialog types
     /** An alert dialog, for console.confirm(..). */
     public static final int CONFIRM = 2;
     /** An alert dialog, for console.prompt(..). */
-    public static final int PROMPT  = 3;
-
-    private final @Nullable String mDefaultValue;
+    public static final int PROMPT = 3;
+    private static final String TAG = "JsDialogHelper";
+    private final @Nullable
+    String mDefaultValue;
     private final JsResult mResult;
     private final String mMessage;
     private final int mType;
     private final String mUrl;
 
     public JsDialogHelper(JsResult result, int type, @Nullable String defaultValue,
-            String message, String url) {
+                          String message, String url) {
         if (type == PROMPT && !(result instanceof JsPromptResult)) {
             throw new IllegalArgumentException("JsDialogHelper PROMPT requires JsPromptResult");
         }
@@ -73,6 +69,10 @@ public class JsDialogHelper {
         mMessage = msg.getData().getString("message");
         mType = msg.getData().getInt("type");
         mUrl = msg.getData().getString("url");
+    }
+
+    private static boolean canShowAlertDialog(Context context) {
+        return context instanceof Activity;
     }
 
     public boolean invokeCallback(WebChromeClient client, WebView webView) {
@@ -123,6 +123,7 @@ public class JsDialogHelper {
         public void onCancel(DialogInterface dialog) {
             mResult.cancel();
         }
+
         @Override
         public void onClick(DialogInterface dialog, int which) {
             mResult.cancel();
@@ -131,9 +132,11 @@ public class JsDialogHelper {
 
     private class PositiveListener implements DialogInterface.OnClickListener {
         private final EditText mEdit;
+
         public PositiveListener(EditText edit) {
             mEdit = edit;
         }
+
         @Override
         public void onClick(DialogInterface dialog, int which) {
             if (mEdit == null) {
@@ -142,9 +145,5 @@ public class JsDialogHelper {
                 ((JsPromptResult) mResult).confirm(mEdit.getText().toString());
             }
         }
-    }
-
-    private static boolean canShowAlertDialog(Context context) {
-        return context instanceof Activity;
     }
 }

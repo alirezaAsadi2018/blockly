@@ -1,9 +1,10 @@
 package com.google.blockly.android.webview.demo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import com.example.blocklywebview.R;
+import com.google.blockly.android.webview.R;
+
 
 /**
  * The primary activity of the demo application. The activity embeds the
