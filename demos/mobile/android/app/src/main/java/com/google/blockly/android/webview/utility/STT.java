@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -31,10 +30,18 @@ public class STT implements Codes {
     private final AtomicBoolean isListening = new AtomicBoolean(false);
     private final AtomicBoolean isBusyAskingForInfo = new AtomicBoolean(false);
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final String preferredLanguage = "fa-IR";
     private String currentSpeechLanguage;
     private List<String> supportedSpeechLanguages;
-    private final String preferredLanguage = "fa-IR";
     private SpeechRecognizer speechRecognizer;
+
+    public static STT getInstance() {
+        if (instance == null) {
+            return instance = new STT();
+        } else {
+            return instance;
+        }
+    }
 
     public AtomicBoolean getIsListening() {
         return isListening;
@@ -52,78 +59,65 @@ public class STT implements Codes {
         this.isBusyAskingForInfo.set(isBusyAskingForInfo);
     }
 
-    public static STT getInstance() {
-        if (instance == null) {
-            return instance = new STT();
-        } else {
-            return instance;
-        }
-    }
-
     public synchronized void stt(final Context mContext, final MainActivity mainActivity, final int requestCode) {
         if (getIsBusyAskingForInfo().get() || getIsListening().get()) {
             return;
         }
 //        executorService.execute(() -> {
-            try {
-                if (isNetworkAvailable(mContext)) {
-                    Intent mSpeechRecognizerIntent = new Intent(RecognizerIntent.
-                            ACTION_RECOGNIZE_SPEECH);
-                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
-                            mContext.getPackageName());
-                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                            R.string.you_may_speak);
-                    if (supportedSpeechLanguages != null && supportedSpeechLanguages.contains(
-                            preferredLanguage)) {
-                        // Setting the speech language
-                        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
-                                preferredLanguage);
-                        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
-                                preferredLanguage);
-                    } else if(supportedSpeechLanguages == null){
-                        //TODO
-                    } else {
-                        mainActivity.runOnUiThread(() ->
-                                Toast.makeText(mContext, R.string.speech_fa_lang_not_supported,
-                                        Toast.LENGTH_LONG).show());
-                        //TODO
-                        //make proper action here
-                    }
+        try {
+            if (isNetworkAvailable(mContext)) {
+                Intent mSpeechRecognizerIntent = new Intent(RecognizerIntent.
+                        ACTION_RECOGNIZE_SPEECH);
+                mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
+                        mContext.getPackageName());
+                mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                        R.string.you_may_speak);
+//                if (supportedSpeechLanguages != null && supportedSpeechLanguages.contains(
+//                        preferredLanguage)) {
+                    // Setting the speech language
+                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,
+                            preferredLanguage);
+                    mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
+                            preferredLanguage);
+//                } else if (supportedSpeechLanguages == null) {
+//                    //TODO
+//                } else {
+//                    mainActivity.runOnUiThread(() ->
+//                            Toast.makeText(mContext, R.string.speech_fa_lang_not_supported,
+//                                    Toast.LENGTH_LONG).show());
+//                    //TODO
+//                    //make proper action here
+//                }
 //                      another way is like this, but may cause error on some devices and I dono why!
 //                       if (mSpeechRecognizerIntent.resolveActivity(mContext.getPackageManager()) != null) {
-                    if (isIntentAvailable(mSpeechRecognizerIntent, mContext)) {
-                        mainActivity.startActivityForResult(mSpeechRecognizerIntent, requestCode);
-                        setIsListening(true);
-                        mainActivity.runOnUiThread(() ->
-                                Toast.makeText(mContext, R.string.you_may_speak, Toast.LENGTH_SHORT).show());
-                    } else {
-                        mainActivity.runOnUiThread(() ->
-                                Toast.makeText(mContext, R.string.speech_not_supported,
-                                        Toast.LENGTH_LONG).show());
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://market.android.com/details?id=com.google.android.googlequicksearchbox"));
-//                                Uri.parse("https://market.android.com/details?id=com.prometheusinteractive.voice_launcher"));
-                        mainActivity.startActivity(browserIntent);
-                    }
-                } else {
-                    Log.e(getClass().getName(), mContext.getResources().getString(R.string.
-                            ds_internet_not_enabled));
+                if (isIntentAvailable(mSpeechRecognizerIntent, mContext)) {
+                    mainActivity.startActivityForResult(mSpeechRecognizerIntent, requestCode);
+                    setIsListening(true);
                     mainActivity.runOnUiThread(() ->
-                            Toast.makeText(mContext, R.string.ds_internet_not_enabled,
-                                    Toast.LENGTH_LONG).show());
+                            Toast.makeText(mContext, R.string.you_may_speak, Toast.LENGTH_SHORT).show());
+                } else {
+                    mainActivity.showInstallGoogleSearchBoxSttDialog();
                 }
-            } catch (IllegalStateException | ActivityNotFoundException e) {
-                Log.e(STT.class.getName(), e.getMessage(), e);
+            } else {
+                Log.e(getClass().getName(), mContext.getResources().getString(R.string.
+                        ds_internet_not_enabled));
+                mainActivity.runOnUiThread(() ->
+                        Toast.makeText(mContext, R.string.ds_internet_not_enabled,
+                                Toast.LENGTH_LONG).show());
             }
+        } catch (IllegalStateException | ActivityNotFoundException e) {
+            Log.e(STT.class.getName(), e.getMessage(), e);
+            mainActivity.runOnUiThread(() -> Toast.makeText(mContext, R.string.speech_to_text_error,
+                            Toast.LENGTH_SHORT).show());
+        }
 //        });
     }
 
     private boolean isIntentAvailable(Intent intent, Context mContext) {
         PackageManager pm = mContext.getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
-        System.out.println(activities);
         return activities.size() > 0;
     }
 
@@ -133,7 +127,7 @@ public class STT implements Codes {
     public void startLanguageReceiver(Context mContext) {
         try {
             Intent languageDetailsIntent = RecognizerIntent.getVoiceDetailsIntent(mContext);
-            if(languageDetailsIntent != null) {//there is no intent to handle voice details
+            if (languageDetailsIntent != null) {//there is no intent to handle voice details
                 languageDetailsIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                 LanguageReceiver languageReceiver = new LanguageReceiver();
                 languageReceiver.setOnLanguageDetailsListener((defaultLanguage, otherLanguages) -> {
@@ -145,7 +139,7 @@ public class STT implements Codes {
                 mContext.sendOrderedBroadcast(languageDetailsIntent, null,
                         languageReceiver, null, Activity.RESULT_OK, null, null);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e(this.getClass().getName(), "Unable to get VoiceDetailsIntent", e);
         }
     }
@@ -170,22 +164,6 @@ public class STT implements Codes {
  */
 
 class LanguageReceiver extends BroadcastReceiver {
-
-    /**
-     * Droid Speech Language Details Listener
-     *
-     * @author Vikram Ezhil
-     */
-
-    interface OnLanguageDetailsListener {
-        /**
-         * Sends an update with the device language details
-         *
-         * @param defaultLanguage The default language
-         * @param otherLanguages  The other supported languages
-         */
-        void onLanguageDetailsInfo(String defaultLanguage, List<String> otherLanguages);
-    }
 
     private OnLanguageDetailsListener onLanguageDetailsListener;
 
@@ -225,5 +203,21 @@ class LanguageReceiver extends BroadcastReceiver {
      */
     void setOnLanguageDetailsListener(OnLanguageDetailsListener onLanguageDetailsListener) {
         this.onLanguageDetailsListener = onLanguageDetailsListener;
+    }
+
+    /**
+     * Droid Speech Language Details Listener
+     *
+     * @author Vikram Ezhil
+     */
+
+    interface OnLanguageDetailsListener {
+        /**
+         * Sends an update with the device language details
+         *
+         * @param defaultLanguage The default language
+         * @param otherLanguages  The other supported languages
+         */
+        void onLanguageDetailsInfo(String defaultLanguage, List<String> otherLanguages);
     }
 }

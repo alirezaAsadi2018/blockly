@@ -19,11 +19,13 @@
     <string name="city_name_not_found">شهرِ موردِ نظر یافت نشد</string>
     <string name="music_player_not_supported">دستگاه شما موزیک پلیر را پشتیبانی نمی کند</string>
     <string name="weather_api_key">521daac643e52381dfd9c18688956964</string>
+    <string name="aqi_api_key">727fd99bd0e91546eed5b6910804d3da4d29d099</string>
     <string name="downloading">Downloading…</string>
     <string name="title_file_download">APK is downloading</string>
     <string name="storage_access_required">Storage access is required to downloading the file.</string>
     <string name="storage_permission_denied">Storage permission request was denied.</string>
     <string name="you_dont_have_espeak_engine">شما برنامه espeak را نصب نکرده اید. برای نصب یکی دو گزینه ی زیر را انتخاب کنبد: </string>
+    <string name="you_dont_have_google_stt_engine">شما برنامه google search box را نصب نکرده اید. برای نصب یکی دو گزینه ی زیر را انتخاب کنبد: </string>
     <string name="install_from_google_play">دانلود از گوگل پلی</string>
     <string name="install_directly">دانلود مستقیم</string>
     <string name="close">بستن</string>
@@ -35,5 +37,12 @@
     <string name="install_voice_data">نصب صوت فارسی</string>
     <string name="speech_fa_lang_not_supported">موتور تشخیص صوت زبان فارسی را پشتیبانی نمی کند</string>
     <string name="ds_internet_not_enabled">اینترنت شما وصل نیست</string>
-    <string name="unable_to_get_voice_details" />>
+    <string name="unable_to_get_voice_details" />
+    <string name="weather_api_uri_template"><![CDATA[https://api.openweathermap.org/data/2.5/weather?units=metric&lang=fa]]></string>
+    <string name="aqi_api_uri_template">https://api.waqi.info/search/</string>
+    <string name="aqi_response_error">اطلاعات آلودگی هوا یافت نشد.</string>
+    <string name="weather_forecast_response_error">اطلاعات آب و هوایی یافت نشد.</string>
+    <string name="city_weather_info_not_found">اطلاعات آب و هوا یافت نشد</string>
+    <string name="city_aqi_info_not_found">اطلاعات آلودگی هوا یافت نشد</string>
+    <string name="speech_to_text_error">مشکلی در برنامه تشخیص صوت اتفاق افتاد</string>
 </resources>

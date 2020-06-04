@@ -1,6 +1,6 @@
 package com.google.blockly.android.webview;
 
-import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,15 +9,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
-import android.media.Rating;
-import android.media.session.MediaController;
-import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -43,8 +41,8 @@ public class MediaPlayerService extends Service implements Codes {
 
     private MediaPlayer mMediaPlayer;
     private NotificationManagerCompat mManager;
-    private MediaSession mSession;
-    private MediaController mController;
+    private MediaSessionCompat mSession;
+    private MediaControllerCompat mController;
     private int mSeekValue = 1000; // milliSeconds
     private int mCurrentIndex;
     private List<Track> mTrackList;
@@ -95,10 +93,21 @@ public class MediaPlayerService extends Service implements Codes {
 
 
     private void buildNotification(NotificationCompat.Action action) {
-        Notification.MediaStyle style = new Notification.MediaStyle();
+        androidx.media.app.NotificationCompat.MediaStyle mediaStyle =
+                new androidx.media.app.NotificationCompat.MediaStyle();
+//        Notification.MediaStyle style = new Notification.MediaStyle();
         mManager = NotificationManagerCompat.from(getApplicationContext());
-        MediaSession mediaSession = new MediaSession(getApplicationContext(),
+        MediaSessionCompat mediaSession = new MediaSessionCompat(getApplicationContext(),
                 "simple player session");
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    CHANNEL_ID, "Channel Name", NotificationManager.IMPORTANCE_HIGH);
+            mManager.createNotificationChannel(mChannel);
+        }
+
+//        MediaSession mediaSession = new MediaSession(getApplicationContext(),
+//                "simple player session");
         Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                 R.mipmap.roobin);
         Intent intent = new Intent(getApplicationContext(), MediaPlayerService.class);
@@ -125,8 +134,7 @@ public class MediaPlayerService extends Service implements Codes {
                 .setContentIntent(contentIntent)
                 .setOnlyAlertOnce(true)
                 .setShowWhen(false)
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(
-                        MediaSessionCompat.Token.fromToken(mediaSession.getSessionToken())));
+                .setStyle(mediaStyle.setMediaSession(mediaSession.getSessionToken()));
 
 //                .setStyle(new Notification.MediaStyle().setMediaSession(
 //                        mediaSession.getSessionToken()));
@@ -138,7 +146,7 @@ public class MediaPlayerService extends Service implements Codes {
         builder.addAction(generateAction(android.R.drawable.ic_media_ff,
                 "Fast Foward", ACTION_FAST_FORWARD));
         builder.addAction(generateAction(android.R.drawable.ic_media_next, "Next", ACTION_NEXT));
-        style.setShowActionsInCompactView(0, 1, 2, 3, 4);
+        mediaStyle.setShowActionsInCompactView(0, 1, 2, 3, 4);
 
         mManager.notify(MUSIC_PLAYER_NOTIFICATION_ID, builder.build());
     }
@@ -170,103 +178,101 @@ public class MediaPlayerService extends Service implements Codes {
             skipToIndex();
         });
 
-        mSession = new MediaSession(getApplicationContext(), "simple player session");
-        mController = new MediaController(getApplicationContext(), mSession.getSessionToken());
+        mSession = new MediaSessionCompat(getApplicationContext(), "simple player session");
+        try {
+            mController = new MediaControllerCompat(getApplicationContext(), mSession.getSessionToken());
+            mSession.setCallback(new MediaSessionCompat.Callback() {
+                                     @Override
+                                     public void onPlay() {
+                                         super.onPlay();
+                                         Log.e("MediaPlayerService", "onPlay");
+                                         isOngoing = true;
+                                         buildNotification(generateAction(android.R.drawable.
+                                                 ic_media_pause, "Pause", ACTION_PAUSE));
+                                         if (!mMediaPlayer.isPlaying())
+                                             mMediaPlayer.start();
+                                     }
 
-        mSession.setCallback(new MediaSession.Callback() {
-                                 @Override
-                                 public void onPlay() {
-                                     super.onPlay();
-                                     Log.e("MediaPlayerService", "onPlay");
-                                     isOngoing = true;
-                                     buildNotification(generateAction(android.R.drawable.
-                                             ic_media_pause, "Pause", ACTION_PAUSE));
-                                     if (!mMediaPlayer.isPlaying())
-                                         mMediaPlayer.start();
-                                 }
+                                     @Override
+                                     public void onPause() {
+                                         super.onPause();
+                                         Log.e("MediaPlayerService", "onPause");
+                                         isOngoing = false;
+                                         buildNotification(generateAction(android.R.drawable.
+                                                 ic_media_play, "Play", ACTION_PLAY));
+                                         if (mMediaPlayer.isPlaying())
+                                             mMediaPlayer.pause();
+                                     }
 
-                                 @Override
-                                 public void onPause() {
-                                     super.onPause();
-                                     Log.e("MediaPlayerService", "onPause");
-                                     isOngoing = false;
-                                     buildNotification(generateAction(android.R.drawable.
-                                             ic_media_play, "Play", ACTION_PLAY));
-                                     if (mMediaPlayer.isPlaying())
-                                         mMediaPlayer.pause();
-                                 }
+                                     @Override
+                                     public void onSkipToNext() {
+                                         super.onSkipToNext();
+                                         Log.e("MediaPlayerService", "onSkipToNext");
+                                         //Change media here
+                                         mCurrentIndex++;
+                                         mCurrentIndex %= mTrackList.size();
+                                         skipToIndex();
+                                     }
 
-                                 @Override
-                                 public void onSkipToNext() {
-                                     super.onSkipToNext();
-                                     Log.e("MediaPlayerService", "onSkipToNext");
-                                     //Change media here
-                                     mCurrentIndex++;
-                                     mCurrentIndex %= mTrackList.size();
-                                     skipToIndex();
-                                 }
+                                     @Override
+                                     public void onSkipToPrevious() {
+                                         super.onSkipToPrevious();
+                                         Log.e("MediaPlayerService", "onSkipToPrevious");
+                                         mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex - 1
+                                                 : mTrackList.size() - 1;
+                                         skipToIndex();
+                                     }
 
-                                 @Override
-                                 public void onSkipToPrevious() {
-                                     super.onSkipToPrevious();
-                                     Log.e("MediaPlayerService", "onSkipToPrevious");
-                                     mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex - 1
-                                             : mTrackList.size() - 1;
-                                     skipToIndex();
-                                 }
+                                     @Override
+                                     public void onFastForward() {
+                                         super.onFastForward();
+                                         Log.e("MediaPlayerService", "onFastForward");
+                                         //Manipulate current media here
+                                         int currentPosition = mMediaPlayer.getCurrentPosition();
+                                         if (currentPosition + mSeekValue <= mMediaPlayer.getDuration()) {
+                                             mMediaPlayer.seekTo(currentPosition + mSeekValue);
+                                         } else {
+                                             mMediaPlayer.seekTo(mMediaPlayer.getDuration());
+                                         }
+                                     }
 
-                                 @Override
-                                 public void onFastForward() {
-                                     super.onFastForward();
-                                     Log.e("MediaPlayerService", "onFastForward");
-                                     //Manipulate current media here
-                                     int currentPosition = mMediaPlayer.getCurrentPosition();
-                                     if (currentPosition + mSeekValue <= mMediaPlayer.getDuration()) {
-                                         mMediaPlayer.seekTo(currentPosition + mSeekValue);
-                                     } else {
-                                         mMediaPlayer.seekTo(mMediaPlayer.getDuration());
+                                     @Override
+                                     public void onRewind() {
+                                         super.onRewind();
+                                         Log.e("MediaPlayerService", "onRewind");
+                                         int currentPosition = mMediaPlayer.getCurrentPosition();
+                                         if (currentPosition - mSeekValue >= 0) {
+                                             mMediaPlayer.seekTo(currentPosition - mSeekValue);
+                                         } else {
+                                             mMediaPlayer.seekTo(0);
+                                         }
+                                     }
+
+                                     @Override
+                                     public void onStop() {
+                                         super.onStop();
+                                         Log.e("MediaPlayerService", "onStop");
+                                         //Stop media player here
+                                         NotificationManager notificationManager = (NotificationManager)
+                                                 getApplicationContext().getSystemService(
+                                                         Context.NOTIFICATION_SERVICE);
+                                         Objects.requireNonNull(notificationManager).cancel(
+                                                 MUSIC_PLAYER_NOTIFICATION_ID);
+                                         Intent intent = new Intent(getApplicationContext(),
+                                                 MediaPlayerService.class);
+                                         stopService(intent);
+                                         mMediaPlayer.release();
+                                     }
+
+                                     @Override
+                                     public void onSeekTo(long pos) {
+                                         super.onSeekTo(pos);
                                      }
                                  }
-
-                                 @Override
-                                 public void onRewind() {
-                                     super.onRewind();
-                                     Log.e("MediaPlayerService", "onRewind");
-                                     int currentPosition = mMediaPlayer.getCurrentPosition();
-                                     if (currentPosition - mSeekValue >= 0) {
-                                         mMediaPlayer.seekTo(currentPosition - mSeekValue);
-                                     } else {
-                                         mMediaPlayer.seekTo(0);
-                                     }
-                                 }
-
-                                 @Override
-                                 public void onStop() {
-                                     super.onStop();
-                                     Log.e("MediaPlayerService", "onStop");
-                                     //Stop media player here
-                                     NotificationManager notificationManager = (NotificationManager)
-                                             getApplicationContext().getSystemService(
-                                                     Context.NOTIFICATION_SERVICE);
-                                     Objects.requireNonNull(notificationManager).cancel(
-                                             MUSIC_PLAYER_NOTIFICATION_ID);
-                                     Intent intent = new Intent(getApplicationContext(),
-                                             MediaPlayerService.class);
-                                     stopService(intent);
-                                     mMediaPlayer.release();
-                                 }
-
-                                 @Override
-                                 public void onSeekTo(long pos) {
-                                     super.onSeekTo(pos);
-                                 }
-
-                                 @Override
-                                 public void onSetRating(@NonNull Rating rating) {
-                                     super.onSetRating(rating);
-                                 }
-                             }
-        );
+            );
+        } catch (RemoteException e) {
+            Log.e(this.getClass().getName(), "media player controller session is not accessible!", e);
+        }
     }
 
 

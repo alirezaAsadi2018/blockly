@@ -202,7 +202,8 @@ public class BlocklyWebViewFragment extends Fragment {
         checkPermissions();
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.addJavascriptInterface(new WebAppInterface(getContext(), (MainActivity) getActivity()), "Android");
+        mWebView.addJavascriptInterface(new WebAppInterface(getContext(),
+                (MainActivity) getActivity()), "Android");
         mWebView.loadUrl("file:///android_asset/blockly/webview.html");
         return mWebView;
     }

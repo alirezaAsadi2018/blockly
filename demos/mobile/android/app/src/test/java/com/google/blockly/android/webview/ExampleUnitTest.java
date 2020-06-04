@@ -1,4 +1,4 @@
-package com.example.blocklywebview;
+package com.google.blockly.android.webview;
 
 import org.junit.Test;
 

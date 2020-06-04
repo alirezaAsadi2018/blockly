@@ -15,26 +15,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.ClientError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.blockly.android.webview.MediaPlayerService;
 import com.google.blockly.android.webview.R;
 import com.google.blockly.android.webview.utility.Codes;
 import com.google.blockly.android.webview.utility.STT;
 import com.google.blockly.android.webview.utility.TTS;
+import com.google.blockly.android.webview.utility.WeatherApiRequestState;
+import com.google.blockly.android.webview.utility.WeatherReport;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -43,17 +32,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * {@link com.google.blockly.android.webview.BlocklyWebViewFragment}.
  */
 public class MainActivity extends AppCompatActivity implements Codes {
-    private TTS mTtsInstance;
-    private Boolean weatherApiIsOk = true;
     private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
-
-
-    public void setIsSttButtonActive(boolean isSttButtonActive) {
-        this.isSttButtonActive.set(isSttButtonActive);
-    }
+    private TTS mTtsInstance;
 
     public AtomicBoolean getIsSttButtonActive() {
         return isSttButtonActive;
+    }
+
+    public void setIsSttButtonActive(boolean isSttButtonActive) {
+        this.isSttButtonActive.set(isSttButtonActive);
     }
 
     public TTS getMTtsInstance() {
@@ -68,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        STT.getInstance().startLanguageReceiver(getApplicationContext());
+//        STT.getInstance().startLanguageReceiver(getApplicationContext());
     }
 
     @Override
@@ -103,8 +90,10 @@ public class MainActivity extends AppCompatActivity implements Codes {
             String text = Objects.requireNonNull(result).get(0);
             switch (requestCode) {
                 case STT_DO_COMMAND_CODE: //STT action from js result -> getting a command
-                    if (text.contains("آب و هوا") || text.contains("آب وهوا")
-                            || text.contains("اب و هوا") || text.contains("اب وهوا")) {
+                    if (text.contains("آب و هوا") || text.contains("آب وهوا") ||
+                            text.contains("اب و هوا") || text.contains("اب وهوا") ||
+                            text.contains("آب\u200Cو\u200Cهوا") || text.contains("آب\u200Cوهوا") ||
+                            text.contains("آب\u200Cو هوا")) {
                         Toast.makeText(getApplicationContext(), "weather", Toast.LENGTH_SHORT).show();
                         STT.getInstance().setIsBusyAskingForInfo(true);
                         askForCityName();
@@ -151,143 +140,43 @@ public class MainActivity extends AppCompatActivity implements Codes {
     }
 
     private void openGameMenu() {
-
+        //TODO
     }
 
 
     private void reportWeather(String city) {
-        weatherApiIsOk = true;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String weather_api_key = "521daac643e52381dfd9c18688956964";
-        String weather_api_url = "https://api.openweathermap.org/data/2.5/weather?q=" + city
-                + "&units=metric&appid=" + weather_api_key + "&lang=fa"; //units = metric -> celsius °C
-        JsonObjectRequest weatherRequest = new JsonObjectRequest
-                (Request.Method.GET, weather_api_url, null, new Response.Listener<JSONObject>() {
+        WeatherReport.getInstance(this).getWeatherReport(city);
+    }
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (!weatherApiIsOk)
-                            return;
-                        JSONObject main = null;
-                        try {
-                            main = response.getJSONObject("main");
-                            JSONObject sys = response.getJSONObject("sys");
-                            JSONObject wind = response.getJSONObject("wind");
-                            JSONObject weather = response.getJSONArray("weather").getJSONObject(0);
-                            String tempMin = "Min Temp: " + main.getString("temp_min") +
-                                    getResources().getString(R.string.degree_centigrade);
-                            String tempMax = "Max Temp: " + main.getString("temp_max") +
-                                    getResources().getString(R.string.degree_centigrade);
-                            String pressure = main.getString("pressure");
-                            String address = response.getString("name") + ", " +
-                                    sys.getString("country");
+    public void onWeatherForecastResult(){
+        WeatherReport instance = WeatherReport.getInstance(this);
 
-                            long updatedAt = response.getLong("dt");
-                            String updatedAtText = "Updated at: " + new SimpleDateFormat(
-                                    "dd/MM/yyyy hh:mm a", Locale.ENGLISH).format(
-                                    new Date(updatedAt * 1000));
-                            String temp = main.getString("temp") +
-                                    getResources().getString(R.string.degree_centigrade);
-                            String humidity = main.getString("humidity");
-                            String weatherDescription = weather.getString("description");
+        //weather forecast part
+        if (instance.getWeatherForecastState() == WeatherApiRequestState.DONE) {
+            callTtsForWeatherForcast(getString(R.string.tts_weather_humidity),
+                    instance.getHumidity());
+            callTtsForWeatherForcast(getString(R.string.tts_weather_temp),
+                    instance.getTemp());
+            callTtsForWeatherForcast(getString(R.string.tts_weather_description),
+                    instance.getWeatherDescription());
+        } else {
+            //Error with weather forecast api request
+            mTtsInstance.tts(getString(R.string.city_weather_info_not_found), IDLE_UTTERANCE_ID);
+//            mTtsInstance.tts(instance.getWeatherForecastErrorMessage(), IDLE_UTTERANCE_ID);
+        }
+    }
+    public void onWeatherAqiRequestResult() {
+        WeatherReport instance = WeatherReport.getInstance(this);
 
-                            callTtsForWeatherForcast(getResources().getString(
-                                    R.string.tts_weather_humidity), humidity);
-                            callTtsForWeatherForcast(getResources().getString(
-                                    R.string.tts_weather_temp), temp);
-                            callTtsForWeatherForcast(getResources().getString(
-                                    R.string.tts_weather_description), weatherDescription);
-                        } catch (JSONException error) {
-                            Log.e(this.getClass().getName(), "json form is not correct for " +
-                                    "weather forecast api", error);
-                            weatherApiIsOk = false;
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(this.getClass().getName(), "weather forecast api response error: " +
-                                error.getMessage(), error);
-                        if (error instanceof ClientError) {
-                            String message = getResources().getString(R.string.city_name_not_found);
-                            mTtsInstance.tts(message, IDLE_UTTERANCE_ID);
-                        }
-                        weatherApiIsOk = false;
-                    }
-                });
-        String aqi_api_key = "727fd99bd0e91546eed5b6910804d3da4d29d099";
-        String aqi_url = "https://api.waqi.info/search/?token=" + aqi_api_key + "&keyword=" + city;
-        JsonObjectRequest aqiRequest = new JsonObjectRequest
-                (Request.Method.GET, aqi_url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (!weatherApiIsOk)
-                            return;
-                        JSONObject data = null;
-                        try {
-                            if (response.getString("status").equals("ok")) {//it's always OK
-                                if (response.getJSONArray("data").length() == 0) {
-                                    // TODO
-                                    //search the city name in English or
-                                    // search for other stations if available or
-                                    // at last show a good message
-                                    return;
-                                }
-                                data = response.getJSONArray("data").getJSONObject(0);
-                                if (data.getString("aqi").equals("-")) {
-                                    // TODO
-                                    //search the city name in English or
-                                    // search for other stations if available or
-                                    // at last show a good message
-                                    return;
-                                }
-                                int aqi = Integer.parseInt(data.getString("aqi"));
-                                String airPollutionResponse;
-                                if (aqi >= 0 && aqi <= 50) {
-                                    //Good
-                                    airPollutionResponse = getResources().getString(R.string.good);
-                                } else if (aqi <= 100) {
-                                    //Moderate
-                                    airPollutionResponse = getResources().getString(R.string.moderate);
-                                } else if (aqi <= 150) {
-                                    //Unhealthy for Sensitive Groups
-                                    airPollutionResponse = getResources().getString(
-                                            R.string.unhealthy_for_sensitive_groups);
-                                } else if (aqi <= 200) {
-                                    //Unhealthy
-                                    airPollutionResponse = getResources().getString(R.string.unhealthy);
-                                } else if (aqi <= 300) {
-                                    //Very Unhealthy
-                                    airPollutionResponse = getResources().getString(
-                                            R.string.very_unhealthy);
-                                } else {
-                                    //Hazardous
-                                    airPollutionResponse = getResources().getString(R.string.hazardous);
-                                }
-                                callTtsForWeatherForcast(getResources().getString(
-                                        R.string.tts_air_pollution), airPollutionResponse);
-
-                            }
-                        } catch (JSONException error) {
-                            Log.e(this.getClass().getName(), "json form is not correct for aqi api"
-                                    , error);
-                            weatherApiIsOk = false;
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(this.getClass().getName(), "aqi api response error: " +
-                                error.getMessage(), error);
-                        weatherApiIsOk = false;
-                    }
-                });
-        queue.add(weatherRequest);
-        queue.add(aqiRequest);
+        //weather quality part
+        if (instance.getAqiState() == WeatherApiRequestState.DONE) {
+            callTtsForWeatherForcast(getString(R.string.tts_air_pollution),
+                    instance.getAirPollutionResponse());
+        }else{
+            //Error with aqi api request
+            mTtsInstance.tts(getString(R.string.city_aqi_info_not_found), IDLE_UTTERANCE_ID);
+//            mTtsInstance.tts(instance.getAqiErrorMessage(), IDLE_UTTERANCE_ID);
+        }
     }
 
     private void callTtsForWeatherForcast(String key, String value) {
@@ -351,10 +240,10 @@ public class MainActivity extends AppCompatActivity implements Codes {
         });
     }
 
-    public void showInstallEspeakDialog() {
+    private void showInstallDialog(int message, Uri playMarketLinkUri, Uri directLinkUri) {
         final Context mContext = getApplicationContext();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(R.string.you_dont_have_espeak_engine);
+        builder1.setMessage(message);
         builder1.setCancelable(true);
 
 
@@ -364,11 +253,9 @@ public class MainActivity extends AppCompatActivity implements Codes {
                 R.string.install_from_google_play, (DialogInterface dialog, int id) -> {
                     dialog.cancel();
                     try {
-                        Intent viewIntent =
-                                new Intent("android.intent.action.VIEW",
-                                        Uri.parse("market://details?id=com.redzoc.ramees.tts.espeak&hl=en"));
+                        Intent viewIntent = new Intent("android.intent.action.VIEW", playMarketLinkUri);
                         startActivity(viewIntent);
-                    }catch (android.content.ActivityNotFoundException e){
+                    } catch (android.content.ActivityNotFoundException e) {
                         //TODO
                         //No Activity found to handle Intent { act=android.intent.action.VIEW dat=market://details?id=com.redzoc.ramees.tts.espeak&hl=en }
                         //use another strategy
@@ -383,10 +270,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
                 R.string.install_directly, (DialogInterface dialog, int id) -> {
                     dialog.cancel();
                     try {
-                        String path = "https://bit.ly/33WrSMa"; // espeak download link from picofile
-                        Intent viewIntent =
-                                new Intent("android.intent.action.VIEW",
-                                        Uri.parse(path));
+                        Intent viewIntent = new Intent("android.intent.action.VIEW", directLinkUri);
                         startActivity(viewIntent);
                     } catch (Exception e) {
                         Toast.makeText(mContext, R.string.unable_to_connect,
@@ -399,5 +283,19 @@ public class MainActivity extends AppCompatActivity implements Codes {
             AlertDialog alert11 = builder1.create();
             alert11.show();
         });
+    }
+
+    public void showInstallEspeakDialog() {
+        showInstallDialog(R.string.you_dont_have_espeak_engine,
+                Uri.parse("market://details?id=com.redzoc.ramees.tts.espeak&hl=en"),
+                Uri.parse("https://bit.ly/33WrSMa"));
+    }
+
+    public void showInstallGoogleSearchBoxSttDialog() {
+        Uri picofileDirectLink = Uri.parse("https://bit.ly/36PwSmY");
+        Uri uploadBoyDirectLink = Uri.parse("https://bit.ly/2yQv8gR");
+        showInstallDialog(R.string.you_dont_have_google_stt_engine,
+                Uri.parse("market://details?id=com.google.android.googlequicksearchbox"),
+                picofileDirectLink);
     }
 }

@@ -43,7 +43,26 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name=".MediaPlayerService" />
+        <receiver android:name="androidx.media.session.MediaButtonReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MediaPlayerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="action_play" />
+                <action android:name="action_pause" />
+                <action android:name="action_rewind" />
+                <action android:name="action_fast_foward" />
+                <action android:name="action_next" />
+                <action android:name="action_previous" />
+                <action android:name=".action_stop" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
