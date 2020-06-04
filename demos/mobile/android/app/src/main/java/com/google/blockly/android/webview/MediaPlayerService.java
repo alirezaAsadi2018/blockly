@@ -185,7 +185,7 @@ public class MediaPlayerService extends Service implements Codes {
                                      @Override
                                      public void onPlay() {
                                          super.onPlay();
-                                         Log.e("MediaPlayerService", "onPlay");
+                                         Log.d("MediaPlayerService", "onPlay");
                                          isOngoing = true;
                                          buildNotification(generateAction(android.R.drawable.
                                                  ic_media_pause, "Pause", ACTION_PAUSE));
@@ -196,7 +196,7 @@ public class MediaPlayerService extends Service implements Codes {
                                      @Override
                                      public void onPause() {
                                          super.onPause();
-                                         Log.e("MediaPlayerService", "onPause");
+                                         Log.d("MediaPlayerService", "onPause");
                                          isOngoing = false;
                                          buildNotification(generateAction(android.R.drawable.
                                                  ic_media_play, "Play", ACTION_PLAY));
@@ -207,7 +207,8 @@ public class MediaPlayerService extends Service implements Codes {
                                      @Override
                                      public void onSkipToNext() {
                                          super.onSkipToNext();
-                                         Log.e("MediaPlayerService", "onSkipToNext");
+                                         Log.d("MediaPlayerService", "onSkipToNext");
+                                         isOngoing = true;
                                          //Change media here
                                          mCurrentIndex++;
                                          mCurrentIndex %= mTrackList.size();
@@ -217,7 +218,8 @@ public class MediaPlayerService extends Service implements Codes {
                                      @Override
                                      public void onSkipToPrevious() {
                                          super.onSkipToPrevious();
-                                         Log.e("MediaPlayerService", "onSkipToPrevious");
+                                         Log.d("MediaPlayerService", "onSkipToPrevious");
+                                         isOngoing = true;
                                          mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex - 1
                                                  : mTrackList.size() - 1;
                                          skipToIndex();
@@ -226,7 +228,8 @@ public class MediaPlayerService extends Service implements Codes {
                                      @Override
                                      public void onFastForward() {
                                          super.onFastForward();
-                                         Log.e("MediaPlayerService", "onFastForward");
+                                         Log.d("MediaPlayerService", "onFastForward");
+                                         isOngoing = true;
                                          //Manipulate current media here
                                          int currentPosition = mMediaPlayer.getCurrentPosition();
                                          if (currentPosition + mSeekValue <= mMediaPlayer.getDuration()) {
@@ -239,7 +242,8 @@ public class MediaPlayerService extends Service implements Codes {
                                      @Override
                                      public void onRewind() {
                                          super.onRewind();
-                                         Log.e("MediaPlayerService", "onRewind");
+                                         Log.d("MediaPlayerService", "onRewind");
+                                         isOngoing = true;
                                          int currentPosition = mMediaPlayer.getCurrentPosition();
                                          if (currentPosition - mSeekValue >= 0) {
                                              mMediaPlayer.seekTo(currentPosition - mSeekValue);
