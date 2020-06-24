@@ -3,23 +3,21 @@ package com.google.blockly.android.webview;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.PermissionRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.blockly.android.webview.demo.MainActivity;
-import com.google.blockly.android.webview.utility.DownloadController;
 
 import java.util.Objects;
 
@@ -29,32 +27,16 @@ import static android.content.ContentValues.TAG;
  * This fragments contains and manages the web view that hosts Blockly.
  */
 public class BlocklyWebViewFragment extends Fragment {
-    protected @Nullable
-    WebView mWebView = null;
     private final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 10;
     private final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE_FILE = 11;
     private final int MY_PERMISSIONS_REQUEST_READ_STORAGE_FILE = 12;
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 13;
     private final int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 14;
     private final int MY_PERMISSIONS_REQUEST_INTERNET = 15;
-
+    protected @Nullable
+    WebView mWebView = null;
 
     private void checkPermissions() {
-        Objects.requireNonNull(mWebView).setWebChromeClient(new WebChromeClient() {
-
-            @Override
-            public void onPermissionRequest(final PermissionRequest request) {
-                Log.d(TAG, "onPermissionRequest");
-                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-                    @Override
-                    public void run() {
-                        request.grant(request.getResources());
-                    }
-                });
-            }
-
-        });
         if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
             System.out.println("Permission is not granted");
@@ -199,9 +181,24 @@ public class BlocklyWebViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mWebView = new WebView(inflater.getContext());
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onPermissionRequest(final PermissionRequest request) {
+                Log.d(TAG, "onPermissionRequest");
+                Objects.requireNonNull(getActivity()).runOnUiThread(() ->
+                        request.grant(request.getResources()));
+            }
+
+        });
         checkPermissions();
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+//        mWebView.evaluateJavascript("(function() { return 'this'; })();", value -> {
+//            // value is the result returned by the Javascript as JSON
+//            Log.d("LogName", value); // Prints: "this"
+//        });
+        //set debugging
+        WebView.setWebContentsDebuggingEnabled(true);
         mWebView.addJavascriptInterface(new WebAppInterface(getContext(),
                 (MainActivity) getActivity()), "Android");
         mWebView.loadUrl("file:///android_asset/blockly/webview.html");

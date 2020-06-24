@@ -34,22 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MainActivity extends AppCompatActivity implements Codes {
     private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
     private TTS mTtsInstance;
-
-    public AtomicBoolean getIsSttButtonActive() {
-        return isSttButtonActive;
-    }
-
-    public void setIsSttButtonActive(boolean isSttButtonActive) {
-        this.isSttButtonActive.set(isSttButtonActive);
-    }
-
-    public TTS getMTtsInstance() {
-        return mTtsInstance;
-    }
-
-    public void setMTtsInstance(TTS mTtsInstance) {
-        this.mTtsInstance = mTtsInstance;
-    }
+    public String sttResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,43 +69,47 @@ public class MainActivity extends AppCompatActivity implements Codes {
                 }, 1000);
             }
         }
-
         if (resultCode == RESULT_OK && data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             String text = Objects.requireNonNull(result).get(0);
-            switch (requestCode) {
-                case STT_DO_COMMAND_CODE: //STT action from js result -> getting a command
-                    if (text.contains("آب و هوا") || text.contains("آب وهوا") ||
-                            text.contains("اب و هوا") || text.contains("اب وهوا") ||
-                            text.contains("آب\u200Cو\u200Cهوا") || text.contains("آب\u200Cوهوا") ||
-                            text.contains("آب\u200Cو هوا")) {
-                        Toast.makeText(getApplicationContext(), "weather", Toast.LENGTH_SHORT).show();
-                        STT.getInstance().setIsBusyAskingForInfo(true);
-                        askForCityName();
-                    } else if (text.contains("آهنگ") || text.contains("اهنگ") || text.contains("موزیک")) {
-                        Toast.makeText(getApplicationContext(), "music", Toast.LENGTH_SHORT).show();
-                        playMusic();
-                    } else if (text.contains("بازی")) {
-                        Toast.makeText(getApplicationContext(), "game", Toast.LENGTH_SHORT).show();
-                        openGameMenu();
-                    } else if (text.contains("سلام")) {
-                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
-                        STT.getInstance().setIsBusyAskingForInfo(true);
-                        askForName();
-                    }
-                    break;
-                case STT_GET_NAME:
-                    sayHello(text);
-                    break;
-                case STT_GET_CITY_NAME:
-                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                    reportWeather(text);
-                    break;
-            }
+            sttResult = text;
+//            switch (requestCode) {
+//                case STT_DO_COMMAND_CODE: //STT action from js result -> getting a command
+//                    if (text.contains("آب و هوا") || text.contains("آب وهوا") ||
+//                            text.contains("اب و هوا") || text.contains("اب وهوا") ||
+//                            text.contains("آب\u200Cو\u200Cهوا") || text.contains("آب\u200Cوهوا") ||
+//                            text.contains("آب\u200Cو هوا")) {
+//                        Toast.makeText(getApplicationContext(), "weather", Toast.LENGTH_SHORT).show();
+//                        STT.getInstance().setIsBusyAskingForInfo(true);
+//                        askForCityName();
+//                    } else if (text.contains("آهنگ") || text.contains("اهنگ") || text.contains("موزیک")) {
+//                        Toast.makeText(getApplicationContext(), "music", Toast.LENGTH_SHORT).show();
+//                        playMusic();
+//                    } else if (text.contains("بازی")) {
+//                        Toast.makeText(getApplicationContext(), "game", Toast.LENGTH_SHORT).show();
+//                        openGameMenu();
+//                    } else if (text.contains("سلام")) {
+//                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
+//                        STT.getInstance().setIsBusyAskingForInfo(true);
+//                        askForName();
+//                    }
+//                    break;
+//                case STT_GET_NAME:
+//                    sayHello(text);
+//                    break;
+//                case STT_GET_CITY_NAME:
+//                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+//                    reportWeather(text);
+//                    break;
+//            }
         } else if (resultCode == RESULT_CANCELED) {
             Log.i(MainActivity.class.getName(), "activity result cancelled!");
         } else {
             Log.i(MainActivity.class.getName(), "result is null in activity results!");
+        }
+        //notify the thread waiting for stt result in webView interface
+        synchronized (this) {
+            this.notifyAll();
         }
     }
 
@@ -148,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
         WeatherReport.getInstance(this).getWeatherReport(city);
     }
 
-    public void onWeatherForecastResult(){
+    public void onWeatherForecastResult() {
         WeatherReport instance = WeatherReport.getInstance(this);
 
         //weather forecast part
@@ -165,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
 //            mTtsInstance.tts(instance.getWeatherForecastErrorMessage(), IDLE_UTTERANCE_ID);
         }
     }
+
     public void onWeatherAqiRequestResult() {
         WeatherReport instance = WeatherReport.getInstance(this);
 
@@ -172,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements Codes {
         if (instance.getAqiState() == WeatherApiRequestState.DONE) {
             callTtsForWeatherForcast(getString(R.string.tts_air_pollution),
                     instance.getAirPollutionResponse());
-        }else{
+        } else {
             //Error with aqi api request
             mTtsInstance.tts(getString(R.string.city_aqi_info_not_found), IDLE_UTTERANCE_ID);
 //            mTtsInstance.tts(instance.getAqiErrorMessage(), IDLE_UTTERANCE_ID);
@@ -297,5 +287,21 @@ public class MainActivity extends AppCompatActivity implements Codes {
         showInstallDialog(R.string.you_dont_have_google_stt_engine,
                 Uri.parse("market://details?id=com.google.android.googlequicksearchbox"),
                 picofileDirectLink);
+    }
+
+    public AtomicBoolean getIsSttButtonActive() {
+        return isSttButtonActive;
+    }
+
+    public void setIsSttButtonActive(boolean isSttButtonActive) {
+        this.isSttButtonActive.set(isSttButtonActive);
+    }
+
+    public TTS getMTtsInstance() {
+        return mTtsInstance;
+    }
+
+    public void setMTtsInstance(TTS mTtsInstance) {
+        this.mTtsInstance = mTtsInstance;
     }
 }

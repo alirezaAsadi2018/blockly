@@ -25,17 +25,6 @@ goog.provide('Blockly.JavaScript.loops');
 
 goog.require('Blockly.JavaScript');
 
-
-Blockly.JavaScript['roobin_test'] = function(block) {
-  var variable_i = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('i'), Blockly.Variables.NAME_TYPE);
-  var number_l = block.getFieldValue('l');
-  var number_r = block.getFieldValue('r');
-  var statements_pythonic_for = Blockly.JavaScript.statementToCode(block, 'pythonic_for');
-  // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
-  return code;
-};
-
 Blockly.JavaScript['controls_repeat_ext'] = function(block) {
   // Repeat n times.
   if (block.getField('TIMES')) {

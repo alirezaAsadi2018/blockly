@@ -318,7 +318,7 @@
 	"LISTS_REVERSE_TOOLTIP": "یک کپی از لیست را معکوس کنید.",
 	"VARIABLES_GET_TOOLTIP": "مقدار این متغیر را بر می‌گرداند.",
 	"VARIABLES_GET_CREATE_SET": "درست‌کردن «تنظیم %1»",
-	"VARIABLES_SET": "مجموعه %1 به %2",
+	"VARIABLES_SET": "مقداردهی %1 با %2",
 	"VARIABLES_SET_TOOLTIP": "متغیر برابر با خروجی را مشخص می‌کند.",
 	"VARIABLES_SET_CREATE_GET": "درست‌کردن «گرفتن %1»",
 	"PROCEDURES_DEFNORETURN_TITLE": "به",

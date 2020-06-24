@@ -41,7 +41,6 @@ goog.require('Blockly.Mutator');
 Blockly.Constants.Text.HUE = 160;
 
 Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
-  // Block for text value
   {
     "type": "text",
     "message0": "%1",

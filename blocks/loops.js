@@ -45,36 +45,6 @@ goog.require('Blockly.Warning');
 Blockly.Constants.Loops.HUE = 120;
 
 Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
-  // my Block for pythonic for_i_in_range_loop
-
-  {
-    "type": "roobin_test",
-    "message0": "for %1 in range( %2 , %3 ): %4",
-    "args0": [
-      {
-        "type": "field_variable",
-        "name": "i",
-        "variable": "i"
-      },
-      {
-        "type": "field_number",
-        "name": "l",
-        "value": 0
-      },
-      {
-        "type": "field_number",
-        "name": "r",
-        "value": 10
-      },
-      {
-        "type": "input_statement",
-        "name": "pythonic_for"
-      }
-    ],
-    "colour": 230,
-    "tooltip": "",
-    "helpUrl": ""
-  },
   // Block for repeat n times (external number).
   {
     "type": "controls_repeat_ext",

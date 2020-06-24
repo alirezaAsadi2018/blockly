@@ -14,13 +14,13 @@
       width: 100%;
     }
   </style>
-    <script src="blockly_compressed.js"></script>
-    <script src="blocks_compressed.js"></script>
-    <script src="javascript_compressed.js"></script>
-    <script src="python_compressed.js"></script>
-    <!-- TODO: Select msg file based on locale. -->
-    <script src="msg/js/fa.js"></script>
-    <script src="toolbox_standard.js"></script>
+  <script src="blockly_compressed.js"></script>
+  <script src="blocks_compressed.js"></script>
+  <script src="javascript_compressed.js"></script>
+  <script src="python_compressed.js"></script>
+  <!-- TODO: Select msg file based on locale. -->
+  <script src="msg/js/fa.js"></script>
+  <script src="toolbox_standard.js"></script>
 </head>
 <body>
 <!--  TODO: Select msg file based on locale. -->
@@ -32,13 +32,6 @@
 <div id="blocklyDiv" style="height: 550px;" ></div>
 
 <script type="text/javascript">
-<!--    var myWorkspace = Blockly.inject('blocklyDiv', {-->
-<!--          media: 'media/',-->
-<!--          toolbox: toolbox,-->
-<!--          zoom: {controls: true}-->
-<!--        });-->
-
-
     function showPython() {
       // Generate JavaScript code and display it.
       Blockly.Python.INFINITE_LOOP_TRAP = null;
@@ -59,7 +52,9 @@
       Blockly.JavaScript.INFINITE_LOOP_TRAP =
           'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
       var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+      debugger
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+	  
       try {
         eval(code);
       } catch (e) {
@@ -67,135 +62,63 @@
       }
     }
 
+    
+
     var myWorkspace = Blockly.inject('blocklyDiv', {
-          media: 'media/',
-          rtl: true,
-          toolbox: BLOCKLY_TOOLBOX_XML['standard'],
-          zoom: {controls: true}
-        });
+      toolbox: BLOCKLY_TOOLBOX_XML['standard'],
+      collapse : true, 
+      comments : true, 
+      disable : true, 
+      maxBlocks : Infinity, 
+      trashcan : true, 
+      horizontalLayout : false, 
+      toolboxPosition : 'start', 
+      css : true, 
+      rtl : true, 
+      scrollbars : true, 
+      sounds : true, 
+      oneBasedIndex : true, 
+      grid : {
+        spacing : 20, 
+        length : 1, 
+        colour : '#888', 
+        snap : false
+      }, 
+      media: 'media/',
+      // media : 'https://blockly-demo.appspot.com/static/media/', 
+      rtl: true,
+      zoom : {
+        controls : true, 
+        wheel : true, 
+        startScale : 1, 
+        maxScale : 3, 
+        minScale : 0.3, 
+        scaleSpeed : 1.2
+      }
+    });
 
     myWorkspace.registerButtonCallback("myButtonPressed", runCode)
 
+    function callTts(text){
+      Android.tts(text);
+    }
+
+    function callStt(){
+      var string = "";
+      try{
+        string = Android.stt();
+      }catch(e){
+        alert(e);
+      }
+      return string;
+    }
+
+
     function runCode(btn) {
-        Android.stt();
+      string = "default string";
+      string = Android.stt();
+      alert(string);
     }
-
-    /* function record(){
-        let recorder;
-        let audio;
-        async_record();
-        sleep(3000).then(() => {
-            async_stop();
-            sleep(3000).then(() => {
-                const reader = new FileReader();
-                reader.readAsDataURL(audio.audioBlob);
-                reader.onload = () => {
-                  const base64AudioMessage = reader.result.split(',')[1];
-
-
-                 fetch('http://alirezaasadi.pythonanywhere.com/messages', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: base64AudioMessage })
-                  }).then(res => {
-                    if (res.status === 201) {
-                      return populateAudioMessages();
-                    }
-                    console.log('Invalid status saving audio message: ' + res.status);
-                  });
-                };
-                return fetch('http://alirezaasadi.pythonanywhere.com/messages').then(res => {
-                  if (res.status === 200) {
-                    return res.json().then(json => {
-                        let text = json.messageFilenames;
-                        console.log(text);
-                        let para = document.querySelector(`[data-para="paragraph"]`);
-                        if(!para){
-                            para = document.createElement('P');
-                            para.setAttribute('data-para', "paragraph");
-                            document.getElementById("body").appendChild(para);
-                        }
-                        console.log(text);
-                        if(text){
-                            para.innerText = text;
-                        }
-                    });
-                  }
-                  console.log('Invalid status getting messages: ' + res.status);
-                });
-                populateAudioMessages()
-            })
-        })
-
-    }
-
-    const async_record = async () => {
-        if (!recorder) {
-          recorder = await recordAudio();
-        }
-        recorder.start();
-    }
-
-    const async_stop = async () => {
-        audio = await recorder.stop();
-    }
-
-
-    const populateAudioMessages = () => {
-        return fetch('http://alirezaasadi.pythonanywhere.com/messages').then(res => {
-          if (res.status === 200) {
-            return res.json().then(json => {
-				let text = json.messageFilenames;
-				console.log(text);
-				let para = document.querySelector(`[data-para="paragraph"]`);
-				if(!para){
-					para = document.createElement('P');
-					para.setAttribute('data-para', "paragraph");
-					document.body.appendChild(para);
-				}
-				console.log(text);
-				if(text){
-				    alert(text)
-					para.innerText = text;
-				}
-            });
-          }
-          console.log('Invalid status getting messages: ' + res.status);
-        });
-      };
-
-
-    const recordAudio = () =>
-        new Promise(async resolve => {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          const mediaRecorder = new MediaRecorder(stream);
-          let audioChunks = [];
-
-          mediaRecorder.addEventListener('dataavailable', event => {
-            audioChunks.push(event.data);
-          });
-
-          const start = () => {
-            audioChunks = [];
-            mediaRecorder.start();
-          };
-
-          const stop = () =>
-            new Promise(resolve => {
-              mediaRecorder.addEventListener('stop', () => {
-                const audioBlob = new Blob(audioChunks);
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const audio = new Audio(audioUrl);
-                const play = () => audio.play();
-                resolve({ audioChunks, audioBlob, audioUrl, play });
-              });
-
-              mediaRecorder.stop();
-            });
-
-          resolve({ start, stop });
-    });
-    const sleep = time => new Promise(resolve => setTimeout(resolve, time));*/
 </script>
 </body>
 </html>

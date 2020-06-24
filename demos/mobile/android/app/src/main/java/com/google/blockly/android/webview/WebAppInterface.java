@@ -14,34 +14,34 @@ import com.google.blockly.android.webview.utility.TTS;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class WebAppInterface implements Codes {
-    private Context mContext;
-    private MainActivity mainActivity;
-    private AtomicInteger activeThreads = new AtomicInteger(0);
-    private int threadThreshold = 5;
-    private ExecutorService executorService = Executors.newFixedThreadPool(threadThreshold);
+    private final Context mContext;
+    private final MainActivity mainActivity;
     private final AtomicBoolean isTtsFaLocaleInstallationDone = new AtomicBoolean(false);
 
 
-    WebAppInterface(Context c, MainActivity mainActivity) {
-        mContext = c;
+    WebAppInterface(Context mContext, MainActivity mainActivity) {
+        this.mContext = mContext;
         this.mainActivity = mainActivity;
     }
 
-    /**
-     * Show a toast from the web page
-     */
     @JavascriptInterface
-    public void stt() {
-        if (mainActivity.getIsSttButtonActive().get() && activeThreads.get() <= threadThreshold) {
-            executorService.submit(this::checkIfEspeakIsInstalled);
-            activeThreads.incrementAndGet();
+    public void tts(String text) throws InterruptedException {
+        if (checkIfEspeakIsInstalled()) {
+            mainActivity.getMTtsInstance().tts(text, IDLE_UTTERANCE_ID);
         }
+    }
+
+
+    @JavascriptInterface
+    public String stt() throws InterruptedException {
+        STT.getInstance().stt(mContext, mainActivity, STT_DO_COMMAND_CODE);
+        synchronized (mainActivity) {
+            mainActivity.wait();
+        }
+        return mainActivity.sttResult;
     }
 
     private synchronized boolean initTts(PackageManager pm) {
@@ -63,17 +63,18 @@ public class WebAppInterface implements Codes {
         return true;
     }
 
-    private void checkIfEspeakIsInstalled() {
+    private boolean checkIfEspeakIsInstalled() {
         PackageManager pm = mContext.getPackageManager();
         if (mainActivity.getMTtsInstance() == null) {
             boolean isPackageInstalled = initTts(pm);
             if (!isPackageInstalled) {
                 mainActivity.showInstallEspeakDialog();
+                return false;
             }
         }
         if (mainActivity.getMTtsInstance() != null &&
                 mainActivity.getMTtsInstance().getIsFaLocaleInitialized().get()) {
-            STT.getInstance().stt(mContext, mainActivity, STT_DO_COMMAND_CODE);
+            return true;
         }
         if (mainActivity.getMTtsInstance() != null &&
                 !mainActivity.getMTtsInstance().getIsFaLocaleInitialized().get()) {
@@ -85,7 +86,7 @@ public class WebAppInterface implements Codes {
                         mainActivity.getMTtsInstance().getIsFaLocaleInitialized().wait(1000);
                     }
                     if (mainActivity.getMTtsInstance().getIsFaLocaleInitialized().get()) {
-                        STT.getInstance().stt(mContext, mainActivity, STT_DO_COMMAND_CODE);
+                        return true;
                     } else {
                         // run only once with one thread
                         if (!isTtsFaLocaleInstallationDone.get()) {
@@ -95,14 +96,16 @@ public class WebAppInterface implements Codes {
                             mainActivity.startActivityForResult(installIntent, INSTALL_TTS_DATA_CODE);
                             isTtsFaLocaleInstallationDone.set(true);
                         }
+                        return false;
                     }
                 } catch (InterruptedException e) {
                     Log.e(this.getClass().getName(), "thread interrupted waiting " +
                             "for tts init", e);
+                    return false;
                 }
             }
         }
-        activeThreads.decrementAndGet();
+        return false;
     }
 
     private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
