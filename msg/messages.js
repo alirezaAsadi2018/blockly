@@ -1639,3 +1639,28 @@ Blockly.Msg.WORKSPACE_ARIA_LABEL = 'Blockly Workspace';
 /// that block have warnings attached to them. It should inform the user that the
 /// block they collapsed contains blocks that have warnings.
 Blockly.Msg.COLLAPSED_WARNINGS_WARNING = 'Collapsed blocks contain warnings.';
+
+/** @type {string} */
+/// %1 is the text which will be converted to speech. only works on android os!!
+Blockly.Msg.ROOBIN_TTS = 'convert text: %1 to speech';
+
+/** @type {string} */
+/// opens a google speech recognition window and listens for a while, if a word was recognized, returns it as a string. only works on android os!!
+Blockly.Msg.ROOBIN_STT = 'convert speech to text';
+
+/** @type {string} */
+/// - As in: ''change the motor of'' [head/neck] ''motor to be at'' 0-80 ''degrees''.
+/// %1 is a dropdown letting the user choose between head or neck to be rotated.
+/// %2 is the degree to be set.
+Blockly.Msg.ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES = 'change %1 motor rotation to %2 degrees';
+/** @type {string} */
+/// - As in: ''rotate the'' [head/neck] ''motor by'' +-(0-80) ''degrees''.
+/// %1 is a dropdown letting the user choose between head or neck to be rotated.
+/// %2 is the degrees to be rotated by.
+Blockly.Msg.ROOBIN_ROTATE_MOTOR_BY_DEGREES = 'rotate %1 motor by %2 degrees';
+/** @type {string} */
+/// dropdown - head 
+Blockly.Msg.ROOBIN_HEAD = 'head';
+/** @type {string} */
+/// dropdown - neck 
+Blockly.Msg.ROOBIN_NECK = 'neck';

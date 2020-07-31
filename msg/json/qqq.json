@@ -398,5 +398,11 @@
 	"PROCEDURES_IFRETURN_WARNING": "warning - This appears if the user tries to use this block outside of a function definition.",
 	"WORKSPACE_COMMENT_DEFAULT_TEXT": "comment text - This text appears in a new workspace comment, to hint that the user can type here.",
 	"WORKSPACE_ARIA_LABEL": "workspace - This text is read out when a user navigates to the workspace while using a screen reader.",
-	"COLLAPSED_WARNINGS_WARNING": "warning - This appears if the user collapses a block, and blocks inside that block have warnings attached to them. It should inform the user that the block they collapsed contains blocks that have warnings."
+	"COLLAPSED_WARNINGS_WARNING": "warning - This appears if the user collapses a block, and blocks inside that block have warnings attached to them. It should inform the user that the block they collapsed contains blocks that have warnings.",
+	"ROOBIN_TTS": "%1 is the text which will be converted to speech. only works on android os!!",
+	"ROOBIN_STT": "opens a google speech recognition window and listens for a while, if a word was recognized, returns it as a string. only works on android os!!",
+	"ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES": "- As in: ''change the motor of'' [head/neck] ''motor to be at'' 0-80 ''degrees''. %1 is a dropdown letting the user choose between head or neck to be rotated. %2 is the degree to be set.",
+	"ROOBIN_ROTATE_MOTOR_BY_DEGREES": "- As in: ''rotate the'' [head/neck] ''motor by'' +-(0-80) ''degrees''. %1 is a dropdown letting the user choose between head or neck to be rotated. %2 is the degrees to be rotated by.",
+	"ROOBIN_HEAD": "dropdown - head",
+	"ROOBIN_NECK": "dropdown - neck"
 }

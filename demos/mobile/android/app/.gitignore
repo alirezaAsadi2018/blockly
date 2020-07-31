@@ -3,5 +3,10 @@
 # Files copied during build:
 src/main/assets/blockly/blockly_compressed.js
 src/main/assets/blockly/blocks_compressed.js
+src/main/assets/blockly/javascript_compressed.js
+src/main/assets/blockly/mqtt.js
+src/main/assets/blockly/python_compressed.js
 src/main/assets/blockly/media
+src/main/assets/blockly/msg
 src/main/assets/blockly/webview.html
+

@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Ellen Spertus <ellen.spertus@gmail.com>",
-		"lastupdated": "2020-06-04 22:24:44.334000",
+		"lastupdated": "2020-07-27 09:29:34.484000",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -404,5 +404,11 @@
 	"PROCEDURES_IFRETURN_WARNING": "Warning: This block may be used only within a function definition.",
 	"WORKSPACE_COMMENT_DEFAULT_TEXT": "Say something...",
 	"WORKSPACE_ARIA_LABEL": "Blockly Workspace",
-	"COLLAPSED_WARNINGS_WARNING": "Collapsed blocks contain warnings."
+	"COLLAPSED_WARNINGS_WARNING": "Collapsed blocks contain warnings.",
+	"ROOBIN_TTS": "convert text: %1 to speech",
+	"ROOBIN_STT": "convert speech to text",
+	"ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES": "change %1 motor rotation to %2 degrees",
+	"ROOBIN_ROTATE_MOTOR_BY_DEGREES": "rotate %1 motor by %2 degrees",
+	"ROOBIN_HEAD": "head",
+	"ROOBIN_NECK": "neck"
 }

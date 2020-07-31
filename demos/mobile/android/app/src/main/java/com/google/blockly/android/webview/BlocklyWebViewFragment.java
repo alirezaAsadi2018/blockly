@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.PermissionRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
@@ -181,7 +182,10 @@ public class BlocklyWebViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mWebView = new WebView(inflater.getContext());
-        mWebView.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = mWebView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+//        settings.setDatabaseEnabled(true);
         mWebView.setWebChromeClient(new WebChromeClient() {
 
             @Override

@@ -14,11 +14,11 @@ goog.require('Blockly.Mutator');
 
 
 Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
-  // my Block for tts
+  // block for tts
   {
     "type": "TTS",
-	//"message0": Blockly.Msg['TTS'], -> not available yet!
-    "message0": "تبدیل متن: %1 به صوت",
+	"message0": "%{BKY_ROOBIN_TTS}",   //   Blockly.Msg['TTS'], -> not available yet!
+    //"message0": "تبدیل متن: %1 به صوت",
 	"args0": [{
       "type": "input_value",
       "name": "TTS_INPUT",
@@ -26,20 +26,56 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
     }],
 	"previousStatement": null,
     "nextStatement": null,
-    "style": "text_blocks",
     "tooltip": "متن موجود در ورودی را به صوت تبدیل می کند."
   },
-  // my Block for stt
+  // block for stt
   {
     "type": "STT",
-	//"message0": Blockly.Msg['STT'], -> not available yet!
-    "message0": "تبدیل صوت به متن",
+	"message0": "%{BKY_ROOBIN_STT}", //	Blockly.Msg['STT'], -> not available yet!
+    //"message0": "تبدیل صوت به متن",
     "output": "String",
-    "style": "text_blocks",
 	"tooltip": "صوت شما را به متن تبدیل می کند و آن را برمی گرداند."
   },
+  // block for rotating to a given degree
   {
-	  "type": "motor_rotate_to_given_degree",
-	  
+	"type": "motor_change_rotation_to_given_degree",
+	"message0": "%{BKY_ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES}",
+    "args0": [{
+        "type": "field_dropdown",
+        "name": "SEL_HEAD_NECK_MOTOR",
+        "options": [
+			  ["%{BKY_ROOBIN_HEAD}", 'HEAD_ROTATE'],
+			  ["%{BKY_ROOBIN_NECK}", 'NECK_ROTATE']
+		]
+	  },
+	  {
+			"type": "input_value",
+			"name": "DEGREES",
+			"check": "Number"
+	  }
+	],
+	"previousStatement": null,
+    "nextStatement": null
+  },
+  // block for rotating by a given degree
+  {
+	"type": "motor_rotate_by_given_degree",
+	"message0": "%{BKY_ROOBIN_ROTATE_MOTOR_BY_DEGREES}",
+    "args0": [{
+        "type": "field_dropdown",
+        "name": "SEL_HEAD_NECK_MOTOR",
+        "options": [
+			  ["%{BKY_ROOBIN_HEAD}", 'HEAD_ROTATE'],
+			  ["%{BKY_ROOBIN_NECK}", 'NECK_ROTATE']
+		]
+	  },
+	  {
+			"type": "input_value",
+			"name": "DEGREES",
+			"check": "Number"
+	  }
+	],
+	"previousStatement": null,
+    "nextStatement": null
   }
 ]);
