@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Ellen Spertus <ellen.spertus@gmail.com>",
-		"lastupdated": "2020-07-27 09:29:34.484000",
+		"lastupdated": "2020-08-03 19:48:24.810693",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -410,5 +410,14 @@
 	"ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES": "change %1 motor rotation to %2 degrees",
 	"ROOBIN_ROTATE_MOTOR_BY_DEGREES": "rotate %1 motor by %2 degrees",
 	"ROOBIN_HEAD": "head",
-	"ROOBIN_NECK": "neck"
+	"ROOBIN_NECK": "neck",
+	"LOGIC_CATEGORY": "logic",
+	"LOOPS_CATEGORY": "loops",
+	"MATH_CATEGORY": "math",
+	"TEXT_CATEGORY": "text",
+	"LISTS_CATEGORY": "lists",
+	"COLOUR_CATEGORY": "colour",
+	"VARIABLES_CATEGORY": "variables",
+	"FUNCTIONS_CATEGORY": "functions",
+	"ROOBIN_CATEGORY": "roobin"
 }

@@ -404,5 +404,14 @@
 	"ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES": "- As in: ''change the motor of'' [head/neck] ''motor to be at'' 0-80 ''degrees''. %1 is a dropdown letting the user choose between head or neck to be rotated. %2 is the degree to be set.",
 	"ROOBIN_ROTATE_MOTOR_BY_DEGREES": "- As in: ''rotate the'' [head/neck] ''motor by'' +-(0-80) ''degrees''. %1 is a dropdown letting the user choose between head or neck to be rotated. %2 is the degrees to be rotated by.",
 	"ROOBIN_HEAD": "dropdown - head",
-	"ROOBIN_NECK": "dropdown - neck"
+	"ROOBIN_NECK": "dropdown - neck",
+	"LOGIC_CATEGORY": "",
+	"LOOPS_CATEGORY": "",
+	"MATH_CATEGORY": "",
+	"TEXT_CATEGORY": "",
+	"LISTS_CATEGORY": "",
+	"COLOUR_CATEGORY": "",
+	"VARIABLES_CATEGORY": "",
+	"FUNCTIONS_CATEGORY": "",
+	"ROOBIN_CATEGORY": ""
 }

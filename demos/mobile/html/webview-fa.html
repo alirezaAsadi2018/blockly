@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!-- HTML file to host Blockly in a mobile WebView. -->
+<html dir="rtl" lang="fa">
+<!-- <html lang="@locale@" data-manifest="" data-framework="typescript"> -->
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"> -->
+    <style type="text/css">
+		html, body, #blocklyDiv {
+		border: 0;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		}
+  	</style>
+  <!-- You MUST include jQuery before Fomantic -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script> -->
+	<script src="media/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="media/semantic.rtl.min.css">
+  <!-- Source Paho MQTT Client-->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script> -->
+  <script src="media/mqttws31.js" type="text/javascript"></script>
+  <!-- Utility Javascript -->
+  <script src="mqtt.js"></script>
+  <script src="blockly_compressed.js"></script>
+  <script src="blocks_compressed.js"></script>
+  <script src="javascript_compressed.js"></script>
+  <script src="python_compressed.js"></script>
+  <script src="toolbox_standard.js"></script>
+  <!-- Select msg file -->
+  <script id="lang_scripts" src="msg/js/fa.js"></script>
+</head>
+<body>
+	<div>
+		<div class="ui orange borderless top secondary inverted menu">
+			<button class="item ui button" onclick="showPython()">خروجی پایتون</button>
+			<button class="item ui button" onclick="showJs()">خروجی جاوااسکریپت</button>
+			<button class="item ui button" onclick="runJsCode()">اجرای جاوااسکریپت</button>
+			<button class="item ui button" onclick="changeLanguage()">عوض کردن زبان</button>
+			<div class="right menu">
+				<a class="ui item">
+					روبین
+				</a>
+				<div class="uiitem">
+					<img class="ui tiny  image" src="media/roobin5.png">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="blocklyDiv" style="height: 550px;" ></div>
+	
+<script src="media/semantic.min.css"></script>
+<script type="text/javascript">
+	var myWorkspace;
+	loadWorkspace();
+	
+	function showPython() {
+		// Generate JavaScript code and display it.
+		Blockly.Python.INFINITE_LOOP_TRAP = null;
+		var code = Blockly.Python.workspaceToCode(myWorkspace);
+		alert(code);
+	}
+
+	function showJs() {
+		// Generate JavaScript code and display it.
+		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+		var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+		alert(code);
+	}
+
+	function rotate(msg){
+		mqttSend(msg);
+	}
+	
+	function runJsCode() {
+		// Generate JavaScript code and run it.
+		window.LoopTrap = 1000;
+		Blockly.JavaScript.INFINITE_LOOP_TRAP =
+			'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+		var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+		//debugger
+		Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+		
+		try {
+		eval(code);
+		} catch (e) {
+		alert(e);
+		}
+	}
+	
+	function callTts(text){
+		Android.tts(text);
+	}
+
+	function callStt(){
+		var string = "";
+		try{
+		string = Android.stt();
+		}catch(e){
+		alert(e);
+		}
+		return string;
+	}
+	
+	function changeLanguage(){
+		redirectToUri('webview.html');
+	}
+
+	function redirectToUri(uri){
+		if(checkOnAndroid()){
+			Android.loadWebview(uri);
+			// document.location=uri;
+		}
+		else
+			window.location.replace(uri);
+	}
+
+	function checkOnAndroid(){
+		return navigator.userAgent.match(/Android/i);
+	}
+
+	function callAndroidStt(btn) {
+		string = "default string";
+		string = Android.stt();
+		alert(string);
+	}
+	
+	function loadWorkspace(){
+		// when language is switched between fa(persian) and en(english), another toolbox with different category names is loaded,
+		// rtl is also turned on when language is fa and off when it is en, the rest is the same.
+		myWorkspace = Blockly.inject('blocklyDiv', {
+			toolbox: BLOCKLY_TOOLBOX_XML['standard_fa'],
+			collapse : true, 
+			comments : true, 
+			disable : true, 
+			maxBlocks : Infinity, 
+			trashcan : true, 
+			horizontalLayout : false, 
+			toolboxPosition : 'start', 
+			css : true, 
+			rtl : true, 
+			scrollbars : true, 
+			sounds : true, 
+			oneBasedIndex : true, 
+			grid : {
+			spacing : 20, 
+			length : 1, 
+			colour : '#888', 
+			snap : false
+			},
+			// theme: new Blockly.Theme('myTheme',{
+			// 		'blockStyles': {
+			// 			"list_blocks": {
+			// 				"colourPrimary": "#4a148c",
+			// 				"colourSecondary":"#AD7BE9",
+			// 				"colourTertiary":"#CDB6E9"
+			// 			},
+			// 			"logic_blocks": {
+			// 				"colourPrimary": "#01579b",
+			// 				"colourSecondary":"#64C7FF",
+			// 				"colourTertiary":"#C5EAFF"
+			// 			}
+			// 		},
+			// 		'categoryStyles': {
+			// 			"list_category": {
+			// 				"colour": "#4a148c"
+			// 			},
+			// 			"logic_category": {
+			// 				"colour": "#01579b",
+			// 			}
+			// 		},
+			// 		'componentStyles': {
+			// 			"workspaceBackgroundColour": "#1e1e1e",
+			// 			"toolboxBackgroundColour": "#333"
+			// 		}
+			// 	}
+			// ),
+			// renderer: 'zelos',
+			media: 'media/',
+			// media : 'https://blockly-demo.appspot.com/static/media/', 
+			rtl: true,
+			zoom : {
+			controls : true, 
+			wheel : true, 
+			startScale : 1, 
+			maxScale : 3, 
+			minScale : 0.3, 
+			scaleSpeed : 1.2
+			}
+		});
+		myWorkspace.registerButtonCallback("myButtonPressed", callAndroidStt);
+	}
+
+	// ------------------------------------------------------------------------------------
+	//jQuery part
+	// add class to the outer div to be the labeled menu
+	$('#blockly\\:1').parent().addClass('ui vertical inverted labeled icon fluid menu');
+	
+	// $('.blocklyToolboxDiv ').css('background-color', 'orange');
+	$('.blocklyToolboxDiv ').addClass('ui middle aligned centered grid');
+
+	// add class to the treeRoot to merge the outer tree and its elements
+	$('.blocklyTreeRoot').addClass('ui inverted item menu');
+
+
+	// logic is the first item in the menu
+	convertCategoryToSemantic('#blockly\\:1', Blockly.Msg['LOGIC_CATEGORY'], 'random icon');
+	// loops is the second item in the menu
+	convertCategoryToSemantic('#blockly\\:2', Blockly.Msg['LOOPS_CATEGORY'], 'redo alternate icon');
+	// math is the third item in the menu
+	convertCategoryToSemantic('#blockly\\:3', Blockly.Msg['MATH_CATEGORY'], 'calculator icon');
+	// text is the forth item in the menu
+	convertCategoryToSemantic('#blockly\\:4', Blockly.Msg['TEXT_CATEGORY'], 'text width icon');
+	// lists is the fifth item in the menu
+	convertCategoryToSemantic('#blockly\\:5', Blockly.Msg['LISTS_CATEGORY'], 'list ol icon');
+	// colour is the sixth item in the menu
+	convertCategoryToSemantic('#blockly\\:6', Blockly.Msg['COLOUR_CATEGORY'], 'palette icon');
+	// variables is the eighth item in the menu
+	convertCategoryToSemantic('#blockly\\:8', Blockly.Msg['VARIABLES_CATEGORY'], 'buffer icon');
+	// functions is the ninth item in the menu
+	convertCategoryToSemantic('#blockly\\:9', Blockly.Msg['FUNCTIONS_CATEGORY'], 'percentage icon');
+	// roobin is the tenth item in the menu
+	convertCategoryToSemantic('#blockly\\:a', Blockly.Msg['ROOBIN_CATEGORY'], 'robot icon');	 
+
+	function convertCategoryToSemantic(id, categoryName, iconName){
+		var attrs = {};
+		$.each($(id).find('.blocklyTreeRow')[0].attributes, function(idx, attr) {
+			attrs[attr.nodeName] = attr.value;
+		});
+		var borderColor;
+		attrs['style'].split(';').forEach(function (item, index) {
+			if(item && item.trim().indexOf('border-right') !== -1){
+				borderColor = item.trim().split(':')[1].trim();
+				borderColor = borderColor.substr(borderColor.indexOf('rgb'));
+			}
+		});
+		$(id).find('.blocklyTreeRow').replaceWith(function () {
+			return $("<a />", attrs).append($(this).contents());
+		});
+
+		$(id).find('.blocklyTreeRow').addClass('item').append(categoryName).css('padding', '0px').css('color', borderColor)
+		.find('.blocklyTreeLabel').replaceWith('<i class="blocklyTreeLabel ' + iconName + '"></i>');
+
+		var observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.type == "attributes") {
+					var el = $(id).find('.blocklyTreeRow');
+					el.addClass('item');
+					if(el.css('color') == 'rgb(255, 255, 255)' || el.css('color') == 'white'){ // if it is white
+						el.css('color', borderColor);
+					}else{
+						el.css('color', 'white');
+					}
+				}
+			});
+		});
+		observer.observe(document.querySelector(id), {
+			attributes: true //configure it to listen to attribute changes
+		});
+	}
+</script>
+</body>
+</html>

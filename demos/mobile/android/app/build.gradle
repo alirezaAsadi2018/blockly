@@ -26,10 +26,11 @@ android {
 
 task copyBlocklyHtmlFile(type: Copy) {
     from('../../html') {
-        include 'index.html', 'toolbox_standard.js'
+        include 'webview-fa.html', 'toolbox_standard.js', 'webview.html'
     }
     into project(':app').file('./src/main/assets/blockly')
-    rename('index.html', 'webview.html')
+//    rename('index - test - Copy - Copy.html', 'webview.html')
+//    rename('index - test - Copy - Copy.html', 'webview.html')
 }
 
 task copyBlocklyMoreFiles(type: Copy) {

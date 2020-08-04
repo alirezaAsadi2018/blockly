@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 
 import com.google.blockly.android.webview.demo.MainActivity;
 import com.google.blockly.android.webview.utility.Codes;
@@ -32,6 +33,15 @@ public class WebAppInterface implements Codes {
         if (checkIfEspeakIsInstalled()) {
             mainActivity.getMTtsInstance().tts(text, IDLE_UTTERANCE_ID);
         }
+    }
+
+    @JavascriptInterface
+    public void loadWebview(String htmlName){
+        String webviewFileBase = "file:///android_asset/blockly/";
+        WebView mWebView = mainActivity.findViewById(R.id.blockly_webview);
+        mWebView.post(() -> {
+            mWebView.loadUrl(webviewFileBase + htmlName);
+        });
     }
 
 

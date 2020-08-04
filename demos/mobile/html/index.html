@@ -24,7 +24,7 @@
   <script src="python_compressed.js"></script>
   <script src="toolbox_standard.js"></script>
   <!-- Select msg file -->
-  <script id="lang_scripts" src="msg/js/fa.js"></script>
+  <script id="lang_scripts" src="msg/js/en.js"></script>
 </head>
 <body>
 <p>
@@ -37,7 +37,7 @@
 
 <script type="text/javascript">
 
-	var myWorkspaceLang = 'fa';
+	var myWorkspaceLang = 'en';
 	var myWorkspace;
 	loadWorkspace();
 	
@@ -95,7 +95,11 @@
 		}else{
 			myWorkspaceLang = 'fa';
 		}
-		
+		window.location = 'index-fa.html';
+		return;
+
+		/*
+
 		// remove last loaded script
 		document.getElementById('lang_scripts').remove();
 		// load the new language script node
@@ -107,7 +111,8 @@
 			loadWorkspace();	
 		};
 		script.src = 'msg/js/' + myWorkspaceLang + '.js';
-		document.head.appendChild(script);	
+		document.head.appendChild(script);
+		*/	
 	}
 
     function callAndroidStt(btn) {
@@ -138,7 +143,35 @@
 			length : 1, 
 			colour : '#888', 
 			snap : false
-			}, 
+			},
+			/*theme: new Blockly.Theme('pxt',{
+					'blockStyles': {
+					   "list_blocks": {
+						  "colourPrimary": "#4a148c",
+						  "colourSecondary":"#AD7BE9",
+						  "colourTertiary":"#CDB6E9"
+					   },
+					   "logic_blocks": {
+						  "colourPrimary": "#01579b",
+						  "colourSecondary":"#64C7FF",
+						  "colourTertiary":"#C5EAFF"
+					   }
+					},
+					'categoryStyles': {
+					   "list_category": {
+						  "colour": "#4a148c"
+					   },
+					   "logic_category": {
+						  "colour": "#01579b",
+					   }
+					},
+					'componentStyles': {
+					   "workspaceBackgroundColour": "#1e1e1e",
+					   "toolboxBackgroundColour": "#333"
+					}
+				}
+			),*/
+			//renderer: 'pxt',
 			media: 'media/',
 			// media : 'https://blockly-demo.appspot.com/static/media/', 
 			rtl: (myWorkspaceLang === 'fa'),

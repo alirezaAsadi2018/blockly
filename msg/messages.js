@@ -1664,3 +1664,22 @@ Blockly.Msg.ROOBIN_HEAD = 'head';
 /** @type {string} */
 /// dropdown - neck 
 Blockly.Msg.ROOBIN_NECK = 'neck';
+
+/** @type {string} */
+Blockly.Msg.LOGIC_CATEGORY = 'logic';
+/** @type {string} */
+Blockly.Msg.LOOPS_CATEGORY = 'loops';
+/** @type {string} */
+Blockly.Msg.MATH_CATEGORY = 'math';
+/** @type {string} */
+Blockly.Msg.TEXT_CATEGORY = 'text';
+/** @type {string} */
+Blockly.Msg.LISTS_CATEGORY = 'lists';
+/** @type {string} */
+Blockly.Msg.COLOUR_CATEGORY = 'colour';
+/** @type {string} */
+Blockly.Msg.VARIABLES_CATEGORY = 'variables';
+/** @type {string} */
+Blockly.Msg.FUNCTIONS_CATEGORY = 'functions';
+/** @type {string} */
+Blockly.Msg.ROOBIN_CATEGORY = 'roobin';

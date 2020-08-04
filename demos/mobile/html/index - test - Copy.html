@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!-- HTML file to host Blockly in a mobile WebView. -->
+<!-- <html lang="@locale@" data-manifest="" data-framework="typescript"> -->
+<html dir="rtl" lang="fa">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+	<!-- You MUST include jQuery before Fomantic -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.js"></script>
+</head>
+<body class="main">
+	<div>
+	<div class="ui orange borderless top three item inverted menu">
+	  <div class="item">
+		<img src="/images/logo.pngk">
+	  </div>
+	  <a class="item">Features</a>
+	  <a class="item">Testimonials</a>
+	</div>
+		<p></p>
+	</div>
+	
+
+	<div class="ui grid">
+		<div class="ui vertical labeled icon menu">
+		  <a class="item">
+			<i class="random icon"></i>
+			Logic
+		  </a>
+		  <a class="item">
+			<i class="redo alternate icon"></i>
+			Loops
+		  </a>
+		  <a class="item">
+			<i class="calculator icon"></i>
+			Math
+		  </a>
+		  <a class="item">
+			<i class="text width icon"></i>
+			Text
+		  </a>
+		  <a class="item">
+			<i class="list ol icon"></i>
+			Lists
+		  </a>
+		  <a class="item">
+			<i class="palette icon"></i>
+			Colour
+		  </a>
+		  <a class="item">
+			<!--<i class="align justify icon"></i>-->
+			<i class="buffer icon"></i>
+			Variables
+		  </a>
+		  <a class="item">
+			<i class="percentage icon"></i>
+			Functions
+		  </a>
+		  <a class="item">
+			<i class="robot icon"></i>
+			Roobin
+		  </a>
+		</div>
+		<div class="twelve wide stretched column">
+		<div class="ui segment">
+		  This is an stretched grid column. This segment will always match the tab height
+		</div>
+	  </div>
+  </div>
+  
+<div class="ui grid">
+	<!-- <div class="ui labeled icon vertical top attached tabular menu"> -->
+	<div class="ui vertical labeled icon menu">
+		<a class="item" data-tab="logic">
+			<i class="random icon"></i>
+			منطق
+	    </a>
+		<a class="item" data-tab="loops">
+			<i class="redo alternate icon"></i>
+			حلقه
+		</a>
+		<a class="item"data-tab="math">
+			<i class="calculator icon"></i>
+			ریاضیات
+		</a>
+		<a class="item" data-tab="text">
+			<i class="text width icon"></i>
+			متن
+		</a>
+		<a class="item" data-tab="lists">
+			<i class="list ol icon"></i>
+			Lists
+		</a>
+		<a class="item"data-tab="colour">
+			<i class="palette icon"></i>
+			Colour
+		</a>
+		<a class="item" data-tab="variables">
+		<!--<i class="align justify icon"></i>-->
+			<i class="buffer icon"></i>
+			Variables
+		</a>
+		<a class="item"data-tab="functions">
+			<i class="percentage icon"></i>
+			Functions
+		</a>
+		<a class="item"data-tab="roobin">
+			<i class="robot icon"></i>
+			Roobin
+		</a>
+	</div>
+	<div class="ui tab segment active" data-tab="logic">
+	  <p>logic</p>
+	</div>
+	<div class="ui tab segment" data-tab="loops">
+	  <p>loops</p>
+	</div>
+	<div class="ui tab segment" data-tab="math">
+	  <p>math</p>
+	</div>
+	<div class="ui tab segment" data-tab="text">
+	  <p>text</p>
+	</div>
+	<div class="ui tab segment" data-tab="lists">
+	  <p>lists</p>
+	</div>
+	<div class="ui tab segment" data-tab="colour">
+	  <p>colour</p>
+	</div>
+	<div class="ui tab segment" data-tab="variables">
+	  <p>variables</p>
+	</div>
+	<div class="ui tab segment" data-tab="functions">
+	  <p>functions</p>
+	</div>
+	<div class="ui tab segment" data-tab="roobin">
+	  <p>roobin</p>
+	</div>
+</div>
+
+
+<div class="blocklyToolbox">
+	<div class="pxtToolbox coloredToolbox">
+	<div class="blocklySearchArea"></div>
+	<div class="blocklyTreeRoot">
+		<div role="tree">
+			<div role="treeitem">
+				<div role="button" class="blocklyTreeRow">
+					<a class="item" data-tab="roobin">
+						<i class="robot icon"></i>
+						Roobin
+					</a>
+				</div>
+			</div>
+			<div role="treeitem">
+				<div role="button" class="blocklyTreeRow">
+					<a class="item" data-tab="logic">
+						<i class="random icon"></i>
+						Logic
+					</a>
+				</div>
+			</div>
+			<div role="treeitem">
+				<div role="button" class="blocklyTreeRow">
+					<a class="item" data-tab="loops">
+						<i class="redo alternate icon"></i>
+						Loops
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+
+
+<div class="context example">
+	<div class="ui tab segment pushable active" data-tab="logic">
+	<div class="ui vertical labeled icon menu">
+			<a class="item" data-tab="logic">
+				<i class="random icon"></i>
+				Logic
+			</a>
+			<a class="item" data-tab="loops">
+				<i class="redo alternate icon"></i>
+				Loops
+			</a>
+	</div>
+	  <div class="ui inverted labeled icon left inline vertical sidebar menu">
+		<a class="item">
+		  <i class="home icon"></i>
+		  Home
+		</a>
+		<a class="item">
+		  <i class="block layout icon"></i>
+		  Topics
+		</a>
+		<a class="item">
+		  <i class="smile icon"></i>
+		  Friends
+		</a>
+		<a class="item">
+		  <i class="calendar icon"></i>
+		  History
+		</a>
+	  </div>
+	  <div class="pusher">
+		<div class="ui basic segment">
+		  <h3 class="ui header">Application Content</h3>
+		  <p></p>
+		  <p></p>
+		  <p></p>
+		  <p></p>
+		</div>
+	  </div>
+	</div>
+</div>
+
+
+<script>
+		$('.menu .item')
+		  .tab();
+		
+		// using context
+		$('.context.example .ui.sidebar')
+		  .sidebar({
+			context: $('.context.example .tab.segment.pushable')
+		  })
+		  .sidebar('attach events', '.context.example .menu .item');
+</script>
+<script src="semantic/dist/semantic.min.css"></script>
+
+</body>
+</html>

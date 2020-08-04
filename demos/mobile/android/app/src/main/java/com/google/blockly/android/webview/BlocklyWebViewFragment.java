@@ -34,8 +34,7 @@ public class BlocklyWebViewFragment extends Fragment {
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 13;
     private final int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 14;
     private final int MY_PERMISSIONS_REQUEST_INTERNET = 15;
-    protected @Nullable
-    WebView mWebView = null;
+    protected @Nullable WebView mWebView = null;
 
     private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.RECORD_AUDIO)
@@ -185,6 +184,8 @@ public class BlocklyWebViewFragment extends Fragment {
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setLoadWithOverviewMode(true);
 //        settings.setDatabaseEnabled(true);
         mWebView.setWebChromeClient(new WebChromeClient() {
 
@@ -205,7 +206,8 @@ public class BlocklyWebViewFragment extends Fragment {
         WebView.setWebContentsDebuggingEnabled(true);
         mWebView.addJavascriptInterface(new WebAppInterface(getContext(),
                 (MainActivity) getActivity()), "Android");
-        mWebView.loadUrl("file:///android_asset/blockly/webview.html");
+        String webviewFileBase = "file:///android_asset/blockly/";
+        mWebView.loadUrl(webviewFileBase + "webview.html");
         return mWebView;
     }
     // TODO: Method to invoke code generation
