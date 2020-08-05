@@ -36,7 +36,7 @@ task copyBlocklyHtmlFile(type: Copy) {
 task copyBlocklyMoreFiles(type: Copy) {
     from('../../html') {
         include 'blockly_compressed.js', 'blocks_compressed.js', 'msg/js/**', 'media/**',
-                'javascript_compressed.js', 'python_compressed.js', 'mqtt.js'
+                'javascript_compressed.js', 'python_compressed.js', 'mqtt.js', 'common-functions.js'
         exclude 'media/test_*'
     }
     into project(':app').file('./src/main/assets/blockly')
