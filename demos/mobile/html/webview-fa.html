@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<!-- <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"> -->
-    <style type="text/css">
+    <!-- <style type="text/css">
 		html, body, #blocklyDiv {
 		border: 0;
 		height: 100%;
@@ -15,7 +15,52 @@
 		padding: 0;
 		width: 100%;
 		}
-  	</style>
+	  </style> -->
+	<style type="text/css">
+		html, body, #blocklyDiv {
+			font-family: "Yekan", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;
+			font-weight: normal;
+		}
+		#blockly\:0 {
+			width: 114px;
+		}
+		/* .blocklyFlyout {
+			transform: translate(1100px) !important;
+			height: 550px;
+		} */
+		.zelos-renderer .blocklyText {
+			fill: #fff;
+			font-family: "Yekan", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;
+			font-size: 12pt;
+			font-weight: normal;
+		}
+		.blocklySvg {
+			background-color: rgb(236,240,241);
+		}
+		.blocklyTreeRoot {
+			/* padding: 15px 0; */
+			padding-top: 14px;
+			/* width: 114px !important; */
+		}
+		.blocklyTreeRow {
+			margin-bottom: 14px;
+		}
+		.blocklyToolboxDiv {
+			width: 114px;
+			background-color: #FFFFFF;
+			color: #575E75;
+			padding-right: 15px !important;
+			/* font-family: sans-serif; */
+		}
+		.blocklyTooltipDiv {
+			font-family: "Yekan", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;
+			font-size: 9pt;
+		}
+		.blocklyFlyoutBackground {
+			fill: #4b4949;
+			fill-opacity: 1;
+		}
+	</style>
   <!-- You MUST include jQuery before Fomantic -->
 	<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script> -->
 	<script src="media/jquery.min.js"></script>
@@ -178,7 +223,7 @@
 			// 		}
 			// 	}
 			// ),
-			// renderer: 'zelos',
+			renderer: 'zelos',
 			media: 'media/',
 			// media : 'https://blockly-demo.appspot.com/static/media/', 
 			rtl: true,
@@ -196,6 +241,8 @@
 
 	// ------------------------------------------------------------------------------------
 	//jQuery part
+
+	var windowWidth = $(window).width();
 	// add class to the outer div to be the labeled menu
 	$('#blockly\\:1').parent().addClass('ui vertical inverted labeled icon fluid menu');
 	
@@ -204,7 +251,6 @@
 
 	// add class to the treeRoot to merge the outer tree and its elements
 	$('.blocklyTreeRoot').addClass('ui inverted item menu');
-
 
 	// logic is the first item in the menu
 	convertCategoryToSemantic('#blockly\\:1', Blockly.Msg['LOGIC_CATEGORY'], 'random icon');
@@ -246,6 +292,23 @@
 
 		var observer = new MutationObserver(function(mutations) {
 			mutations.forEach(function(mutation) {
+				var toolboxWidth = +window.getComputedStyle(document.querySelector('.blocklyToolboxDiv.blocklyNonSelectable')).width
+				.slice(0,-2);
+				var blocklyFlyoutWidth = +window.getComputedStyle(document.querySelectorAll('.blocklyFlyout')[1]).width.slice(0,-2);
+				var blocklyFlyoutTransformMatrix = window.getComputedStyle(document.querySelectorAll('.blocklyFlyout')[1]).transform;
+				var blocklyFlyoutTransformArray = blocklyFlyoutTransformMatrix.split(',');
+				var blocklyFlyoutTranslateX = +blocklyFlyoutTransformArray[4];
+				var blocklyFlyoutTranslateY = +blocklyFlyoutTransformArray[5].slice(0,-1);
+				var blocklyFlyoutNewTranslateX = windowWidth - toolboxWidth - blocklyFlyoutWidth + 15;
+				$('.blocklyFlyout').css('transform', 'translate(' + blocklyFlyoutNewTranslateX + 'px, ' + blocklyFlyoutTranslateY
+				+ 'px)');
+
+				var blocklyFlyoutScrollbarTranslateY = 2.5;
+				var blocklyFlyoutScrollbarOffset = 0;
+
+				$('.blocklyScrollbarVertical.blocklyFlyoutScrollbar').css('transform', 'translate(' + (blocklyFlyoutNewTranslateX  
+				+ blocklyFlyoutScrollbarOffset) + 'px, ' + blocklyFlyoutScrollbarTranslateY + 'px)');
+
 				if (mutation.type == "attributes") {
 					var el = $(id).find('.blocklyTreeRow');
 					el.addClass('item');
