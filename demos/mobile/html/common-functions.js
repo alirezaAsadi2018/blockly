@@ -1,3 +1,15 @@
+var workspaceLang;
+var borderStylePropertyName;
+
+function setLanguageRelatedProps(lang){
+    workspaceLang = lang;
+    if(workspaceLang === 'fa'){
+		borderStylePropertyName = 'border-right-color';
+	}else if(workspaceLang === 'en'){
+		borderStylePropertyName = 'border-left-color';
+	}
+}
+
 function showPython() {
     // Generate JavaScript code and display it.
     Blockly.Python.INFINITE_LOOP_TRAP = null;
@@ -26,27 +38,35 @@ function runJsCode() {
     Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
     
     try {
-    eval(code);
+        eval(code);
     } catch (e) {
-    alert(e);
+        alert(e);
     }
 }
 
 function callTts(text){
-    Android.tts(text);
+    if(!isAndroidUserAgent()){
+        alert("Sorry!! Tts is available only on Android!!");
+        return;
+    }
+    Android.tts(text, workspaceLang);
 }
 
 function callStt(){
+    if(!isAndroidUserAgent()){
+        alert("Sorry!! Stt is available only on Android!!");
+        return;
+    }
     var string = "";
     try{
-    string = Android.stt();
+        string = Android.stt(workspaceLang);
     }catch(e){
-    alert(e);
+        alert(e);
     }
     return string;
 }
 
-function changeLanguage(workspaceLang){
+function changeLanguage(){
     if(workspaceLang === 'en'){
         redirectToUri('webview-fa.html');
     }else if(workspaceLang === 'fa'){
@@ -55,14 +75,14 @@ function changeLanguage(workspaceLang){
 }
 
 function redirectToUri(uri){
-    if(checkOnAndroid()){
+    if(isAndroidUserAgent()){
         Android.loadWebview(uri);
         // document.location=uri;
     }else
         window.location.replace(uri);
 }
 
-function checkOnAndroid(){
+function isAndroidUserAgent(){
     return navigator.userAgent.match(/Android/i);
 }
 
@@ -72,7 +92,8 @@ function callAndroidStt(btn) {
     alert(string);
 }
 
-function loadWorkspace(workspaceLang){
+function loadWorkspace(){
+    defineRoobinTheme();
     // when language is switched between fa(persian) and en(english), another toolbox with different category names is loaded,
     // rtl is also turned on when language is fa and off when it is en, the rest is the same.
     var myWorkspace = Blockly.inject('blocklyDiv', {
@@ -95,33 +116,7 @@ function loadWorkspace(workspaceLang){
         colour : '#888', 
         snap : false
         },
-        // theme: new Blockly.Theme('myTheme',{
-        // 		'blockStyles': {
-        // 			"list_blocks": {
-        // 				"colourPrimary": "#4a148c",
-        // 				"colourSecondary":"#AD7BE9",
-        // 				"colourTertiary":"#CDB6E9"
-        // 			},
-        // 			"logic_blocks": {
-        // 				"colourPrimary": "#01579b",
-        // 				"colourSecondary":"#64C7FF",
-        // 				"colourTertiary":"#C5EAFF"
-        // 			}
-        // 		},
-        // 		'categoryStyles': {
-        // 			"list_category": {
-        // 				"colour": "#4a148c"
-        // 			},
-        // 			"logic_category": {
-        // 				"colour": "#01579b",
-        // 			}
-        // 		},
-        // 		'componentStyles': {
-        // 			"workspaceBackgroundColour": "#1e1e1e",
-        // 			"toolboxBackgroundColour": "#333"
-        // 		}
-        // 	}
-        // ),
+        theme: Blockly.Themes.Roobin_Theme,
         renderer: 'zelos',
         media: 'media/',
         // media : 'https://blockly-demo.appspot.com/static/media/', 
@@ -161,33 +156,33 @@ function convertCategoriesTosemantic(){
 	addClassToElement(el, 'ui vertical inverted labeled icon fluid menu');
 
 	el = document.querySelector('.blocklyToolboxDiv');
-	addClassToElement(el, 'ui middle aligned centered grid');
+	addClassToElement(el, 'ui inverted menu');
 
 	// add class to the treeRoot to merge the outer tree and its elements
 	el = document.querySelector('.blocklyTreeRoot');
     addClassToElement(el, 'ui inverted item menu');
     
     // logic is the first item in the menu
-	convertCategoryToSemantic('#blockly\\:1', Blockly.Msg['LOGIC_CATEGORY'], 'random icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:1', Blockly.Msg['LOGIC_CATEGORY'], 'random icon', observer);
 	// loops is the second item in the menu
-	convertCategoryToSemantic('#blockly\\:2', Blockly.Msg['LOOPS_CATEGORY'], 'redo alternate icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:2', Blockly.Msg['LOOPS_CATEGORY'], 'redo alternate icon', observer);
 	// math is the third item in the menu
-	convertCategoryToSemantic('#blockly\\:3', Blockly.Msg['MATH_CATEGORY'], 'calculator icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:3', Blockly.Msg['MATH_CATEGORY'], 'calculator icon', observer);
 	// text is the forth item in the menu
-	convertCategoryToSemantic('#blockly\\:4', Blockly.Msg['TEXT_CATEGORY'], 'text width icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:4', Blockly.Msg['TEXT_CATEGORY'], 'text width icon', observer);
 	// lists is the fifth item in the menu
-	convertCategoryToSemantic('#blockly\\:5', Blockly.Msg['LISTS_CATEGORY'], 'list ol icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:5', Blockly.Msg['LISTS_CATEGORY'], 'list ol icon', observer);
 	// colour is the sixth item in the menu
-	convertCategoryToSemantic('#blockly\\:6', Blockly.Msg['COLOUR_CATEGORY'], 'palette icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:6', Blockly.Msg['COLOUR_CATEGORY'], 'palette icon', observer);
 	// variables is the eighth item in the menu
-	convertCategoryToSemantic('#blockly\\:8', Blockly.Msg['VARIABLES_CATEGORY'], 'buffer icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:8', Blockly.Msg['VARIABLES_CATEGORY'], 'buffer icon', observer);
 	// functions is the ninth item in the menu
-	convertCategoryToSemantic('#blockly\\:9', Blockly.Msg['FUNCTIONS_CATEGORY'], 'percentage icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:9', Blockly.Msg['FUNCTIONS_CATEGORY'], 'percentage icon', observer);
 	// roobin is the tenth item in the menu
-	convertCategoryToSemantic('#blockly\\:a', Blockly.Msg['ROOBIN_CATEGORY'], 'robot icon', borderStylePropertyName, observer);
+	convertCategoryToSemantic('#blockly\\:a', Blockly.Msg['ROOBIN_CATEGORY'], 'robot icon', observer);
 }
 
-function convertCategoryToSemantic(id, categoryName, iconName, borderStylePropertyName, observer){
+function convertCategoryToSemantic(id, categoryName, iconName, observer){
     var attrs = {};
     $.each($(id).find('.blocklyTreeRow')[0].attributes, function(idx, attr) {
         attrs[attr.nodeName] = attr.value;
@@ -214,7 +209,7 @@ function addClassToElement(el, classString){
     }
 }
 
-function adjustFlyoutPostion(waitForDomLoad, workspaceLang){
+function adjustFlyoutPostion(waitForDomLoad){
     var windowWidth = $(window).width();
     var flyoutEl = document.querySelectorAll('.blocklyFlyout')[1];
     var toolboxEl = document.querySelector('.blocklyToolboxDiv.blocklyNonSelectable');
@@ -230,7 +225,7 @@ function adjustFlyoutPostion(waitForDomLoad, workspaceLang){
     var blocklyFlyoutScrollbarOffset;
     var blocklyFlyoutScrollbarTranslateX;
     if(workspaceLang === 'fa'){
-        blocklyFlyoutNewTranslateX = windowWidth - toolboxWidth - blocklyFlyoutWidth + 15;
+        blocklyFlyoutNewTranslateX = windowWidth - toolboxWidth - blocklyFlyoutWidth;
         blocklyFlyoutScrollbarTranslateX = blocklyFlyoutNewTranslateX;
     }else if(workspaceLang === 'en'){
         blocklyFlyoutNewTranslateX = blocklyFlyoutTranslateX;
@@ -251,4 +246,101 @@ function adjustFlyoutPostion(waitForDomLoad, workspaceLang){
         scrollbarEl.style.transform = 'translate(' + (blocklyFlyoutScrollbarTranslateX) + 'px, '
             + blocklyFlyoutScrollbarTranslateY + 'px)';
     }
+}
+
+function defineRoobinTheme(){
+    Blockly.Themes.Roobin_Theme={};
+    Blockly.Themes.Roobin_Theme.categoryStyles = {              
+        colour_category: {
+            colour: "#CF63CF"
+        },
+        list_category: {
+            colour: "#9966FF"
+        },
+        logic_category: {
+            colour: "#4C97FF"
+        },
+        loop_category: {
+            colour: "#0fBD8C"
+        },
+        math_category: {
+            colour: "#59C059"
+        },
+        procedure_category: {
+            colour: "#FF6680"
+        },
+        text_category: {
+            colour: "#FFBF00"
+        },
+        variable_category: {
+            colour: "#DC143C"
+        },
+        function_category: {
+            colour: "FF6680"
+        },
+        roobin_category: {
+            colour: "#F2711C"
+        },
+    };
+    Blockly.Themes.Roobin_Theme.defaultBlockStyles = {
+        colour_blocks: {
+            colourPrimary: "#CF63CF",
+            colourSecondary: "#C94FC9",
+            colourTertiary: "#BD42BD"
+        },
+        list_blocks: {
+        colourPrimary: "#9966FF",
+        colourSecondary: "#855CD6",
+        colourTertiary: "#774DCB"
+        },
+        logic_blocks: {
+            colourPrimary: "#4C97FF",
+            colourSecondary: "#4280D7",
+            colourTertiary: "#3373CC"
+        },
+        loop_blocks: {
+            colourPrimary: "#0fBD8C",
+            colourSecondary: "#0DA57A",
+            colourTertiary: "#0B8E69"
+        },
+        math_blocks: {
+            colourPrimary: "#59C059",
+            colourSecondary: "#46B946",
+            colourTertiary: "#389438"
+        },
+        procedure_blocks: {
+            colourPrimary: "#FF6680",
+            colourSecondary: "#FF4D6A",
+            colourTertiary: "#FF3355"
+        },
+        text_blocks: {
+            colourPrimary: "#FFBF00",
+            colourSecondary: "#E6AC00",
+            colourTertiary: "#CC9900"
+        },
+        variable_blocks: {
+            colourPrimary: "#DC143C",
+            colourSecondary: "#FF8000",
+            colourTertiary: "#DB6E00"
+        },
+        roobin_blocks: {
+            colourPrimary: "#F2711C",
+            colourSecondary: "#FF8000",
+            colourTertiary: "#DB6E00"
+        },
+        function_blocks: {
+            colourPrimary: "#FF6680",
+            colourSecondary: "#FF8000",
+            colourTertiary: "#DB6E00"
+        },
+        hat_blocks: {
+            colourPrimary: "#4C97FF",
+            colourSecondary: "#4280D7",
+            colourTertiary: "#3373CC",
+            hat: "cap"
+        }
+    };
+    Blockly.Themes.Roobin_Theme = new Blockly.Theme("Roobin_Theme",
+            Blockly.Themes.Roobin_Theme.defaultBlockStyles,
+            Blockly.Themes.Roobin_Theme.categoryStyles);
 }

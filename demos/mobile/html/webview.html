@@ -23,9 +23,10 @@
 		}
 		#blockly\:0 {
 			width: 114px;
+			/* margin-left: 15px; */
 		}
 		.blocklyFlyout {
-			transform: translate(100px) !important;
+			transform: translate(115px) !important;
 			height: 550px;
 		}
 		.zelos-renderer .blocklyText {
@@ -61,12 +62,12 @@
 		}
 	</style>
   <!-- You MUST include jQuery before Fomantic -->
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-	<!-- <script src="media/jquery.min.js"></script> -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script> -->
+	<script src="media/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="media/semantic.min.css">
   <!-- Source Paho MQTT Client-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
-  <!-- <script src="media/mqttws31.js" type="text/javascript"></script> -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script> -->
+  <script src="media/mqttws31.js" type="text/javascript"></script>
   <!-- Utility Javascript -->
   <script src="mqtt.js"></script>
   <script src="common-functions.js"></script>
@@ -76,9 +77,9 @@
   <script src="python_compressed.js"></script>
   <script src="toolbox_standard.js"></script>
   <!-- Select msg file -->
-  <script id="lang_scripts" src="msg/js/en.js"></script>
+  <script src="msg/js/en.js"></script>
 </head>
-<body onresize="adjustFlyoutPostion(true, workspaceLang)">
+<body>
 	<div>
 		<div class="ui orange borderless top secondary inverted menu">
 			<button class="item ui button" onclick="showPython()">Show Python</button>
@@ -100,6 +101,7 @@
 <script src="media/semantic.min.css"></script>
 <script type="text/javascript">
 	var workspaceLang = 'en';
+	setLanguageRelatedProps(workspaceLang);
 	var myWorkspace = loadWorkspace(workspaceLang);
 	myWorkspace.registerButtonCallback("myButtonPressed", callAndroidStt);
 

@@ -23,11 +23,8 @@
 		}
 		#blockly\:0 {
 			width: 114px;
+			/* margin-right: 15px; */
 		}
-		/* .blocklyFlyout {
-			transform: translate(1100px) !important;
-			height: 550px;
-		} */
 		.zelos-renderer .blocklyText {
 			fill: #fff;
 			font-family: "Yekan", "Helvetica Neue", "Segoe UI", Helvetica, sans-serif;
@@ -40,7 +37,7 @@
 		.blocklyTreeRoot {
 			/* padding: 15px 0; */
 			padding-top: 14px;
-			/* width: 114px !important; */
+			width: 114px !important;
 		}
 		.blocklyTreeRow {
 			margin-bottom: 14px;
@@ -49,7 +46,7 @@
 			width: 114px;
 			background-color: #FFFFFF;
 			color: #575E75;
-			padding-right: 15px !important;
+			/* padding-right: 15px !important; */
 			/* font-family: sans-serif; */
 		}
 		.blocklyTooltipDiv {
@@ -77,9 +74,9 @@
   <script src="python_compressed.js"></script>
   <script src="toolbox_standard.js"></script>
   <!-- Select msg file -->
-  <script id="lang_scripts" src="msg/js/fa.js"></script>
+  <script src="msg/js/fa.js"></script>
 </head>
-<body onresize="adjustFlyoutPostion(true, workspaceLang)">
+<body>
 	<div>
 		<div class="ui orange borderless top secondary inverted menu">
 			<button class="item ui button" onclick="showPython()">خروجی پایتون</button>
@@ -101,16 +98,11 @@
 <script src="media/semantic.min.css"></script>
 <script type="text/javascript">
 	var workspaceLang = 'fa';
+	setLanguageRelatedProps(workspaceLang);
 	var myWorkspace = loadWorkspace(workspaceLang);
 	myWorkspace.registerButtonCallback("myButtonPressed", callAndroidStt);
 
 	// UI js part
-	var borderStylePropertyName;
-	if(workspaceLang === 'fa'){
-		borderStylePropertyName = 'border-right-color';
-	}else if(workspaceLang === 'en'){
-		borderStylePropertyName = 'border-left-color';
-	}
 	convertCategoriesTosemantic();	 
 </script>
 </body>

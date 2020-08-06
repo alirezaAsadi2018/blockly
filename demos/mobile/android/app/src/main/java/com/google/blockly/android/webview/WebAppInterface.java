@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class WebAppInterface implements Codes {
     private final Context mContext;
     private final MainActivity mainActivity;
-    private final AtomicBoolean isTtsFaLocaleInstallationDone = new AtomicBoolean(false);
+    private final AtomicBoolean isTtsLocaleInstallationDone = new AtomicBoolean(false);
 
 
     WebAppInterface(Context mContext, MainActivity mainActivity) {
@@ -29,32 +29,34 @@ public class WebAppInterface implements Codes {
     }
 
     @JavascriptInterface
-    public void tts(String text) throws InterruptedException {
-        if (checkIfEspeakIsInstalled()) {
+    public void tts(String text, String lang) {
+        if (checkIfEspeakIsInstalled(lang)) {
             mainActivity.getMTtsInstance().tts(text, IDLE_UTTERANCE_ID);
         }
     }
 
     @JavascriptInterface
-    public void loadWebview(String htmlName){
+    public void loadWebview(String htmlName) {
         String webviewFileBase = "file:///android_asset/blockly/";
         WebView mWebView = mainActivity.findViewById(R.id.blockly_webview);
-        mWebView.post(() -> {
-            mWebView.loadUrl(webviewFileBase + htmlName);
-        });
+        mWebView.post(() -> mWebView.loadUrl(webviewFileBase + htmlName));
     }
 
 
     @JavascriptInterface
-    public String stt() throws InterruptedException {
-        STT.getInstance().stt(mContext, mainActivity, STT_DO_COMMAND_CODE);
-        synchronized (mainActivity) {
-            mainActivity.wait();
+    public String stt(String lang) throws InterruptedException {
+        boolean res = STT.getInstance().stt(mContext, mainActivity, STT_DO_COMMAND_CODE, lang);
+        if (res) {
+            synchronized (mainActivity) {
+                mainActivity.wait();
+            }
+            return mainActivity.sttResult;
+        } else {
+            return "";
         }
-        return mainActivity.sttResult;
     }
 
-    private synchronized boolean initTts(PackageManager pm) {
+    private synchronized boolean initTts(PackageManager pm, String lang) {
         if (mainActivity.getMTtsInstance() == null) {
             boolean isPackageInstalled = false;
             List<String> enginesList = new ArrayList<>();
@@ -63,7 +65,7 @@ public class WebAppInterface implements Codes {
             enginesList.add("com.googlecode.eyesfree.espeak");
             for (String engineName : enginesList) {
                 if (isPackageInstalled(engineName, pm)) {
-                    mainActivity.setMTtsInstance(new TTS(mContext, mainActivity, engineName));
+                    mainActivity.setMTtsInstance(new TTS(mContext, mainActivity, engineName, lang));
                     isPackageInstalled = true;
                     break;
                 }
@@ -73,38 +75,38 @@ public class WebAppInterface implements Codes {
         return true;
     }
 
-    private boolean checkIfEspeakIsInstalled() {
+    private boolean checkIfEspeakIsInstalled(String lang) {
         PackageManager pm = mContext.getPackageManager();
         if (mainActivity.getMTtsInstance() == null) {
-            boolean isPackageInstalled = initTts(pm);
+            boolean isPackageInstalled = initTts(pm, lang);
             if (!isPackageInstalled) {
                 mainActivity.showInstallEspeakDialog();
                 return false;
             }
         }
         if (mainActivity.getMTtsInstance() != null &&
-                mainActivity.getMTtsInstance().getIsFaLocaleInitialized().get()) {
+                mainActivity.getMTtsInstance().getIsLocaleInitialized().get()) {
             return true;
         }
         if (mainActivity.getMTtsInstance() != null &&
-                !mainActivity.getMTtsInstance().getIsFaLocaleInitialized().get()) {
-            synchronized (mainActivity.getMTtsInstance().getIsFaLocaleInitialized()) {
+                !mainActivity.getMTtsInstance().getIsLocaleInitialized().get()) {
+            synchronized (mainActivity.getMTtsInstance().getIsLocaleInitialized()) {
                 try {
-                    mainActivity.getMTtsInstance().getIsFaLocaleInitialized().wait(1000);
-                    if (!mainActivity.getMTtsInstance().getIsFaLocaleInitialized().get()) {
-                        mainActivity.getMTtsInstance().setLanguage();
-                        mainActivity.getMTtsInstance().getIsFaLocaleInitialized().wait(1000);
+                    mainActivity.getMTtsInstance().getIsLocaleInitialized().wait(1000);
+                    if (!mainActivity.getMTtsInstance().getIsLocaleInitialized().get()) {
+                        mainActivity.getMTtsInstance().setLanguage(lang);
+                        mainActivity.getMTtsInstance().getIsLocaleInitialized().wait(1000);
                     }
-                    if (mainActivity.getMTtsInstance().getIsFaLocaleInitialized().get()) {
+                    if (mainActivity.getMTtsInstance().getIsLocaleInitialized().get()) {
                         return true;
                     } else {
                         // run only once with one thread
-                        if (!isTtsFaLocaleInstallationDone.get()) {
+                        if (!isTtsLocaleInstallationDone.get()) {
                             mainActivity.setIsSttButtonActive(false);
                             Intent installIntent = new Intent();
                             installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
                             mainActivity.startActivityForResult(installIntent, INSTALL_TTS_DATA_CODE);
-                            isTtsFaLocaleInstallationDone.set(true);
+                            isTtsLocaleInstallationDone.set(true);
                         }
                         return false;
                     }

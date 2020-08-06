@@ -29,8 +29,6 @@ task copyBlocklyHtmlFile(type: Copy) {
         include 'webview-fa.html', 'toolbox_standard.js', 'webview.html'
     }
     into project(':app').file('./src/main/assets/blockly')
-//    rename('index - test - Copy - Copy.html', 'webview.html')
-//    rename('index - test - Copy - Copy.html', 'webview.html')
 }
 
 task copyBlocklyMoreFiles(type: Copy) {

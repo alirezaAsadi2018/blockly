@@ -12,14 +12,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TTS implements Codes {
     private TextToSpeech textToSpeech;
-    private final AtomicBoolean isFaLocaleInitialized = new AtomicBoolean(false);
+    private final AtomicBoolean isLocaleInitialized = new AtomicBoolean(false);
     private final MainActivity mMainActivity;
 
-    public AtomicBoolean getIsFaLocaleInitialized() {
-        return isFaLocaleInitialized;
+    public AtomicBoolean getIsLocaleInitialized() {
+        return isLocaleInitialized;
     }
 
-    public TTS(final Context mContext, final MainActivity mainActivity, String engine) {
+    public TTS(final Context mContext, final MainActivity mainActivity, String engine, String lang) {
         mMainActivity = mainActivity;
         textToSpeech = new TextToSpeech(mContext, status -> {
             if (status == TextToSpeech.SUCCESS) {
@@ -27,7 +27,7 @@ public class TTS implements Codes {
                     Log.i(this.getClass().getName(), "tts instance is null!!");
                     return;
                 }
-                setLanguage();
+                setLanguage(lang);
                 Log.i("TTS", "Initialization success.");
             } else
                 Log.e("TTS", "Initialization Failed!");
@@ -46,11 +46,11 @@ public class TTS implements Codes {
                     switch (Integer.parseInt(utteranceId)) {
                         case ASK_NAME_UTTERANCE_ID:
                             STT.getInstance().setIsBusyAskingForInfo(false);
-                            STT.getInstance().stt(mContext, mainActivity, STT_GET_NAME);
+                            STT.getInstance().stt(mContext, mainActivity, STT_GET_NAME, lang);
                             break;
                         case ASK_CITY_UTTERANCE_ID:
                             STT.getInstance().setIsBusyAskingForInfo(false);
-                            STT.getInstance().stt(mContext, mainActivity, STT_GET_CITY_NAME);
+                            STT.getInstance().stt(mContext, mainActivity, STT_GET_CITY_NAME, lang);
                             break;
                         case IDLE_UTTERANCE_ID:
                         default:
@@ -66,17 +66,17 @@ public class TTS implements Codes {
         });
     }
 
-    public void setLanguage(){
-        int ttsLang = textToSpeech.setLanguage(new Locale("fa"));
+    public void setLanguage(String lang){
+        int ttsLang = textToSpeech.setLanguage(new Locale(lang));
         if (ttsLang == TextToSpeech.LANG_MISSING_DATA
                 || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
-            Log.e("TTS", "Farsi Language is not supported or loaded!");
+            Log.e("TTS", "Language is not supported or loaded!");
         } else {
             Log.i("TTS", "Language Supported.");
-            isFaLocaleInitialized.set(true);
+            isLocaleInitialized.set(true);
         }
-        synchronized (isFaLocaleInitialized) {
-            isFaLocaleInitialized.notifyAll();
+        synchronized (isLocaleInitialized) {
+            isLocaleInitialized.notifyAll();
         }
     }
 
