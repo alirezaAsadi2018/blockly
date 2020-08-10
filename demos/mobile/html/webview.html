@@ -61,13 +61,16 @@
 			fill-opacity: 1;
 		}
 	</style>
-  <!-- You MUST include jQuery before Fomantic -->
-	<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script> -->
-	<script src="media/jquery.min.js"></script>
+
+  	<!-- You MUST include jQuery before Fomantic -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+	<!-- <script src="media/jquery.min.js"></script> -->
 	<link rel="stylesheet" type="text/css" href="media/semantic.min.css">
-  <!-- Source Paho MQTT Client-->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script> -->
-  <script src="media/mqttws31.js" type="text/javascript"></script>
+	<script src="media/semantic.min.js"></script>
+
+	<!-- Source Paho MQTT Client-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+  <!-- <script src="media/mqttws31.js" type="text/javascript"></script> -->
   <!-- Utility Javascript -->
   <script src="mqtt.js"></script>
   <script src="common-functions.js"></script>
@@ -78,41 +81,152 @@
   <script src="toolbox_standard.js"></script>
   <!-- Select msg file -->
   <script src="msg/js/en.js"></script>
+  <script src="media/acorn_interpreter.js"></script>
 </head>
 <body>
 	<div>
 		<div class="ui orange borderless top secondary inverted menu">
-			<button class="item ui button" onclick="showPython()">Show Python</button>
-			<button class="item ui button" onclick="showJs()">Show JavaScript</button>
-			<button class="item ui button" onclick="runJsCode()">Run JavaScript</button>
-			<button class="item ui button" onclick="changeLanguage(workspaceLang)">change language</button>
+			<div class="item">
+				<button class="ui button" onclick="showCode()">Show Code</button>
+			</div>
+			<div class="item">
+				<button id="runButton" class="ui button" onclick="runCode()">Run Code</button>
+			</div>
+			<div class="item">
+				<button class="ui button" onclick="resetInterpreter()">Stop Code</button>
+			</div>
+			<div class="item">
+				<div class="ui floating labeled icon dropdown button">
+					<i class="dropdown icon"></i>
+					<div class="default text">Select Language</div>
+					<div class="menu">
+					  <div class="item" onclick="setCodingLang('js')">
+						<i class="js icon"></i>
+						JavaScript
+					  </div>
+					  <div class="item" onclick="setCodingLang('py')">
+						<i class="python icon"></i>
+						Python
+					  </div>
+					</div>
+				</div>
+			</div>
 			<div class="right menu">
-			  <a class="ui item">
-				Roobin
-			  </a>
-			  <div class="uiitem">
-				<img class="ui tiny  image" src="media/roobin5.png">
-			  </div>
+				<div class="item">
+					<div class="ui language floating dropdown link">
+						<i class="world icon"></i>
+						<span class="text">English</span>
+						<div class="menu">
+						<div class="item" onclick="changeWorkspaceLang('en')">English</div>
+						<div class="item" onclick="changeWorkspaceLang('fa')">Persian</div>
+						</div>
+					</div>
+				</div>
+				<div class="item">
+					<div class="ui logo shape">
+						<div class="sides">
+							<div class="active ui side">
+								<img class="ui tiny  image" src="media/roobin5.png">
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 	 <div id="blocklyDiv" style="height: 550px;" ></div>
 
-<script src="media/semantic.min.css"></script>
+
+<script type="text/js-worker">
+	function initApi(interpreter, globalObject) {
+		// Add an API function for the alert() block.
+		var wrapper = function(text) {
+			return postMessage('alert("' + (arguments.length ? text : '') + '")');
+		};
+		interpreter.setProperty(globalObject, 'alert',
+			interpreter.createNativeFunction(wrapper));
+	  
+		// Add an API function for the prompt() block.
+		wrapper = function(text) {
+			return postMessage('prompt("' + text + '")');
+		};
+		interpreter.setProperty(globalObject, 'prompt',
+			interpreter.createNativeFunction(wrapper));
+		
+		// Add an API function for the callStt() block.
+		wrapper = function() {
+			return postMessage('callStt()');
+		};
+		interpreter.setProperty(globalObject, 'callStt',
+			interpreter.createNativeFunction(wrapper));
+
+		// Add an API function for the callTts() block.
+		wrapper = function(text) {
+			return postMessage('callTts("' + (arguments.length ? text : '') + '")');
+		};
+		interpreter.setProperty(globalObject, 'callTts',
+			interpreter.createNativeFunction(wrapper));
+			
+		// Add an API function for the rotate() block.
+		wrapper = function(text) {
+			return postMessage('rotate("' + (arguments.length ? text : '') + '")');
+		};
+		interpreter.setProperty(globalObject, 'rotate',
+			interpreter.createNativeFunction(wrapper));
+	}
+</script>
+<script type="text/js-worker">
+	onmessage = function(oEvent) {
+		var data = oEvent.data;
+		if (data.url) {
+			var url = data.url;
+			acorn_interpreter_url = url + '/media/acorn_interpreter.js';
+			console.log(acorn_interpreter_url);
+			importScripts(acorn_interpreter_url);
+		}else{
+			var code = data;
+			// window is not recognized here in this worker context!
+			while(code.indexOf('window.') !== -1){
+				code = code.replace('window.', '');
+			}
+			var myInterpreter = new Interpreter(code, initApi);
+
+			var runner = function() {
+				if (myInterpreter) {
+					try{
+						var hasMore = myInterpreter.run();
+						if (hasMore) {
+							// Execution is currently blocked by some async call. Try again later.
+							setTimeout(runner, 10);
+						} else {
+							// Program is complete.
+							postMessage('fin');
+						}
+					}catch(error){
+						postMessage('error:' + error);
+					}
+				}
+			};
+			runner();
+		}
+	};
+</script>
 <script type="text/javascript">
+	$('.ui.dropdown').dropdown();
 	var workspaceLang = 'en';
 	setLanguageRelatedProps(workspaceLang);
 	var myWorkspace = loadWorkspace(workspaceLang);
 	myWorkspace.registerButtonCallback("myButtonPressed", callAndroidStt);
 
-	// UI js part
-	var borderStylePropertyName;
-	if(workspaceLang === 'fa'){
-		borderStylePropertyName = 'border-right-color';
-	}else if(workspaceLang === 'en'){
-		borderStylePropertyName = 'border-left-color';
-	}
+	// UI part
 	convertCategoriesTosemantic();
+
+	myWorkspace.addChangeListener(function(event) {
+      if (!(event instanceof Blockly.Events.Ui)) {
+        // Something changed. Parser needs to be reloaded.
+        resetInterpreter();
+      }
+	});
 </script>
 </body>
 </html>

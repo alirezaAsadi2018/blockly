@@ -14,6 +14,7 @@ public class TTS implements Codes {
     private TextToSpeech textToSpeech;
     private final AtomicBoolean isLocaleInitialized = new AtomicBoolean(false);
     private final MainActivity mMainActivity;
+    private String lang;
 
     public AtomicBoolean getIsLocaleInitialized() {
         return isLocaleInitialized;
@@ -66,11 +67,17 @@ public class TTS implements Codes {
         });
     }
 
+    public String getLang() {
+        return lang;
+    }
+
     public void setLanguage(String lang){
+        this.lang = lang;
         int ttsLang = textToSpeech.setLanguage(new Locale(lang));
         if (ttsLang == TextToSpeech.LANG_MISSING_DATA
                 || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.e("TTS", "Language is not supported or loaded!");
+            isLocaleInitialized.set(false);
         } else {
             Log.i("TTS", "Language Supported.");
             isLocaleInitialized.set(true);

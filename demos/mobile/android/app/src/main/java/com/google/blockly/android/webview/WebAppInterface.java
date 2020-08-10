@@ -84,12 +84,14 @@ public class WebAppInterface implements Codes {
                 return false;
             }
         }
-        if (mainActivity.getMTtsInstance() != null &&
-                mainActivity.getMTtsInstance().getIsLocaleInitialized().get()) {
+        if (mainActivity.getMTtsInstance() != null
+                && mainActivity.getMTtsInstance().getIsLocaleInitialized().get()
+                && mainActivity.getMTtsInstance().getLang().equals(lang)) {
             return true;
         }
-        if (mainActivity.getMTtsInstance() != null &&
-                !mainActivity.getMTtsInstance().getIsLocaleInitialized().get()) {
+        if (mainActivity.getMTtsInstance() != null) {
+            mainActivity.getMTtsInstance().getIsLocaleInitialized().set(false);
+            isTtsLocaleInstallationDone.set(false);
             synchronized (mainActivity.getMTtsInstance().getIsLocaleInitialized()) {
                 try {
                     mainActivity.getMTtsInstance().getIsLocaleInitialized().wait(1000);

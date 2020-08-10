@@ -1,5 +1,15 @@
 var workspaceLang;
 var borderStylePropertyName;
+var codingLangSelected = 'js';
+// Exit is used to signal the end of a script.
+var myInterpreter = null;
+var runner;
+var code;
+var runButton;
+
+window.onload = function(){
+    runButton = document.getElementById('runButton');
+}
 
 function setLanguageRelatedProps(lang){
     workspaceLang = lang;
@@ -8,6 +18,26 @@ function setLanguageRelatedProps(lang){
 	}else if(workspaceLang === 'en'){
 		borderStylePropertyName = 'border-left-color';
 	}
+}
+
+function changeWorkspaceLang(lang){
+    if(workspaceLang === lang){
+        return;
+    }else{
+        changeLanguage();
+    }
+}
+
+function setCodingLang(lang){
+    codingLangSelected = lang;
+}
+
+function showCode(){
+    if(codingLangSelected === 'js'){
+        showJs();
+    }else if(codingLangSelected === 'py'){
+        showPython();
+    }
 }
 
 function showPython() {
@@ -28,19 +58,74 @@ function rotate(msg){
     mqttSend(msg);
 }
 
-function runJsCode() {
-    // Generate JavaScript code and run it.
-    window.LoopTrap = 1000;
-    Blockly.JavaScript.INFINITE_LOOP_TRAP =
-        'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-    var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
-    //debugger
-    Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-    
-    try {
-        eval(code);
-    } catch (e) {
-        alert(e);
+function initApi(interpreter, globalObject) {
+    // Add an API function for the alert() block.
+    var wrapper = function(text) {
+      return alert(arguments.length ? text : '');
+    };
+    interpreter.setProperty(globalObject, 'alert',
+        interpreter.createNativeFunction(wrapper));
+  
+    // Add an API function for the prompt() block.
+    wrapper = function(text) {
+      return prompt(text);
+    };
+    interpreter.setProperty(globalObject, 'prompt',
+        interpreter.createNativeFunction(wrapper));
+}
+
+function runCode() {
+    Blockly.JavaScript.addReservedWords('exit');
+    code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+    runButton.disabled = 'disabled';
+    var blob = new Blob(Array.prototype.map.call(document.querySelectorAll('script[type=\'text\/js-worker\']'), 
+		function (oScript) { return oScript.textContent; }),{type: 'text/javascript'});
+    document.worker = new Worker(window.URL.createObjectURL(blob));
+    document.worker.onmessage = function(oEvent) {
+		if(oEvent.data === 'fin'){
+			resetInterpreter();
+		}else if(oEvent.data.indexOf('alert') !== -1){
+            eval(oEvent.data);
+        }else if(oEvent.data.indexOf('prompt') !== -1){
+            eval(oEvent.data);
+        }else if(oEvent.data.indexOf('callStt') !== -1){
+            eval(oEvent.data);
+        }else if(oEvent.data.indexOf('callTts') !== -1){
+            eval(oEvent.data);
+        }else if(oEvent.data.indexOf('rotate') !== -1){
+            eval(oEvent.data);
+        }else if(oEvent.data.indexOf('error:') !== -1){
+            alert(oEvent.data.substr(oEvent.data.indexOf('error:') + 'error:'.length));
+            resetInterpreter();
+        }
+    };
+    var url = document.location.href;
+    var index = -1;
+    if(workspaceLang === 'en'){
+        index = url.indexOf('webview.html');
+    }else if(workspaceLang === 'fa'){
+        index = url.indexOf('webview-fa.html');
+    }   
+    if (index != -1) {
+        url = url.substring(0, index);
+    }
+    if(url[url.length - 1] === '/'){
+        url = url.substring(0, url.length - 1);
+    }
+    // this is really odd but without this line english page url is not correct!!!
+    if((workspaceLang === 'en' && !isAndroidUserAgent())){
+        url = url + '/';
+    }
+    document.worker.postMessage({url:url});
+    document.worker.postMessage(code);
+}
+
+function resetInterpreter(){
+    if(runButton){
+        runButton.disabled = '';
+    }
+    if(document.worker){
+        document.worker.terminate();
     }
 }
 
