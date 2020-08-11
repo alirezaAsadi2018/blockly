@@ -93,7 +93,7 @@
 				<button id="runButton" class="ui button" onclick="runCode()">Run Code</button>
 			</div>
 			<div class="item">
-				<button class="ui button" onclick="resetInterpreter()">Stop Code</button>
+				<button class="ui button" onclick="resetInterpreter();Android.stopTts();">Stop Code</button>
 			</div>
 			<div class="item">
 				<div class="ui floating labeled icon dropdown button">
@@ -162,7 +162,7 @@
 
 		// Add an API function for the callTts() block.
 		wrapper = function(text) {
-			return postMessage('callTts("' + (arguments.length ? text : '') + '")');
+			postMessage('callTts("' + (arguments.length ? text : '') + '")');
 		};
 		interpreter.setProperty(globalObject, 'callTts',
 			interpreter.createNativeFunction(wrapper));

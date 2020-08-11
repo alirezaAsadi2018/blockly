@@ -11,20 +11,16 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TTS implements Codes {
-    private TextToSpeech textToSpeech;
     private final AtomicBoolean isLocaleInitialized = new AtomicBoolean(false);
     private final MainActivity mMainActivity;
+    private TextToSpeech textToSpeech;
     private String lang;
-
-    public AtomicBoolean getIsLocaleInitialized() {
-        return isLocaleInitialized;
-    }
 
     public TTS(final Context mContext, final MainActivity mainActivity, String engine, String lang) {
         mMainActivity = mainActivity;
         textToSpeech = new TextToSpeech(mContext, status -> {
             if (status == TextToSpeech.SUCCESS) {
-                if(textToSpeech == null) {
+                if (textToSpeech == null) {
                     Log.i(this.getClass().getName(), "tts instance is null!!");
                     return;
                 }
@@ -67,6 +63,10 @@ public class TTS implements Codes {
         });
     }
 
+    public AtomicBoolean getIsLocaleInitialized() {
+        return isLocaleInitialized;
+    }
+
     public String getLang() {
         return lang;
     }
@@ -89,24 +89,29 @@ public class TTS implements Codes {
 
     private void showRestartDialog(){
         mMainActivity.showRestartDialog(
-        (dialog, which)-> {mMainActivity.setMTtsInstance(null);dialog.cancel();},
-        (dialog)->mMainActivity.setMTtsInstance(null),
-        ()->{stop();mMainActivity.setMTtsInstance(null);});
+                (dialog, which) -> {
+                    mMainActivity.setMTtsInstance(null);
+                    dialog.cancel();
+                },
+                (dialog) -> mMainActivity.setMTtsInstance(null),
+                () -> {
+                    stop();
+                    mMainActivity.setMTtsInstance(null);
+                });
     }
 
     public void tts(final String text, final int utteranceID) {
-        mMainActivity.runOnUiThread(()->{
-            int speechStatus = textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null,
-                    String.valueOf(utteranceID));
-            if (speechStatus == TextToSpeech.ERROR) {
-                Log.e("TTS", "Error in tts function!");
-            }
-        });
+        int speechStatus = textToSpeech.speak(text, TextToSpeech.QUEUE_ADD, null,
+                String.valueOf(utteranceID));
+        if (speechStatus == TextToSpeech.ERROR) {
+            Log.e("TTS", "Error in tts function!");
+        }
     }
+
 
     public void stop() {
         if (textToSpeech != null) {
-            textToSpeech.shutdown();
+            textToSpeech.stop();
         }
     }
 }

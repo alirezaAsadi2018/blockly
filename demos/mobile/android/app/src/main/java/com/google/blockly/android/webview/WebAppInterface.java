@@ -36,6 +36,13 @@ public class WebAppInterface implements Codes {
     }
 
     @JavascriptInterface
+    public void stopTts(){
+        if(mainActivity.getMTtsInstance() != null)
+            mainActivity.getMTtsInstance().stop();
+//        isTtsLocaleInstallationDone.set(false);
+    }
+
+    @JavascriptInterface
     public void loadWebview(String htmlName) {
         String webviewFileBase = "file:///android_asset/blockly/";
         WebView mWebView = mainActivity.findViewById(R.id.blockly_webview);

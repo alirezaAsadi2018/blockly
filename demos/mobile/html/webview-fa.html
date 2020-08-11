@@ -87,7 +87,7 @@
 				<button id="runButton" class="ui button" onclick="runCode()">اجرای کد</button>
 			</div>
 			<div class="item">
-				<button class="ui button" onclick="resetInterpreter()">توقف اجرا</button>
+				<button class="ui button" onclick="resetInterpreter();Android.stopTts();">توقف اجرا</button>
 			</div>
 			<div class="item">
 				<div class="ui floating labeled icon dropdown button">
@@ -179,7 +179,9 @@
 		}else{
 			var code = data;
 			// window is not recognized here in this worker context!
-			code = code.replaceAll('window.', '');
+			while(code.indexOf('window.') !== -1){
+				code = code.replace('window.', '');
+			}
 			var myInterpreter = new Interpreter(code, initApi);
 
 			var runner = function() {
