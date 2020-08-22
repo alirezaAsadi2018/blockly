@@ -257,8 +257,10 @@ function convertCategoriesTosemantic(){
 	});
 
     // add class to the outer div to be the labeled menu
-	var el = document.querySelector('#blockly\\:1').parentNode;
-	addClassToElement(el, 'ui vertical inverted labeled icon fluid menu');
+	// var el = document.querySelector('#blockly-1').parentNode;
+    // addClassToElement(el, 'ui vertical inverted labeled icon fluid menu');
+    var el = document.querySelector('#blockly-0');
+    addClassToElement(el, 'ui vertical inverted labeled icon fluid menu');
 
 	el = document.querySelector('.blocklyToolboxDiv');
 	addClassToElement(el, 'ui inverted menu');
@@ -268,23 +270,23 @@ function convertCategoriesTosemantic(){
     addClassToElement(el, 'ui inverted item menu');
     
     // logic is the first item in the menu
-	convertCategoryToSemantic('#blockly\\:1', Blockly.Msg['LOGIC_CATEGORY'], 'random icon', observer);
+	convertCategoryToSemantic('#blockly-1', Blockly.Msg['LOGIC_CATEGORY'], 'random icon', observer);
 	// loops is the second item in the menu
-	convertCategoryToSemantic('#blockly\\:2', Blockly.Msg['LOOPS_CATEGORY'], 'redo alternate icon', observer);
+	convertCategoryToSemantic('#blockly-2', Blockly.Msg['LOOPS_CATEGORY'], 'redo alternate icon', observer);
 	// math is the third item in the menu
-	convertCategoryToSemantic('#blockly\\:3', Blockly.Msg['MATH_CATEGORY'], 'calculator icon', observer);
+	convertCategoryToSemantic('#blockly-3', Blockly.Msg['MATH_CATEGORY'], 'calculator icon', observer);
 	// text is the forth item in the menu
-	convertCategoryToSemantic('#blockly\\:4', Blockly.Msg['TEXT_CATEGORY'], 'text width icon', observer);
+	convertCategoryToSemantic('#blockly-4', Blockly.Msg['TEXT_CATEGORY'], 'text width icon', observer);
 	// lists is the fifth item in the menu
-	convertCategoryToSemantic('#blockly\\:5', Blockly.Msg['LISTS_CATEGORY'], 'list ol icon', observer);
+	convertCategoryToSemantic('#blockly-5', Blockly.Msg['LISTS_CATEGORY'], 'list ol icon', observer);
 	// colour is the sixth item in the menu
-	convertCategoryToSemantic('#blockly\\:6', Blockly.Msg['COLOUR_CATEGORY'], 'palette icon', observer);
+	convertCategoryToSemantic('#blockly-6', Blockly.Msg['COLOUR_CATEGORY'], 'palette icon', observer);
 	// variables is the eighth item in the menu
-	convertCategoryToSemantic('#blockly\\:8', Blockly.Msg['VARIABLES_CATEGORY'], 'buffer icon', observer);
+	convertCategoryToSemantic('#blockly-8', Blockly.Msg['VARIABLES_CATEGORY'], 'buffer icon', observer);
 	// functions is the ninth item in the menu
-	convertCategoryToSemantic('#blockly\\:9', Blockly.Msg['FUNCTIONS_CATEGORY'], 'percentage icon', observer);
+	convertCategoryToSemantic('#blockly-9', Blockly.Msg['FUNCTIONS_CATEGORY'], 'percentage icon', observer);
 	// roobin is the tenth item in the menu
-	convertCategoryToSemantic('#blockly\\:a', Blockly.Msg['ROOBIN_CATEGORY'], 'robot icon', observer);
+	convertCategoryToSemantic('#blockly-a', Blockly.Msg['ROOBIN_CATEGORY'], 'robot icon', observer);
 }
 
 function convertCategoryToSemantic(id, categoryName, iconName, observer){
@@ -449,9 +451,9 @@ function defineRoobinTheme(){
         Blockly.Themes.Roobin_Theme.defaultBlockStyles,
         Blockly.Themes.Roobin_Theme.categoryStyles);
 
-    // Blockly.Themes.Roobin_Theme.setFontStyle ({
-    //     'family': "Yekan, Helvetica Neue, Segoe UI, Helvetica, sans-serif",
-    //     'weight': null, // Use default font-weight
-    //     'size': 16
-    // });
+    Blockly.Themes.Roobin_Theme.setFontStyle ({
+        'family': "Yekan, Helvetica Neue, Segoe UI, Helvetica, sans-serif",
+        'weight': 'normal', // Use default font-weight
+        'size': 12
+    });
 }
