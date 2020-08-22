@@ -94,6 +94,8 @@ function runCode() {
             eval(oEvent.data);
         }else if(oEvent.data.indexOf('rotate') !== -1){
             eval(oEvent.data);
+        }else if(oEvent.data.indexOf('requestServer') !== -1){
+            eval(oEvent.data);
         }else if(oEvent.data.indexOf('error:') !== -1){
             alert(oEvent.data.substr(oEvent.data.indexOf('error:') + 'error:'.length));
             resetInterpreter();
@@ -117,7 +119,7 @@ function runCode() {
         url = url + '/';
     }
     document.worker.postMessage({url:url});
-    document.worker.postMessage(code);
+    document.worker.postMessage({code:code});
 }
 
 function resetInterpreter(){
@@ -129,9 +131,27 @@ function resetInterpreter(){
     }
 }
 
+function stopCode(){
+    resetInterpreter();
+    if(isAndroidUserAgent()){
+        Android.stopTts();
+    }
+}
+
+function requestServer(query){
+    // server is only accessible from browser for now!!
+    if(!navigator.userAgent.match(/Android/i)){
+        var url = 'http://localhost:1234/' + query;
+        fetch(url)
+        .then(data=>{console.log(data.url);})
+        .catch(error=>console.log(error));
+    }
+}
+
 function callTts(text){
+    var busy = false;
     if(!isAndroidUserAgent()){
-        alert("Sorry!! Tts is available only on Android!!");
+        alert('not supported!');
         return;
     }
     Android.tts(text, workspaceLang);
@@ -425,7 +445,13 @@ function defineRoobinTheme(){
             hat: "cap"
         }
     };
-    Blockly.Themes.Roobin_Theme = new Blockly.Theme("Roobin_Theme",
-            Blockly.Themes.Roobin_Theme.defaultBlockStyles,
-            Blockly.Themes.Roobin_Theme.categoryStyles);
+    Blockly.Themes.Roobin_Theme = new Blockly.Theme("Roobin_Theme",  
+        Blockly.Themes.Roobin_Theme.defaultBlockStyles,
+        Blockly.Themes.Roobin_Theme.categoryStyles);
+
+    // Blockly.Themes.Roobin_Theme.setFontStyle ({
+    //     'family': "Yekan, Helvetica Neue, Segoe UI, Helvetica, sans-serif",
+    //     'weight': null, // Use default font-weight
+    //     'size': 16
+    // });
 }

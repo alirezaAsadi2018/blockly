@@ -87,7 +87,7 @@
 				<button id="runButton" class="ui button" onclick="runCode()">اجرای کد</button>
 			</div>
 			<div class="item">
-				<button class="ui button" onclick="resetInterpreter();Android.stopTts();">توقف اجرا</button>
+				<button class="ui button" onclick="stopCode()">توقف اجرا</button>
 			</div>
 			<div class="item">
 				<div class="ui floating labeled icon dropdown button">
@@ -131,35 +131,66 @@
 	<div id="blocklyDiv" style="height: 550px;" ></div>
 	
 <script type="text/js-worker">
+	var hasMore =false;
+	var ttsBusy = false;
+	function isTtsBusy(){
+		return ttsBusy;
+	}
 	function initApi(interpreter, globalObject) {
 		// Add an API function for the alert() block.
 		var wrapper = function(text) {
-			return postMessage('alert("' + (arguments.length ? text : '') + '")');
+			postMessage('alert("' + (arguments.length ? text : '') + '")');
 		};
 		interpreter.setProperty(globalObject, 'alert',
 			interpreter.createNativeFunction(wrapper));
 		
 		// Add an API function for the prompt() block.
 		wrapper = function(text) {
-			return postMessage('prompt("' + text + '")');
+			postMessage('prompt("' + text + '")');
 		};
 		interpreter.setProperty(globalObject, 'prompt',
 			interpreter.createNativeFunction(wrapper));
 		
 		// Add an API function for the callStt() block.
 		wrapper = function() {
-			return postMessage('callStt()');
+			if(!navigator.userAgent.match(/Android/i)){
+				console.log('stt started');
+				var url = 'http://localhost:1234/set_stt_var';
+				fetch(url)
+				.then(data=>{console.log(data.url);})
+				.catch(error=>console.log(error));
+			}else{
+				postMessage('callStt()');
+			}
 		};
 		interpreter.setProperty(globalObject, 'callStt',
 			interpreter.createNativeFunction(wrapper));
 
 		// Add an API function for the callTts() block.
 		wrapper = function(text) {
-			return postMessage('callTts("' + (arguments.length ? text : '') + '")');
+			if(!navigator.userAgent.match(/Android/i)){
+				ttsBusy = true;
+				console.log('tts started');
+				var url = 'http://localhost:1234/begoo/' + text;
+				fetch(url)
+				.then(data=>{if(data.status === 200)ttsBusy = false; return data;})
+				.then(res=>{console.log(res.url)})
+				.catch(error=>console.log(error));
+			}else{
+				postMessage('callTts("' + (arguments.length ? text : '') + '")');
+			}
 		};
+
 		interpreter.setProperty(globalObject, 'callTts',
 			interpreter.createNativeFunction(wrapper));
 			
+		// Add an API function for the requestServer() block.
+		wrapper = function(query){
+			postMessage('requestServer("' + (arguments.length ? query : '') + '")');
+		}
+		interpreter.setProperty(globalObject, 'requestServer',
+			interpreter.createNativeFunction(wrapper));
+
 		// Add an API function for the rotate() block.
 		wrapper = function(text) {
 			return postMessage('rotate("' + (arguments.length ? text : '') + '")');
@@ -169,6 +200,33 @@
 	}
 </script>
 <script type="text/js-worker">
+	var code;
+	var myInterpreter;
+	var intervalRunner;
+	var runner = function() {
+		if (myInterpreter) {
+			do{
+				try{
+					if(ttsBusy){
+						console.log('tts busy');
+						return;
+					}
+					hasMore = myInterpreter.step();
+				}catch(error){
+					postMessage('error:' + error);
+				}finally{
+					if (!hasMore){
+						// Program is complete.
+						clearInterval(intervalRunner);
+						myInterpreter = undefined;
+						// just in case sth bad happens!!
+						ttsBusy = false;
+						postMessage('fin');
+					}
+				}
+			}while(hasMore);
+		}
+	};
 	onmessage = function(oEvent) {
 		var data = oEvent.data;
 		if (data.url) {
@@ -176,31 +234,16 @@
 			acorn_interpreter_url = url + '/media/acorn_interpreter.js';
 			console.log(acorn_interpreter_url);
 			importScripts(acorn_interpreter_url);
-		}else{
-			var code = data;
+		}else if(data.code){
+			code = data.code;
 			// window is not recognized here in this worker context!
 			while(code.indexOf('window.') !== -1){
 				code = code.replace('window.', '');
 			}
-			var myInterpreter = new Interpreter(code, initApi);
-
-			var runner = function() {
-				if (myInterpreter) {
-					try{
-						var hasMore = myInterpreter.run();
-						if (hasMore) {
-							// Execution is currently blocked by some async call. Try again later.
-							setTimeout(runner, 10);
-						} else {
-							// Program is complete.
-							postMessage('fin');
-						}
-					}catch(error){
-						postMessage('error:' + error);
-					}
-				}
-			};
-			runner();
+			myInterpreter = new Interpreter(code, initApi);
+			intervalRunner = setInterval(runner, 100);
+		}else{
+			console.log(data);
 		}
 	};
 </script>
@@ -222,5 +265,6 @@
       }
 	});
 </script>
+<script src="block_defs.js"></script>
 </body>
 </html>

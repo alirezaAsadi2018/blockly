@@ -1683,3 +1683,165 @@ Blockly.Msg.VARIABLES_CATEGORY = 'variables';
 Blockly.Msg.FUNCTIONS_CATEGORY = 'functions';
 /** @type {string} */
 Blockly.Msg.ROOBIN_CATEGORY = 'roobin';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SET_LANG = 'change language to %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SET_LANG_FA = 'persian';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SET_LANG_EN = 'english';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SET_SPEAK_SPEED = 'set speaking speed to %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SET_SPEAK_PITCH = 'set speaking pitch to %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_CHANGE_SPEAK_PITCH = 'change speaking pitch by %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SET_STT_VAR = 'convert speech to text';
+/** @type {string} */
+Blockly.Msg.ROOBIN_CHANGE_EYE = 'change %1 eye to %2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_LEFT = 'left';
+/** @type {string} */
+Blockly.Msg.ROOBIN_RIGHT = 'right';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SULLIVAN = 'sullivan';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SPONGE_BOB = 'sponge bob';
+/** @type {string} */
+Blockly.Msg.ROOBIN_KITTY = 'kitty';
+/** @type {string} */
+Blockly.Msg.ROOBIN_MINION = 'minion';
+/** @type {string} */
+Blockly.Msg.ROOBIN_BATMAN = 'batman';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ANGRY_BIRD = 'angry bird';
+/** @type {string} */
+Blockly.Msg.ROOBIN_CIRCULAR = 'circular';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIAMOND = 'diamond';
+/** @type {string} */
+Blockly.Msg.ROOBIN_TRIANGULAR = 'triangular';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ORIGINAL = 'original';
+/** @type {string} */
+Blockly.Msg.ROOBIN_CHANGE_MOUTH = 'change mouth form to %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ORIGINAL_MOUTH = 'roobin';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PUCKER_MOUTH = 'pucker';
+/** @type {string} */
+Blockly.Msg.ROOBIN_RANDOM_GEN = 'make a random number between %1 and %2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_RECOVERY = 'recovery';
+/** @type {string} */
+Blockly.Msg.ROOBIN_INTRODUCE = 'introduce';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SAY_HELLO = 'Say hello';
+/** @type {string} */
+Blockly.Msg.ROOBIN_CHUCKLE = 'Chckle';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ASK_WAIT = 'ask %1 and wait for response';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SEARCH_IN_WIKI = 'search in wikipedia';
+/** @type {string} */
+Blockly.Msg.ROOBIN_SEARCH_WORD_IN_WIKI = 'search %1 in wikipedia';
+/** @type {string} */
+Blockly.Msg.ROOBIN_TODAY_DATE = 'today\'s date';
+/** @type {string} */
+Blockly.Msg.ROOBIN_FIND_DAY = 'what day was that day';
+/** @type {string} */
+Blockly.Msg.ROOBIN_RIDDLE_GAME = 'riddle';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ARROW_GAME = 'arrows game %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIFFICULTY_EASY = 'easy';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIFFICULTY_MEDIUM = 'medium';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIFFICULTY_HARD = 'hard';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIFFICULTY_IMPOSSIBLE = 'impossible';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PATTERN_GAME = 'offline patterns game %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_NUMBERS_GAME = 'numbers game %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIFFICULTY_LEVEL_ONE = 'level 1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIFFICULTY_LEVEL_TWO = 'level 2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DIFFICULTY_LEVEL_THREE = 'level 3';
+/** @type {string} */
+Blockly.Msg.ROOBIN_AMAZING_FACTS = 'Did you know?';
+/** @type {string} */
+Blockly.Msg.ROOBIN_GAMES_EXPLANATION = 'explanation for %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_GAMES_LIST_SEARCH_IN_WIKI = 'search in wikipedia';
+/** @type {string} */
+Blockly.Msg.ROOBIN_GAMES_LIST_RIDDLE = 'riddle';
+/** @type {string} */
+Blockly.Msg.ROOBIN_GAMES_LIST_ARROWS_GAME = 'arrows game';
+/** @type {string} */
+Blockly.Msg.ROOBIN_GAMES_LIST_PATTERNS_GAME = 'offline patterns game';
+/** @type {string} */
+Blockly.Msg.ROOBIN_GAMES_LIST_NUMBERS_GAME = 'numbers game';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_TELLING = 'choose story %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_NOSE = 'nose';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_MY_GLASSES = 'my glasses';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_ONE_BELOW = 'one below the other';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_BOY_IN_DRUM = 'a boy in a drum';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_EMPERORS_CLOTHES = 'the emperor\'s new clothes';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_ANIMAL_FARM_ONE = 'animal farm 1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_ANIMAL_FARM_TWO = 'animal farm 2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_ANIMAL_FARM_THREE = 'animal farm 3';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_LITTLE_PRINCE_ONE = 'the little prince 1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_LITTLE_PRINCE_TWO = 'the little prince 2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_FINGERBOY = 'fingerboy';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_SNOWMAN = 'snowman';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_CINDERELLA = 'cinderella';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_GULLIVER = 'gulliver';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_PUSS_IN_BOOTS = 'puss in boots';
+/** @type {string} */
+Blockly.Msg.ROOBIN_STORY_LIST_JACK_AND_BEANSTALK = 'Jack and the beanstalk';
+/** @type {string} */
+Blockly.Msg.ROOBIN_MOVE_MOTOR = 'move %1 motor to %2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ROTATE_MOTOR = 'rotate %1 \'s motor by %2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_BLINK = 'blink';
+/** @type {string} */
+Blockly.Msg.ROOBIN_LOOK_AROUND = 'look around';
+/** @type {string} */
+Blockly.Msg.ROOBIN_LOOK_NEUTRAL = 'look straight ahead';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DRAW_ON_EYES = 'turn %4 %1 eye in postitions %2 and %3';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ON = 'on';
+/** @type {string} */
+Blockly.Msg.ROOBIN_OFF = 'off';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DRAW_ON_MOUTH = 'turn %3 mouth in postitions %1 and %2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_CLEAN_MATRICES = 'turn off %1 for drawing';
+/** @type {string} */
+Blockly.Msg.ROOBIN_LEFT_EYE = 'left eye';
+/** @type {string} */
+Blockly.Msg.ROOBIN_RIGHT_EYE = 'right eye';
+/** @type {string} */
+Blockly.Msg.ROOBIN_MOUTH = 'mouth';

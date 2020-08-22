@@ -93,7 +93,7 @@
 				<button id="runButton" class="ui button" onclick="runCode()">Run Code</button>
 			</div>
 			<div class="item">
-				<button class="ui button" onclick="resetInterpreter();Android.stopTts();">Stop Code</button>
+				<button class="ui button" onclick="stopCode()">Stop Code</button>
 			</div>
 			<div class="item">
 				<div class="ui floating labeled icon dropdown button">
@@ -162,7 +162,15 @@
 
 		// Add an API function for the callTts() block.
 		wrapper = function(text) {
-			postMessage('callTts("' + (arguments.length ? text : '') + '")');
+			if(!navigator.userAgent.match(/Android/i)){
+				var url = 'http://localhost:1234/begoo/' + text;
+				fetch(url)
+				.then(data=>{if(data.status === 200)busy = false; return data;})
+				.then(res=>{console.log(res.url)})
+				.catch(error=>console.log(error));
+			}else{
+				postMessage('callTts("' + (arguments.length ? text : '') + '")');
+			}
 		};
 		interpreter.setProperty(globalObject, 'callTts',
 			interpreter.createNativeFunction(wrapper));
@@ -194,7 +202,7 @@
 			var runner = function() {
 				if (myInterpreter) {
 					try{
-						var hasMore = myInterpreter.run();
+						var hasMore = myInterpreter.step();
 						if (hasMore) {
 							// Execution is currently blocked by some async call. Try again later.
 							setTimeout(runner, 10);
@@ -209,7 +217,7 @@
 			};
 			runner();
 		}
-	};
+	}; 
 </script>
 <script type="text/javascript">
 	$('.ui.dropdown').dropdown();
@@ -228,5 +236,6 @@
       }
 	});
 </script>
+<script src="block_defs.js"></script>
 </body>
 </html>
