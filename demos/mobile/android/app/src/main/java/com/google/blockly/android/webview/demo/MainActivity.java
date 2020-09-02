@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements Codes {
     private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
     private TTS mTtsInstance;
     public String sttResult;
+    public final AtomicBoolean isBluetoothEnabled = new AtomicBoolean(false);
+    public final AtomicBoolean isBluetoothDiscoverable = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,28 @@ public class MainActivity extends AppCompatActivity implements Codes {
                     mTtsInstance = null;
                     setIsSttButtonActive(true);
                 }, 1000);
+            }
+        }
+        if(requestCode == BLUETOOTH_ACTION_REQUEST_ENABLE){
+            synchronized (isBluetoothEnabled){
+                isBluetoothEnabled.notifyAll();
+            }
+            System.out.println("resultCode on: " + resultCode);
+            if(resultCode == RESULT_OK){
+                isBluetoothEnabled.set(true);
+            }else{
+                isBluetoothEnabled.set(false);
+            }
+        }
+        if(requestCode == BLUETOOTH_ACTION_REQUEST_DISCOVERABLE){
+            System.out.println("resultCode discover: " + resultCode);
+            synchronized (isBluetoothDiscoverable){
+                isBluetoothDiscoverable.notifyAll();
+            }
+            if(resultCode == RESULT_OK || resultCode == BLUETOOTH_DISCOVERABLE_DURATION){
+                isBluetoothDiscoverable.set(true);
+            }else{
+                isBluetoothDiscoverable.set(false);
             }
         }
         if (resultCode == RESULT_OK && data != null) {

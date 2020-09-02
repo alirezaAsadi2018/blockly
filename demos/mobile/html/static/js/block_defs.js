@@ -1,7 +1,16 @@
+Blockly.JavaScript['TTS'] = function(block) {
+	var text = Blockly.JavaScript.valueToCode(block, 'TTS_INPUT',
+		Blockly.JavaScript.ORDER_NONE) || '';
+	query = 'begoo/';
+	if(!text)
+		return '';
+	return 'if(' + text +')\nrequestServer(\'' + query + '\' + ' + text + ');\n';
+};
+
 var setLangDefinitionJson = {
 	"type": "roobin_set_lang",
 	"message0": "%{BKY_ROOBIN_SET_LANG}",   //   Blockly.Msg['ROOBIN_SET_LANG'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"args0": [{
 		"type": "field_dropdown",
 		"name": "SEL_ROOBIN_SET_LANG",
@@ -31,7 +40,7 @@ Blockly.JavaScript['roobin_set_lang'] = function(block) {
 var setSpeakSpeedDefinitionJson = {
 	"type": "roobin_set_speak_speed",
 	"message0": "%{BKY_ROOBIN_SET_SPEAK_SPEED}",   //   Blockly.Msg['ROOBIN_SET_SPEAK_SPEED'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"args0": [
 		{
 			"type": "input_value",
@@ -50,11 +59,18 @@ Blockly.Blocks['roobin_set_speak_speed'] = {
 	}
 };
 
+Blockly.JavaScript['roobin_set_speak_speed'] = function(block) {
+	var arg = Blockly.JavaScript.valueToCode(block, 'SPEED',
+		Blockly.JavaScript.ORDER_NONE) || '0';
+	query = 'set_speak_speed/';
+	return 'if(!' + arg +')' + arg + ' = 0;requestServer(\'' + query + '\' + ' + arg + ');\n';
+};
+
 
 var setSpeakPitchDefinitionJson = {
 	"type": "roobin_set_speak_pitch",
 	"message0": "%{BKY_ROOBIN_SET_SPEAK_PITCH}",   //   Blockly.Msg['ROOBIN_SET_SPEAK_PITCH'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"args0": [
 		{
 			"type": "input_value",
@@ -76,15 +92,15 @@ Blockly.Blocks['roobin_set_speak_pitch'] = {
 Blockly.JavaScript['roobin_set_speak_pitch'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'PITCH',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	query = 'set_speak_pitch/' + arg;
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'set_speak_pitch/';
+	return 'if(!' + arg +')' + arg + ' = 0;requestServer(\'' + query + '\' + ' + arg +');\n';
 };
 
 
 var changeSpeakPitchDefinitionJson = {
 	"type": "roobin_change_speak_pitch",
 	"message0": "%{BKY_ROOBIN_CHANGE_SPEAK_PITCH}",   //   Blockly.Msg['ROOBIN_CHANGE_SPEAK_PITCH'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"args0": [
 		{
 			"type": "input_value",
@@ -106,8 +122,8 @@ Blockly.Blocks['roobin_change_speak_pitch'] = {
 Blockly.JavaScript['roobin_change_speak_pitch'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'PITCH',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	query = 'change_speak_pitch/' + arg;
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'change_speak_pitch/';
+	return 'if(!' + arg +')' + arg + ' = 0;requestServer(\'' + query + '\' + ' + arg +');\n';
 };
 
 
@@ -225,8 +241,7 @@ var randomGenDefinitionJson = {
 			"check": "Number"
 		}
 	],
-	"previousStatement": null,
-	"nextStatement": null
+	"output": "Number",
 	// "tooltip": "یک عدد تصادفی بین اعداد داده شده تولید می کند."
 };
 
@@ -237,19 +252,21 @@ Blockly.Blocks['roobin_random_gen'] = {
 };
 
 Blockly.JavaScript['roobin_random_gen'] = function(block) {
-	var arg1 = Blockly.JavaScript.valueToCode(block, 'LOWER_BOUND',
+	var min = Blockly.JavaScript.valueToCode(block, 'LOWER_BOUND',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	var arg2 = Blockly.JavaScript.valueToCode(block, 'UPPER_BOUND',
+	var max = Blockly.JavaScript.valueToCode(block, 'UPPER_BOUND',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	query = 'myRandom/' + arg1 + '/' + arg2;
-	return 'requestServer(\'' + query + '\');\n';
+	// var query = 'myRandom/' + min + '/' + max;
+	var code = 'Math.floor(Math.random() * (' + max + ' - ' + min + ') + ' + min + ')';
+	return [code, Blockly.JavaScript.ORDER_NONE];
+	// return 'requestServer(\'' + query + '\');\n';
 };
 
 
 var recoveryDefinitionJson = {
 	"type": "roobin_recovery",
 	"message0": "%{BKY_ROOBIN_RECOVERY}",   //   Blockly.Msg['ROOBIN_RECOVERY'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"previousStatement": null,
 	"nextStatement": null
 	// "tooltip": "روبین را ریستارت می کند."
@@ -356,8 +373,10 @@ Blockly.Blocks['roobin_ask_wait'] = {
 Blockly.JavaScript['roobin_ask_wait'] = function(block) {
 	var text = Blockly.JavaScript.valueToCode(block, 'ASK_INPUT',
 		Blockly.JavaScript.ORDER_NONE) || '';
-	query = 'askNwait/' + eval(text);
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'askNwait/';
+	if(!text)
+		return '';
+	return 'if(' + text +')\nrequestServer(\'' + query + '\' + ' + text + ');\n';
 };
 
 
@@ -408,10 +427,10 @@ Blockly.Blocks['roobin_search_word_in_wikipedia'] = {
 Blockly.JavaScript['roobin_search_word_in_wikipedia'] = function(block) {
 	var text = Blockly.JavaScript.valueToCode(block, 'WIKI_INPUT',
 		Blockly.JavaScript.ORDER_NONE) || '';
-	if(!eval(text))
-		return '\'\'';
-	query = 'search_sth_in_wikipedia/' + eval(text);
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'search_sth_in_wikipedia/';
+	if(!text)
+		return '';
+	return 'if(' + text +')\nrequestServer(\'' + query + '\' + ' + text + ');\n';
 };
 
 
@@ -674,7 +693,7 @@ Blockly.JavaScript['roobin_story_telling'] = function(block) {
 var moveMotorDefinitionJson = {
 	"type": "roobin_move_motor",
 	"message0": "%{BKY_ROOBIN_MOVE_MOTOR}",   //   Blockly.Msg['ROOBIN_MOVE_MOTOR'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_motor_blocks",
 	"args0": [{
 		"type": "field_dropdown",
 		"name": "SEL_NECK_HEAD",
@@ -703,15 +722,15 @@ Blockly.JavaScript['roobin_move_motor'] = function(block) {
 	var headOrNeck = block.getFieldValue('SEL_NECK_HEAD');
 	var arg = Blockly.JavaScript.valueToCode(block, 'ROTATION_INPUT',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	query = 'move_motor/' + headOrNeck + '/' + arg;
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'move_motor/' + headOrNeck + '/';
+	return 'if(' + arg +' || ' + arg + ' === 0)\nrequestServer(\'' + query + '\' + ' + arg +');\n';
 };
 
 
 var rotateMotorDefinitionJson = {
 	"type": "roobin_rotate_motor",
 	"message0": "%{BKY_ROOBIN_ROTATE_MOTOR}",   //   Blockly.Msg['ROOBIN_ROTATE_MOTOR'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_motor_blocks",
 	"args0": [{
 		"type": "field_dropdown",
 		"name": "SEL_NECK_HEAD",
@@ -740,8 +759,8 @@ Blockly.JavaScript['roobin_rotate_motor'] = function(block) {
 	var headOrNeck = block.getFieldValue('SEL_NECK_HEAD');
 	var arg = Blockly.JavaScript.valueToCode(block, 'ROTATION_INPUT',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	query = 'move_motor_droplist/' + headOrNeck + '/' + arg;
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'move_motor_droplist/' + headOrNeck + '/';
+	return 'if(' + arg +' || ' + arg + ' === 0)\nrequestServer(\'' + query + '\' + ' + arg +');\n';
 };
 
 
@@ -811,7 +830,7 @@ Blockly.JavaScript['roobin_neutral'] = function(block) {
 var roobinDrawOnEyesDefinitionJson = {
 	"type": "roobin_draw_on_eyes",
 	"message0": "%{BKY_ROOBIN_DRAW_ON_EYES}",   //   Blockly.Msg['ROOBIN_DRAW_ON_EYES'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"args0": [{
 		"type": "field_dropdown",
 		"name": "SEL_LEFT_RIGHT",
@@ -856,15 +875,15 @@ Blockly.JavaScript['roobin_draw_on_eyes'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	var arg2 = Blockly.JavaScript.valueToCode(block, 'Y',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	query = 'draw_on_eyes/' + leftOrRight + '/' + arg1 + '/' + arg2 + '/' + onOrOff;
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'draw_on_eyes/' + leftOrRight;
+	return 'if((' + arg1 +' || ' + arg1 + ' === 0) && (' + arg2 +' || ' + arg2 + ' === 0))\nrequestServer(\'' + query + '/\' + ' + arg1 + ' + \'/\' +' + arg2 + ' + \'/\' + \'' + onOrOff + '\');\n';
 };
 
 
 var roobinDrawOnMouthDefinitionJson = {
 	"type": "roobin_draw_on_mouth",
 	"message0": "%{BKY_ROOBIN_DRAW_ON_MOUTH}",   //   Blockly.Msg['ROOBIN_DRAW_ON_MOUTH'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"args0": [{
 		"type": "input_value",
 		"name": "X",
@@ -900,15 +919,15 @@ Blockly.JavaScript['roobin_draw_on_mouth'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	var arg2 = Blockly.JavaScript.valueToCode(block, 'Y',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	query = 'draw_on_mouth/' + arg1 + '/' + arg2 + '/' + onOrOff;
-	return 'requestServer(\'' + query + '\');\n';
+	query = 'draw_on_mouth/';
+	return 'if((' + arg1 +' || ' + arg1 + ' === 0) && (' + arg2 +' || ' + arg2 + ' === 0))\nrequestServer(\'' + query + '\' + ' + arg1 + ' + \'/\' +' + arg2 + ' + \'/\' + \'' + onOrOff + '\');\n';
 };
 
 
 var roobinCleanMatricesDefinitionJson = {
 	"type": "roobin_clean_matrices",
 	"message0": "%{BKY_ROOBIN_CLEAN_MATRICES}",   //   Blockly.Msg['ROOBIN_CLEAN_MATRICES'], -> not available yet!
-	"style": "roobin_blocks",
+	"style": "roobin_setup_blocks",
 	"args0": [{
 		"type": "field_dropdown",
 		"name": "SEL_PART",

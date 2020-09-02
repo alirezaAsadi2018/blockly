@@ -141,10 +141,16 @@ function stopCode(){
 function requestServer(query){
     // server is only accessible from browser for now!!
     if(!navigator.userAgent.match(/Android/i)){
-        var url = 'http://localhost:1234/' + query;
-        fetch(url)
-        .then(data=>{console.log(data.url);})
-        .catch(error=>console.log(error));
+        fetch('http://localhost:1234')
+        .then(data=>{if(data.status === 200) serverFunc();})
+        .catch(error=>{console.log(error); alert('server not connected!')});
+        var serverFunc = function(){
+            console.log(query)
+            var url = 'http://localhost:1234/' + query;
+            fetch(url)
+            .then(data=>{console.log(data.url);})
+            .catch(error=>{console.log(error);});
+        }
     }
 }
 
@@ -207,7 +213,7 @@ function loadWorkspace(){
         comments : true, 
         disable : true, 
         maxBlocks : Infinity, 
-        trashcan : true, 
+        trashcan : true,
         horizontalLayout : false, 
         toolboxPosition : 'start', 
         css : true, 
@@ -216,10 +222,10 @@ function loadWorkspace(){
         sounds : true, 
         oneBasedIndex : true, 
         grid : {
-        spacing : 20, 
-        length : 1, 
-        colour : '#888', 
-        snap : false
+            spacing : 20, 
+            length : 1, 
+            colour : '#888', 
+            snap : false
         },
         theme: Blockly.Themes.Roobin_Theme,
         renderer: 'zelos',
@@ -227,15 +233,48 @@ function loadWorkspace(){
         // media : 'https://blockly-demo.appspot.com/static/media/', 
         rtl: (workspaceLang === 'fa'),
         zoom : {
-        controls : true, 
-        wheel : true, 
-        startScale : 1, 
-        maxScale : 3, 
-        minScale : 0.3, 
-        scaleSpeed : 1.2
+            controls : true, 
+            wheel : true, 
+            startScale : 1, 
+            maxScale : 3, 
+            minScale : 0.3, 
+            scaleSpeed : 1.2
         }
     });
     return myWorkspace;
+}
+
+function addEventsToBluetoothButton(){
+    document.querySelector('.connect-bluetooth-device').addEventListener('click', function(evnet){
+		if(!deviceArray || deviceArray.length === 0){
+			populateBluetoothDevicesForm();
+		}else{
+			bluetoothDeviceSelected = $(".select-bluetooth-device").dropdown('get value');
+            if(!bluetoothDeviceSelected || bluetoothDeviceSelected === 'select a device to connect'
+                || bluetoothDeviceSelected === 'یک دستگاه را برای اتصال انتخاب کنید'){
+				return;
+			}
+			Android.connectBluetooth(bluetoothDeviceSelected);
+		}
+	});
+
+	document.querySelector('.select-bluetooth-device').addEventListener('click', populateBluetoothDevicesForm);
+}
+
+function populateBluetoothDevicesForm(){
+    deviceArray = Android.list().split(',');
+    console.log(deviceArray);
+    $.each(deviceArray, function (i, item) {
+        item = item.trim();
+        item = item.split(" ").join("-").split('_').join("-");
+        if (!$(`.bluetooth-drop .${item}`).length) {
+            $('.bluetooth-drop').append($('<div>', {
+                value: i.toString(),
+                text: item.toString(),
+                class: `item ${item}`
+            }));
+        }
+    });
 }
 
 function convertCategoriesTosemantic(){
@@ -434,6 +473,16 @@ function defineRoobinTheme(){
             colourPrimary: "#F2711C",
             colourSecondary: "#FF8000",
             colourTertiary: "#DB6E00"
+        },
+        roobin_motor_blocks: {
+            colourPrimary: "#008080",
+            colourSecondary: "#FF8000",
+            colourTertiary: "#008080"
+        },
+        roobin_setup_blocks: {
+            colourPrimary: "#808080",
+            colourSecondary: "#FF8000",
+            colourTertiary: "#808080"
         },
         function_blocks: {
             colourPrimary: "#FF6680",
