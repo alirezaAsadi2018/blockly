@@ -63,7 +63,7 @@ Blockly.JavaScript['roobin_set_speak_speed'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'SPEED',
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	query = 'set_speak_speed/';
-	return 'if(!' + arg +')' + arg + ' = 0;requestServer(\'' + query + '\' + ' + arg + ');\n';
+	return 'if(' + arg +' || ' + arg + ' === 0)requestServer(\'' + query + '\' + ' + arg + ');\n';
 };
 
 
@@ -93,7 +93,7 @@ Blockly.JavaScript['roobin_set_speak_pitch'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'PITCH',
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	query = 'set_speak_pitch/';
-	return 'if(!' + arg +')' + arg + ' = 0;requestServer(\'' + query + '\' + ' + arg +');\n';
+	return 'if(' + arg +' || ' + arg + ' === 0)requestServer(\'' + query + '\' + ' + arg +');\n';
 };
 
 
@@ -123,7 +123,7 @@ Blockly.JavaScript['roobin_change_speak_pitch'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'PITCH',
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	query = 'change_speak_pitch/';
-	return 'if(!' + arg +')' + arg + ' = 0;requestServer(\'' + query + '\' + ' + arg +');\n';
+	return 'if(' + arg +' || ' + arg + ' === 0)requestServer(\'' + query + '\' + ' + arg +');\n';
 };
 
 
@@ -143,7 +143,8 @@ Blockly.Blocks['roobin_set_stt_var'] = {
 
 Blockly.JavaScript['roobin_set_stt_var'] = function(block) {
 	query = 'set_stt_var';
-	return 'requestServer(\'' + query + '\');\n';
+	var code = 'requestServer(\'' + query + '\')'
+	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 
@@ -256,10 +257,8 @@ Blockly.JavaScript['roobin_random_gen'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	var max = Blockly.JavaScript.valueToCode(block, 'UPPER_BOUND',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	// var query = 'myRandom/' + min + '/' + max;
 	var code = 'Math.floor(Math.random() * (' + max + ' - ' + min + ') + ' + min + ')';
 	return [code, Blockly.JavaScript.ORDER_NONE];
-	// return 'requestServer(\'' + query + '\');\n';
 };
 
 

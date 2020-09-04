@@ -13,7 +13,7 @@ window.onload = function(){
 
 function setLanguageRelatedProps(lang){
     workspaceLang = lang;
-    if(workspaceLang === 'fa'){
+    if(workspaceLang === 'fa' || workspaceLang === 'ar'){
 		borderStylePropertyName = 'border-right-color';
 	}else if(workspaceLang === 'en'){
 		borderStylePropertyName = 'border-left-color';
@@ -24,7 +24,8 @@ function changeWorkspaceLang(lang){
     if(workspaceLang === lang){
         return;
     }else{
-        changeLanguage();
+        workspaceLang = lang;
+        changeHtmlPage();
     }
 }
 
@@ -77,6 +78,13 @@ function initApi(interpreter, globalObject) {
 function runCode() {
     Blockly.JavaScript.addReservedWords('exit');
     code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+    if(!code){
+        resetInterpreter();
+        return;
+    }
+    if(window.Worker === undefined){
+         return;
+    }
     runButton.disabled = 'disabled';
     var blob = new Blob(Array.prototype.map.call(document.querySelectorAll('script[type=\'text\/js-worker\']'), 
 		function (oScript) { return oScript.textContent; }),{type: 'text/javascript'});
@@ -107,7 +115,9 @@ function runCode() {
         index = url.indexOf('webview.html');
     }else if(workspaceLang === 'fa'){
         index = url.indexOf('webview-fa.html');
-    }   
+    }else if(workspaceLang === 'ar'){
+        index = url.indexOf('webview-ar.html');
+    }
     if (index != -1) {
         url = url.substring(0, index);
     }
@@ -139,17 +149,18 @@ function stopCode(){
 }
 
 function requestServer(query){
+    var serverUrl = 'http://localhost:1234';
     // server is only accessible from browser for now!!
     if(!navigator.userAgent.match(/Android/i)){
+        // sendIfServerConnected(serverUrl, query);
         fetch('http://localhost:1234')
-        .then(data=>{if(data.status === 200) serverFunc();})
-        .catch(error=>{console.log(error); alert('server not connected!')});
+        .then(function(data){if(data.status === 200) serverFunc();})
+        .catch(function(error){alert('server not connected!')});
         var serverFunc = function(){
-            console.log(query)
             var url = 'http://localhost:1234/' + query;
             fetch(url)
-            .then(data=>{console.log(data.url);})
-            .catch(error=>{console.log(error);});
+            .then(function(data){})
+            .catch(function(error){});
         }
     }
 }
@@ -177,11 +188,13 @@ function callStt(){
     return string;
 }
 
-function changeLanguage(){
+function changeHtmlPage(){
     if(workspaceLang === 'en'){
-        redirectToUri('webview-fa.html');
-    }else if(workspaceLang === 'fa'){
         redirectToUri('webview.html');
+    }else if(workspaceLang === 'fa'){
+        redirectToUri('webview-fa.html');
+    }else if(workspaceLang === 'ar'){
+        redirectToUri('webview-ar.html');
     }
 }
 
@@ -208,7 +221,7 @@ function loadWorkspace(){
     // when language is switched between fa(persian) and en(english), another toolbox with different category names is loaded,
     // rtl is also turned on when language is fa and off when it is en, the rest is the same.
     var myWorkspace = Blockly.inject('blocklyDiv', {
-        toolbox: BLOCKLY_TOOLBOX_XML['standard_' + workspaceLang],
+        toolbox: BLOCKLY_TOOLBOX_XML['standard'],
         collapse : true, 
         comments : true, 
         disable : true, 
@@ -231,7 +244,7 @@ function loadWorkspace(){
         renderer: 'zelos',
         media: 'media/',
         // media : 'https://blockly-demo.appspot.com/static/media/', 
-        rtl: (workspaceLang === 'fa'),
+        rtl: (workspaceLang === 'fa' || workspaceLang === 'ar'),
         zoom : {
             controls : true, 
             wheel : true, 
@@ -263,15 +276,14 @@ function addEventsToBluetoothButton(){
 
 function populateBluetoothDevicesForm(){
     deviceArray = Android.list().split(',');
-    console.log(deviceArray);
     $.each(deviceArray, function (i, item) {
         item = item.trim();
         item = item.split(" ").join("-").split('_').join("-");
-        if (!$(`.bluetooth-drop .${item}`).length) {
+        if (!$('.bluetooth-drop .' + item).length) {
             $('.bluetooth-drop').append($('<div>', {
                 value: i.toString(),
                 text: item.toString(),
-                class: `item ${item}`
+                class: 'item ' + item
             }));
         }
     });
@@ -370,7 +382,7 @@ function adjustFlyoutPostion(waitForDomLoad){
     var blocklyFlyoutNewTranslateX;
     var blocklyFlyoutScrollbarOffset;
     var blocklyFlyoutScrollbarTranslateX;
-    if(workspaceLang === 'fa'){
+    if(workspaceLang === 'fa' || workspaceLang === 'ar'){
         blocklyFlyoutNewTranslateX = windowWidth - toolboxWidth - blocklyFlyoutWidth;
         blocklyFlyoutScrollbarTranslateX = blocklyFlyoutNewTranslateX;
     }else if(workspaceLang === 'en'){
@@ -500,9 +512,17 @@ function defineRoobinTheme(){
         Blockly.Themes.Roobin_Theme.defaultBlockStyles,
         Blockly.Themes.Roobin_Theme.categoryStyles);
 
-    Blockly.Themes.Roobin_Theme.setFontStyle ({
-        'family': "Yekan, Helvetica Neue, Segoe UI, Helvetica, sans-serif",
-        'weight': 'normal', // Use default font-weight
-        'size': 12
-    });
+    if(workspaceLang === 'ar'){
+        Blockly.Themes.Roobin_Theme.setFontStyle ({
+            'family': "Helvetica Neue, Segoe UI, Helvetica, sans-serif",
+            'weight': 'normal', // Use default font-weight
+            'size': 12
+        });
+    }else if(workspaceLang === 'fa' || workspaceLang === 'en'){
+        Blockly.Themes.Roobin_Theme.setFontStyle ({
+            'family': "Yekan, Helvetica Neue, Segoe UI, Helvetica, sans-serif",
+            'weight': 'normal', // Use default font-weight
+            'size': 12
+        });
+    }
 }
