@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Ellen Spertus <ellen.spertus@gmail.com>",
-		"lastupdated": "2020-08-22 16:08:01.468000",
+		"lastupdated": "2020-09-11 01:57:02.336416",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -500,5 +500,18 @@
 	"ROOBIN_CLEAN_MATRICES": "turn off %1 for drawing",
 	"ROOBIN_LEFT_EYE": "left eye",
 	"ROOBIN_RIGHT_EYE": "right eye",
-	"ROOBIN_MOUTH": "mouth"
+	"ROOBIN_MOUTH": "mouth",
+	"RUN": "run",
+	"STOP": "stop",
+	"SHOW_CODE": "show code",
+	"BLUETOOTH_CONNECTION": "bluetooth connection",
+	"BLUETOOTH_SELECT_DEVICE": "select a device to connect",
+	"SELECT_LANGUAGE": "select language",
+	"JAVASCRIPT": "javaScript",
+	"PYTHON": "python",
+	"ENGLISH": "English",
+	"ARABIC": "Arabic",
+	"PERSIAN": "Persian",
+	"TIMEOUT": "Maximum execution iterations exceeded.",
+	"BAD_CODE": "Program error: %1"
 }

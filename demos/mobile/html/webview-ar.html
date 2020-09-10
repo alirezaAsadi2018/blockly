@@ -60,16 +60,22 @@
 	<div>
 		<div class="ui orange borderless top secondary inverted menu">
 			<div class="item">
-				<button class="ui button" onclick="showCode()">أظهر الكود</button>
+				<button class="large ui button" onclick="showCode()">أظهر الكود</button>
 			</div>
 			<div class="item">
-				<button id="runButton" class="ui button" onclick="runCode()">يركض</button>
+				<div id="runButton" class="large ui left labeled icon button" onclick="runCode()">
+				<i class="green play icon"></i>
+				يركض
+				</div>
 			</div>
 			<div class="item">
-				<button class="ui button" onclick="stopCode()">قف</button>
+				<div class="large ui left labeled icon button" onclick="stopCode()">
+				<i class="red stop icon"></i>
+				قف
+				</div>
 			</div>
 			<div class="item">
-				<div class="ui buttons">
+				<div class="large ui buttons">
 					<div class="ui button connect-bluetooth-device">اتصال بلوتوث</div>
 					<div class="ui combo top right pointing dropdown icon button select-bluetooth-device">
 						<i class="dropdown icon"></i>
@@ -80,7 +86,7 @@
 				</div>
 			</div>
 			<div class="item">
-				<div class="ui floating top right pointing dropdown icon button">
+				<div class="large ui floating top right pointing dropdown icon button">
 					<div class="text">اختار اللغة</div>
 					<i class="dropdown icon"></i>
 					<div class="menu">
@@ -97,7 +103,7 @@
 			</div>
 			<div class="right menu">
 				<div class="item">
-					<div class="ui language floating dropdown link">
+					<div class="large ui language floating dropdown link">
 						<i class="world icon"></i>
 						<span class="text">عربی</span>
 						<div class="menu">

@@ -442,5 +442,18 @@
 	"ROOBIN_CLEAN_MATRICES": "%1 را برای نقاشی خاموش کن",
 	"ROOBIN_LEFT_EYE": "چشم راست",
 	"ROOBIN_RIGHT_EYE": "چشم چپ",
-	"ROOBIN_MOUTH": "دهان"
+	"ROOBIN_MOUTH": "دهان",
+	"RUN": "اجرا",
+	"STOP": "توقف",
+	"SHOW_CODE": "نمایش کد",
+	"BLUETOOTH_CONNECTION": "اتصال بلوتوث",
+	"BLUETOOTH_SELECT_DEVICE": "یک دستگاه را برای اتصال انتخاب کنید",
+	"SELECT_LANGUAGE": "انتخاب زبان",
+	"JAVASCRIPT": "جاوااسکریپت",
+	"PYTHON": "پایتون",
+	"ENGLISH": "انگلیسی",
+	"ARABIC": "عربی",
+	"PERSIAN": "فارسی",
+	"TIMEOUT": "حداکثر تکرارهای اجرا رد شده‌است.",
+	"BAD_CODE": "خطای برنامه: %1"
 }

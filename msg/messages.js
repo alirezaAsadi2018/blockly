@@ -1834,3 +1834,29 @@ Blockly.Msg.ROOBIN_LEFT_EYE = 'left eye';
 Blockly.Msg.ROOBIN_RIGHT_EYE = 'right eye';
 /** @type {string} */
 Blockly.Msg.ROOBIN_MOUTH = 'mouth';
+/** @type {string} */
+Blockly.Msg.RUN = 'run';
+/** @type {string} */
+Blockly.Msg.STOP = 'stop';
+/** @type {string} */
+Blockly.Msg.SHOW_CODE = 'show code';
+/** @type {string} */
+Blockly.Msg.BLUETOOTH_CONNECTION = 'bluetooth connection';
+/** @type {string} */
+Blockly.Msg.BLUETOOTH_SELECT_DEVICE = 'select a device to connect';
+/** @type {string} */
+Blockly.Msg.SELECT_LANGUAGE = 'select language';
+/** @type {string} */
+Blockly.Msg.JAVASCRIPT = 'javaScript';
+/** @type {string} */
+Blockly.Msg.PYTHON = 'python';
+/** @type {string} */
+Blockly.Msg.ENGLISH = 'English';
+/** @type {string} */
+Blockly.Msg.ARABIC = 'Arabic';
+/** @type {string} */
+Blockly.Msg.PERSIAN = 'Persian';
+/** @type {string} */
+Blockly.Msg.TIMEOUT = 'Maximum execution iterations exceeded.';
+/** @type {string} */
+Blockly.Msg.BAD_CODE = 'Program error: %1';

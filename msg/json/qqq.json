@@ -494,5 +494,18 @@
 	"ROOBIN_CLEAN_MATRICES": "",
 	"ROOBIN_LEFT_EYE": "",
 	"ROOBIN_RIGHT_EYE": "",
-	"ROOBIN_MOUTH": ""
+	"ROOBIN_MOUTH": "",
+	"RUN": "",
+	"STOP": "",
+	"SHOW_CODE": "",
+	"BLUETOOTH_CONNECTION": "",
+	"BLUETOOTH_SELECT_DEVICE": "",
+	"SELECT_LANGUAGE": "",
+	"JAVASCRIPT": "",
+	"PYTHON": "",
+	"ENGLISH": "",
+	"ARABIC": "",
+	"PERSIAN": "",
+	"TIMEOUT": "",
+	"BAD_CODE": ""
 }

@@ -33,7 +33,7 @@ task copyBlocklyHtmlFile(type: Copy) {
 
 task copyBlocklyMoreFiles(type: Copy) {
     from('../../html') {
-        include 'msg/js/**', 'media/**', 'static/**'
+        include 'static/**'
         exclude 'media/test_*'
     }
     into project(':app').file('./src/main/assets/blockly')

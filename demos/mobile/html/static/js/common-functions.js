@@ -1,32 +1,193 @@
-var workspaceLang;
+var LANGUAGE_NAME = {
+    'ar': 'عربی',
+    'en': 'English',
+    'fa': 'فارسی'
+};
+var LANGUAGE_RTL = ['ar', 'fa'];
+var workspaceLang = getLang();
+var myWorkspace;
 var borderStylePropertyName;
 var codingLangSelected = 'js';
 // Exit is used to signal the end of a script.
 var myInterpreter = null;
 var runner;
 var code;
-var runButton;
+var runButtons;
+var keyEventBlocksOnWorkspace = {};
+var deviceArray;
 
 window.onload = function(){
-    runButton = document.getElementById('runButton');
+    init();
+    runButtons = document.querySelectorAll('#runButton');
+}
+window.addEventListener('resize', onresizeFunc, false);
+
+if(workspaceLang === 'ar'){
+    document.write('<style type="text/css">\n.ui {\nfont-family: "Helvetica Neue", "Segoe UI", Helvetica, sans-serif !important;\n}\n</style>');
+}
+document.write('<script src="static/js/jquery.min.js" type="text/javascript"></script>\n');
+document.write('<link rel="stylesheet" type="text/css" href="static/css/semantic' + (isRtl()?'.rtl':'') + '.min.css">\n');
+document.write('<script src="static/js/semantic.min.js" type="text/javascript"></script>\n');
+document.write('<script src="static/js/blockly_compressed.js"></script>\n');
+document.write('<script src="static/js/blocks_compressed.js"></script>\n');
+document.write('<script src="static/js/javascript_compressed.js"></script>\n');
+document.write('<script src="static/js/python_compressed.js"></script>\n');
+document.write('<script src="static/js/toolbox_standard.js"></script>\n');
+document.write('<script src="static/msg/js/' + workspaceLang + '.js"></script>\n');
+document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
+
+function onresizeFunc(){
+    Blockly.svgResize(myWorkspace);
 }
 
-function setLanguageRelatedProps(lang){
-    workspaceLang = lang;
+function getStringParamFromUrl(name, defaultValue) {
+    var val = location.search.match(new RegExp('[?&]' + name + '=([^&]+)'));
+    return val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : defaultValue;
+};
+
+function getLang(){
+    var lang = getStringParamFromUrl('lang', '');
+    if (LANGUAGE_NAME[lang] === undefined) {
+        // Default to English.
+        lang = 'fa';
+    }
+    return lang;
+}
+
+function changeLanguage(newLang) {
+    var search = window.location.search;
+    if (search.length <= 1) {
+        search = '?lang=' + newLang;
+    } else if (search.match(/[?&]lang=[^&]*/)) {
+        search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
+    } else {
+        search = search.replace(/\?/, '?lang=' + newLang + '&');
+    }
+
+    window.location = window.location.protocol + '//' +
+        window.location.host + window.location.pathname + search;
+};
+
+
+function initLanguage() {
+    // Set the HTML's language and direction.
+    var rtl = isRtl();
+    document.dir = rtl ? 'rtl' : 'ltr';
+    document.head.parentElement.setAttribute('lang', workspaceLang);
+
+    // Inject language strings.
+    var els = document.querySelectorAll('#showCode');
+    for(var i = 0; i < els.length; ++i){
+        els[i].textContent = Blockly.Msg['SHOW_CODE'];
+    }
+    els = document.querySelectorAll('#runButton');
+    for(var i = 0; i < els.length; ++i){
+        els[i].innerHTML = '<i class="green play icon"></i>' + Blockly.Msg['RUN'];
+    }
+    els = document.querySelectorAll('#stopButton');
+    for(var i = 0; i < els.length; ++i){
+        els[i].innerHTML = '<i class="red stop icon"></i>' + Blockly.Msg['STOP'];
+    }
+    els = document.querySelectorAll('#bluetoothButton');
+    for(var i = 0; i < els.length; ++i){
+        els[i].textContent = Blockly.Msg['BLUETOOTH_CONNECTION'];
+    }
+    els = document.querySelectorAll('#bluetooth_select_item');
+    for(var i = 0; i < els.length; ++i){
+        els[i].textContent = Blockly.Msg['BLUETOOTH_SELECT_DEVICE'];
+    }
+    els = document.querySelectorAll('#selectCodeLang');
+    for(var i = 0; i < els.length; ++i){
+        els[i].textContent = Blockly.Msg['SELECT_LANGUAGE'];
+    }
+    els = document.querySelectorAll('#jsItem');
+    for(var i = 0; i < els.length; ++i){
+        els[i].innerHTML = '<i class="js icon"></i>' + Blockly.Msg['JAVASCRIPT'];
+    }
+    els = document.querySelectorAll('#pythonItem');
+    for(var i = 0; i < els.length; ++i){
+        els[i].innerHTML = '<i class="python icon"></i>' + Blockly.Msg['PYTHON'];
+    }
+    els = document.querySelectorAll('#selectLang');
+    for(var i = 0; i < els.length; ++i){
+        els[i].textContent = LANGUAGE_NAME[getLang()];
+    }
+};
+
+function isRtl() {
+    return LANGUAGE_RTL.indexOf(workspaceLang) != -1;
+};
+
+function init() {
+    $('.ui.sidebar').sidebar({
+		context: $('.ui.pushable.segment'),
+		transition: 'overlay'
+	}).sidebar('attach events', '#mobile_item');
+	$('.ui.dropdown').dropdown();
+
+	$('.combo.dropdown').dropdown({
+		action: 'combo'
+	});
+    initLanguage();
+
+	setLanguageRelatedProps(workspaceLang);
+    myWorkspace = loadWorkspace(workspaceLang);
+    
+    // UI part
+	convertCategoriesTosemantic();
+
+    addEventsToBluetoothButton();
+
+    // Listen to events on primary workspace.
+	myWorkspace.addChangeListener(blocksEventListener);
+	document.addEventListener('keydown', keyPressedBlocksEventListener);
+    
+    Blockly.svgResize(myWorkspace);
+    
+};
+
+function blocksEventListener(event) {
+    if (event instanceof Blockly.Events.Ui &&  event.element === 'click') {
+        var block_clicked = myWorkspace.getBlockById(event.blockId);
+        // This line initializes variable_db_  
+        Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
+        var code_to_run = Blockly.JavaScript.blockToCode(block_clicked);
+        if(typeof code_to_run !== 'string'){
+            code_to_run = code_to_run[0];
+        }
+        runCode(code_to_run);
+    }
+    else if(event instanceof Blockly.Events.BlockCreate){
+        var block_created_id = event.blockId;
+        var block_created = myWorkspace.getBlockById(block_created_id);
+        if(block_created && (block_created.type === 'roobin_keyBoard_event')){
+            keyEventBlocksOnWorkspace[block_created_id] = block_created;
+        }
+    }
+    else if(event instanceof Blockly.Events.BlockDelete){
+        var block_deleted_id = event.blockId;
+    }
+}
+
+function keyPressedBlocksEventListener(e){
+    var keyCodeRecieved = e.code;
+    for(blockId in keyEventBlocksOnWorkspace){
+        var keyEventBlock = keyEventBlocksOnWorkspace[blockId];
+        var keyCodeSelected = keyEventBlock.getFieldValue('SEL_ROOBIN_KEY_PRESSED');
+        if(keyCodeRecieved === keyCodeSelected){
+            var code_to_run = Blockly.JavaScript.blockToCode(keyEventBlock);
+            code_to_run = 'var keyPressed = \'' + e.code + '\';\n' + code_to_run;
+            runCode(code_to_run);
+        }
+    }
+}
+
+function setLanguageRelatedProps(){
     if(workspaceLang === 'fa' || workspaceLang === 'ar'){
 		borderStylePropertyName = 'border-right-color';
 	}else if(workspaceLang === 'en'){
 		borderStylePropertyName = 'border-left-color';
 	}
-}
-
-function changeWorkspaceLang(lang){
-    if(workspaceLang === lang){
-        return;
-    }else{
-        workspaceLang = lang;
-        changeHtmlPage();
-    }
 }
 
 function setCodingLang(lang){
@@ -75,20 +236,70 @@ function initApi(interpreter, globalObject) {
         interpreter.createNativeFunction(wrapper));
 }
 
-function runCode() {
-    Blockly.JavaScript.addReservedWords('exit');
-    code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+function createWorker(){
+    try{
+        var blob;
+        var blobCode = Array.prototype.map.call(document.querySelectorAll('script[type=\'text\/js-worker\']'), 
+            function (oScript) { return oScript.textContent; });
+        try {
+            blob = new Blob(blobCode, {type: 'text/javascript'});
+        } catch (e) {
+            var blobBuilder = new (window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder)();
+            for(var i = 0; i < blobCode.length; ++i){
+                blobBuilder.append(blobCode[i])
+            }
+            blob = blobBuilder.getBlob('text/javascript');
+        }
+        var windowUrl = window.URL || window.webkitURL;
+        var blobUrl = windowUrl.createObjectURL(blob);
+        document.worker = new Worker(blobUrl);
+    }catch (e2) {
+        // can do nothing more
+    }
+}
+
+function runCode(code){
+    if(arguments.length < 1){
+        code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+    }
     if(!code){
         resetInterpreter();
         return;
     }
     if(window.Worker === undefined){
-         return;
+        return;
     }
-    runButton.disabled = 'disabled';
-    var blob = new Blob(Array.prototype.map.call(document.querySelectorAll('script[type=\'text\/js-worker\']'), 
-		function (oScript) { return oScript.textContent; }),{type: 'text/javascript'});
-    document.worker = new Worker(window.URL.createObjectURL(blob));
+    for(var i = 0; i < runButtons.length; ++i){
+        if(runButtons[i].classList.contains('disabled'))
+            return;
+    }
+    resetInterpreter();
+    for(var i = 0; i < runButtons.length; ++i){
+        runButtons[i].classList.add('disabled');
+    }
+    Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout,exit');
+
+    createWorker();
+
+    if(!document.worker){
+        // worker could not be initialized
+        Blockly.JavaScript.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
+        var timeouts = 0;
+        var checkTimeout = function() {
+            if (timeouts++ > 1000000) {
+                throw Blockly.Msg['TIMEOUT'];
+            }
+        };
+        Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+        try {
+            eval(code);
+        } catch (e) {
+            alert(Blockly.Msg['BAD_CODE'].replace('%1', e));
+        }
+        resetInterpreter();
+        return;
+    }
+
     document.worker.onmessage = function(oEvent) {
 		if(oEvent.data === 'fin'){
 			resetInterpreter();
@@ -109,23 +320,14 @@ function runCode() {
             resetInterpreter();
         }
     };
-    var url = document.location.href;
-    var index = -1;
-    if(workspaceLang === 'en'){
-        index = url.indexOf('webview.html');
-    }else if(workspaceLang === 'fa'){
-        index = url.indexOf('webview-fa.html');
-    }else if(workspaceLang === 'ar'){
-        index = url.indexOf('webview-ar.html');
-    }
+    var url =  window.location.protocol + '//' +
+        window.location.host + window.location.pathname;
+    var index = url.indexOf('index.html');;
     if (index != -1) {
-        url = url.substring(0, index);
-    }
-    if(url[url.length - 1] === '/'){
-        url = url.substring(0, url.length - 1);
+        url = url.substring(0, index - 1);
     }
     // this is really odd but without this line english page url is not correct!!!
-    if((workspaceLang === 'en' && !isAndroidUserAgent())){
+    if(!isAndroidUserAgent()){
         url = url + '/';
     }
     document.worker.postMessage({url:url});
@@ -133,11 +335,15 @@ function runCode() {
 }
 
 function resetInterpreter(){
-    if(runButton){
-        runButton.disabled = '';
+    
+    if(runButtons){
+        for(var i = 0; i < runButtons.length; ++i){
+            runButtons[i].classList.remove('disabled');
+        }
     }
     if(document.worker){
         document.worker.terminate();
+        document.worker = undefined;
     }
 }
 
@@ -188,16 +394,6 @@ function callStt(){
     return string;
 }
 
-function changeHtmlPage(){
-    if(workspaceLang === 'en'){
-        redirectToUri('webview.html');
-    }else if(workspaceLang === 'fa'){
-        redirectToUri('webview-fa.html');
-    }else if(workspaceLang === 'ar'){
-        redirectToUri('webview-ar.html');
-    }
-}
-
 function redirectToUri(uri){
     if(isAndroidUserAgent()){
         Android.loadWebview(uri);
@@ -242,9 +438,9 @@ function loadWorkspace(){
         },
         theme: Blockly.Themes.Roobin_Theme,
         renderer: 'zelos',
-        media: 'media/',
+        media: 'static/media/',
         // media : 'https://blockly-demo.appspot.com/static/media/', 
-        rtl: (workspaceLang === 'fa' || workspaceLang === 'ar'),
+        rtl: isRtl(),
         zoom : {
             controls : true, 
             wheel : true, 
@@ -260,14 +456,15 @@ function loadWorkspace(){
 function addEventsToBluetoothButton(){
     document.querySelector('.connect-bluetooth-device').addEventListener('click', function(evnet){
 		if(!deviceArray || deviceArray.length === 0){
-			populateBluetoothDevicesForm();
+            populateBluetoothDevicesForm();
 		}else{
 			bluetoothDeviceSelected = $(".select-bluetooth-device").dropdown('get value');
-            if(!bluetoothDeviceSelected || bluetoothDeviceSelected === 'select a device to connect'
-                || bluetoothDeviceSelected === 'یک دستگاه را برای اتصال انتخاب کنید'){
+            if(!bluetoothDeviceSelected || bluetoothDeviceSelected === Blockly.Msg['BLUETOOTH_SELECT_DEVICE']){
 				return;
-			}
-			Android.connectBluetooth(bluetoothDeviceSelected);
+            }
+            if(isAndroidUserAgent()){
+                Android.connectBluetooth(bluetoothDeviceSelected);
+            }
 		}
 	});
 
@@ -275,6 +472,8 @@ function addEventsToBluetoothButton(){
 }
 
 function populateBluetoothDevicesForm(){
+    if(!isAndroidUserAgent())
+        return;
     deviceArray = Android.list().split(',');
     $.each(deviceArray, function (i, item) {
         item = item.trim();
@@ -302,7 +501,8 @@ function convertCategoriesTosemantic(){
 					el.style.color = borderColor;
 				}else{
 					el.style.color = 'white';
-				}
+                }
+                onresizeFunc();
 			}
 		});
 	});
@@ -447,9 +647,9 @@ function defineRoobinTheme(){
             colourTertiary: "#BD42BD"
         },
         list_blocks: {
-        colourPrimary: "#9966FF",
-        colourSecondary: "#855CD6",
-        colourTertiary: "#774DCB"
+            colourPrimary: "#9966FF",
+            colourSecondary: "#855CD6",
+            colourTertiary: "#774DCB"
         },
         logic_blocks: {
             colourPrimary: "#4C97FF",
@@ -484,17 +684,17 @@ function defineRoobinTheme(){
         roobin_blocks: {
             colourPrimary: "#F2711C",
             colourSecondary: "#FF8000",
-            colourTertiary: "#DB6E00"
+            colourTertiary: "#BB6E00"
         },
         roobin_motor_blocks: {
-            colourPrimary: "#008080",
+            colourPrimary: "#00c9b0",
             colourSecondary: "#FF8000",
-            colourTertiary: "#008080"
+            colourTertiary: "#007d55"
         },
         roobin_setup_blocks: {
-            colourPrimary: "#808080",
+            colourPrimary: "#93195b",
             colourSecondary: "#FF8000",
-            colourTertiary: "#808080"
+            colourTertiary: "#BB6E00"
         },
         function_blocks: {
             colourPrimary: "#FF6680",

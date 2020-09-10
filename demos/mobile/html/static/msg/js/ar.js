@@ -3,6 +3,10 @@
 'use strict';
 
 Blockly.Msg["ADD_COMMENT"] = "أضف تعليقًا";
+Blockly.Msg["ARABIC"] = "عربی";
+Blockly.Msg["BAD_CODE"] = "خطأ في البرنامج: %1";
+Blockly.Msg["BLUETOOTH_CONNECTION"] = "اتصال بلوتوث";
+Blockly.Msg["BLUETOOTH_SELECT_DEVICE"] = "حدد جهازًا للاتصال";
 Blockly.Msg["CANNOT_DELETE_VARIABLE_PROCEDURE"] = "لايمكن حذف متغير \"%1\" بسبب انه جزء من الدالة \"%2\"";
 Blockly.Msg["CHANGE_VALUE_TITLE"] = "تغيير قيمة:";
 Blockly.Msg["CLEAN_UP"] = "ترتيب القطع";
@@ -68,6 +72,7 @@ Blockly.Msg["DISABLE_BLOCK"] = "عطّل القطعة";
 Blockly.Msg["DUPLICATE_BLOCK"] = "مكرر";
 Blockly.Msg["DUPLICATE_COMMENT"] = "تعليق مكرر";
 Blockly.Msg["ENABLE_BLOCK"] = "أعد تفعيل القطعة";
+Blockly.Msg["ENGLISH"] = "الإنجليزية";
 Blockly.Msg["EXPAND_ALL"] = "وسٌّع القطع";
 Blockly.Msg["EXPAND_BLOCK"] = "وسٌّع القطعة";
 Blockly.Msg["EXTERNAL_INPUTS"] = "ادخال خارجي";
@@ -87,6 +92,7 @@ Blockly.Msg["IOS_VARIABLES_DELETE_BUTTON"] = "احذف";
 Blockly.Msg["IOS_VARIABLES_EMPTY_NAME_ERROR"] = "لا يمكنك استخدام اسم متغير فارغ.";
 Blockly.Msg["IOS_VARIABLES_RENAME_BUTTON"] = "أعد التسمية";
 Blockly.Msg["IOS_VARIABLES_VARIABLE_NAME"] = "اسم المتغير";
+Blockly.Msg["JAVASCRIPT"] = "جافا سكريبت";
 Blockly.Msg["LISTS_CATEGORY"] = "قوائم";
 Blockly.Msg["LISTS_CREATE_EMPTY_HELPURL"] = "https://github.com/google/blockly/wiki/Lists#create-empty-list";
 Blockly.Msg["LISTS_CREATE_EMPTY_TITLE"] = "إنشئ قائمة فارغة";
@@ -295,6 +301,7 @@ Blockly.Msg["NEW_VARIABLE"] = "إنشاء متغير...";
 Blockly.Msg["NEW_VARIABLE_TITLE"] = "اسم المتغير الجديد:";
 Blockly.Msg["NEW_VARIABLE_TYPE_TITLE"] = "نوع متغير جديد:";
 Blockly.Msg["ORDINAL_NUMBER_SUFFIX"] = "";  // untranslated
+Blockly.Msg["PERSIAN"] = "الفارسية";
 Blockly.Msg["PROCEDURES_ALLOW_STATEMENTS"] = "اسمح بالبيانات";
 Blockly.Msg["PROCEDURES_BEFORE_PARAMS"] = "مع:";
 Blockly.Msg["PROCEDURES_CALLNORETURN_HELPURL"] = "https://en.wikipedia.org/wiki/Subroutine";
@@ -321,98 +328,103 @@ Blockly.Msg["PROCEDURES_MUTATORARG_TITLE"] = "اسم الإدخال:";
 Blockly.Msg["PROCEDURES_MUTATORARG_TOOLTIP"] = "أضف مدخلا إلى الوظيفة.";
 Blockly.Msg["PROCEDURES_MUTATORCONTAINER_TITLE"] = "المدخلات";
 Blockly.Msg["PROCEDURES_MUTATORCONTAINER_TOOLTIP"] = "إضافة أو إزالة أو إعادة ترتيب المدخلات لهذه المهمة.";
+Blockly.Msg["PYTHON"] = "بيثون";
 Blockly.Msg["REDO"] = "إعادة";
 Blockly.Msg["REMOVE_COMMENT"] = "أزل التعليق";
 Blockly.Msg["RENAME_VARIABLE"] = "إعادة تسمية المتغير...";
 Blockly.Msg["RENAME_VARIABLE_TITLE"] = "إعادة تسمية كافة المتغيرات '%1' إلى:";
-Blockly.Msg["ROOBIN_AMAZING_FACTS"] = "Did you know?";  // untranslated
-Blockly.Msg["ROOBIN_ANGRY_BIRD"] = "angry bird";  // untranslated
-Blockly.Msg["ROOBIN_ARROW_GAME"] = "arrows game %1";  // untranslated
-Blockly.Msg["ROOBIN_ASK_WAIT"] = "ask %1 and wait for response";  // untranslated
-Blockly.Msg["ROOBIN_BATMAN"] = "batman";  // untranslated
-Blockly.Msg["ROOBIN_BLINK"] = "blink";  // untranslated
+Blockly.Msg["ROOBIN_AMAZING_FACTS"] = "هل كنت تعلم؟";
+Blockly.Msg["ROOBIN_ANGRY_BIRD"] = "طير غاضب";
+Blockly.Msg["ROOBIN_ARROW_GAME"] = "لعبة الأسهم %1";
+Blockly.Msg["ROOBIN_ASK_WAIT"] = "اسأل %1 وانتظر الرد";
+Blockly.Msg["ROOBIN_BATMAN"] = "الرجل الوطواط";
+Blockly.Msg["ROOBIN_BLINK"] = "رمش";
 Blockly.Msg["ROOBIN_CATEGORY"] = "روبین";
-Blockly.Msg["ROOBIN_CHANGE_EYE"] = "change %1 eye to %2";  // untranslated
-Blockly.Msg["ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES"] = "change %1 motor rotation to %2 degrees";  // untranslated
-Blockly.Msg["ROOBIN_CHANGE_MOUTH"] = "change mouth form to %1";  // untranslated
-Blockly.Msg["ROOBIN_CHANGE_SPEAK_PITCH"] = "change speaking pitch by %1";  // untranslated
-Blockly.Msg["ROOBIN_CHUCKLE"] = "Chckle";  // untranslated
-Blockly.Msg["ROOBIN_CIRCULAR"] = "circular";  // untranslated
-Blockly.Msg["ROOBIN_CLEAN_MATRICES"] = "turn off %1 for drawing";  // untranslated
-Blockly.Msg["ROOBIN_DIAMOND"] = "diamond";  // untranslated
-Blockly.Msg["ROOBIN_DIFFICULTY_EASY"] = "easy";  // untranslated
-Blockly.Msg["ROOBIN_DIFFICULTY_HARD"] = "hard";  // untranslated
-Blockly.Msg["ROOBIN_DIFFICULTY_IMPOSSIBLE"] = "impossible";  // untranslated
-Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_ONE"] = "level 1";  // untranslated
-Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_THREE"] = "level 3";  // untranslated
-Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_TWO"] = "level 2";  // untranslated
-Blockly.Msg["ROOBIN_DIFFICULTY_MEDIUM"] = "medium";  // untranslated
-Blockly.Msg["ROOBIN_DRAW_ON_EYES"] = "turn %4 %1 eye in postitions %2 and %3";  // untranslated
-Blockly.Msg["ROOBIN_DRAW_ON_MOUTH"] = "turn %3 mouth in postitions %1 and %2";  // untranslated
-Blockly.Msg["ROOBIN_FIND_DAY"] = "what day was that day";  // untranslated
-Blockly.Msg["ROOBIN_GAMES_EXPLANATION"] = "explanation for %1";  // untranslated
-Blockly.Msg["ROOBIN_GAMES_LIST_ARROWS_GAME"] = "arrows game";  // untranslated
-Blockly.Msg["ROOBIN_GAMES_LIST_NUMBERS_GAME"] = "numbers game";  // untranslated
-Blockly.Msg["ROOBIN_GAMES_LIST_PATTERNS_GAME"] = "offline patterns game";  // untranslated
-Blockly.Msg["ROOBIN_GAMES_LIST_RIDDLE"] = "riddle";  // untranslated
-Blockly.Msg["ROOBIN_GAMES_LIST_SEARCH_IN_WIKI"] = "search in wikipedia";  // untranslated
-Blockly.Msg["ROOBIN_HEAD"] = "head";  // untranslated
-Blockly.Msg["ROOBIN_INTRODUCE"] = "introduce";  // untranslated
-Blockly.Msg["ROOBIN_KITTY"] = "kitty";  // untranslated
-Blockly.Msg["ROOBIN_LEFT"] = "left";  // untranslated
-Blockly.Msg["ROOBIN_LEFT_EYE"] = "left eye";  // untranslated
-Blockly.Msg["ROOBIN_LOOK_AROUND"] = "look around";  // untranslated
-Blockly.Msg["ROOBIN_LOOK_NEUTRAL"] = "look straight ahead";  // untranslated
-Blockly.Msg["ROOBIN_MINION"] = "minion";  // untranslated
-Blockly.Msg["ROOBIN_MOUTH"] = "mouth";  // untranslated
-Blockly.Msg["ROOBIN_MOVE_MOTOR"] = "move %1 motor to %2";  // untranslated
-Blockly.Msg["ROOBIN_NECK"] = "neck";  // untranslated
-Blockly.Msg["ROOBIN_NUMBERS_GAME"] = "numbers game %1";  // untranslated
-Blockly.Msg["ROOBIN_OFF"] = "off";  // untranslated
-Blockly.Msg["ROOBIN_ON"] = "on";  // untranslated
-Blockly.Msg["ROOBIN_ORIGINAL"] = "original";  // untranslated
-Blockly.Msg["ROOBIN_ORIGINAL_MOUTH"] = "roobin";  // untranslated
-Blockly.Msg["ROOBIN_PATTERN_GAME"] = "offline patterns game %1";  // untranslated
-Blockly.Msg["ROOBIN_PUCKER_MOUTH"] = "pucker";  // untranslated
-Blockly.Msg["ROOBIN_RANDOM_GEN"] = "make a random number between %1 and %2";  // untranslated
-Blockly.Msg["ROOBIN_RECOVERY"] = "recovery";  // untranslated
-Blockly.Msg["ROOBIN_RIDDLE_GAME"] = "riddle";  // untranslated
-Blockly.Msg["ROOBIN_RIGHT"] = "right";  // untranslated
-Blockly.Msg["ROOBIN_RIGHT_EYE"] = "right eye";  // untranslated
-Blockly.Msg["ROOBIN_ROTATE_MOTOR"] = "rotate %1 's motor by %2";  // untranslated
-Blockly.Msg["ROOBIN_ROTATE_MOTOR_BY_DEGREES"] = "rotate %1 motor by %2 degrees";  // untranslated
-Blockly.Msg["ROOBIN_SAY_HELLO"] = "Say hello";  // untranslated
-Blockly.Msg["ROOBIN_SEARCH_IN_WIKI"] = "search in wikipedia";  // untranslated
-Blockly.Msg["ROOBIN_SEARCH_WORD_IN_WIKI"] = "search %1 in wikipedia";  // untranslated
-Blockly.Msg["ROOBIN_SET_LANG"] = "change language to %1";  // untranslated
-Blockly.Msg["ROOBIN_SET_LANG_EN"] = "english";  // untranslated
-Blockly.Msg["ROOBIN_SET_LANG_FA"] = "persian";  // untranslated
-Blockly.Msg["ROOBIN_SET_SPEAK_PITCH"] = "set speaking pitch to %1";  // untranslated
-Blockly.Msg["ROOBIN_SET_SPEAK_SPEED"] = "set speaking speed to %1";  // untranslated
-Blockly.Msg["ROOBIN_SET_STT_VAR"] = "convert speech to text";  // untranslated
-Blockly.Msg["ROOBIN_SPONGE_BOB"] = "sponge bob";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_ONE"] = "animal farm 1";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_THREE"] = "animal farm 3";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_TWO"] = "animal farm 2";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_BOY_IN_DRUM"] = "a boy in a drum";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_CINDERELLA"] = "cinderella";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_EMPERORS_CLOTHES"] = "the emperor's new clothes";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_FINGERBOY"] = "fingerboy";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_GULLIVER"] = "gulliver";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_JACK_AND_BEANSTALK"] = "Jack and the beanstalk";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_LITTLE_PRINCE_ONE"] = "the little prince 1";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_LITTLE_PRINCE_TWO"] = "the little prince 2";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_MY_GLASSES"] = "my glasses";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_NOSE"] = "nose";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_ONE_BELOW"] = "one below the other";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_PUSS_IN_BOOTS"] = "puss in boots";  // untranslated
-Blockly.Msg["ROOBIN_STORY_LIST_SNOWMAN"] = "snowman";  // untranslated
-Blockly.Msg["ROOBIN_STORY_TELLING"] = "choose story %1";  // untranslated
-Blockly.Msg["ROOBIN_STT"] = "convert speech to text";  // untranslated
-Blockly.Msg["ROOBIN_SULLIVAN"] = "sullivan";  // untranslated
-Blockly.Msg["ROOBIN_TODAY_DATE"] = "today's date";  // untranslated
-Blockly.Msg["ROOBIN_TRIANGULAR"] = "triangular";  // untranslated
-Blockly.Msg["ROOBIN_TTS"] = "convert text: %1 to speech";  // untranslated
+Blockly.Msg["ROOBIN_CHANGE_EYE"] = "تغيير عين %1 إلى %2";
+Blockly.Msg["ROOBIN_CHANGE_MOTOR_ROTATION_DEGREES"] = "قم بتغيير دوران المحرك %1 إلى %2 درجة";
+Blockly.Msg["ROOBIN_CHANGE_MOUTH"] = "تغيير شكل الفم إلى %1";
+Blockly.Msg["ROOBIN_CHANGE_SPEAK_PITCH"] = "تغيير درجة التحدث بواسطة %1";
+Blockly.Msg["ROOBIN_CHUCKLE"] = "تشكل";
+Blockly.Msg["ROOBIN_CIRCULAR"] = "دائري";
+Blockly.Msg["ROOBIN_CLEAN_MATRICES"] = "قم بإيقاف تشغيل %1 للرسم";
+Blockly.Msg["ROOBIN_DIAMOND"] = "الماس";
+Blockly.Msg["ROOBIN_DIFFICULTY_EASY"] = "سهل";
+Blockly.Msg["ROOBIN_DIFFICULTY_HARD"] = "الصعب";
+Blockly.Msg["ROOBIN_DIFFICULTY_IMPOSSIBLE"] = "غير ممكن";
+Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_ONE"] = "مستوى 1";
+Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_THREE"] = "مستوى 3";
+Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_TWO"] = "مستوى 2";
+Blockly.Msg["ROOBIN_DIFFICULTY_MEDIUM"] = "متوسط";
+Blockly.Msg["ROOBIN_DRAW_ON_EYES"] = "قلب %4 %1 عين في التعيينات %2 و %3";
+Blockly.Msg["ROOBIN_DRAW_ON_MOUTH"] = "أدر %3 فم في التعيينات %1 و %2";
+Blockly.Msg["ROOBIN_FIND_DAY"] = "في أي يوم كان ذلك اليوم";
+Blockly.Msg["ROOBIN_GAMES_EXPLANATION"] = "شرح لـ %1";
+Blockly.Msg["ROOBIN_GAMES_LIST_ARROWS_GAME"] = "لعبة السهام";
+Blockly.Msg["ROOBIN_GAMES_LIST_NUMBERS_GAME"] = "لعبة الأرقام";
+Blockly.Msg["ROOBIN_GAMES_LIST_PATTERNS_GAME"] = "لعبة أنماط حاليا";
+Blockly.Msg["ROOBIN_GAMES_LIST_RIDDLE"] = "لغز";
+Blockly.Msg["ROOBIN_GAMES_LIST_SEARCH_IN_WIKI"] = "البحث في ويكيبيديا";
+Blockly.Msg["ROOBIN_HEAD"] = "الرأس";
+Blockly.Msg["ROOBIN_INTRODUCE"] = "تقديم";
+Blockly.Msg["ROOBIN_KITTY"] = "كيتي";
+Blockly.Msg["ROOBIN_LEFT"] = "اليسار";
+Blockly.Msg["ROOBIN_LEFT_EYE"] = "العين اليسرى";
+Blockly.Msg["ROOBIN_LOOK_AROUND"] = "انظر حولك";
+Blockly.Msg["ROOBIN_LOOK_NEUTRAL"] = "تطلع للمستقبل";
+Blockly.Msg["ROOBIN_MINION"] = "تابع";
+Blockly.Msg["ROOBIN_MOUTH"] = "فم";
+Blockly.Msg["ROOBIN_MOVE_MOTOR"] = "انقل محرك %1 إلى %2";
+Blockly.Msg["ROOBIN_NECK"] = "العنق";
+Blockly.Msg["ROOBIN_NUMBERS_GAME"] = "لعبة الأرقام %1";
+Blockly.Msg["ROOBIN_OFF"] = "إيقاف";
+Blockly.Msg["ROOBIN_ON"] = "تشغيل";
+Blockly.Msg["ROOBIN_ORIGINAL"] = "أصلي";
+Blockly.Msg["ROOBIN_ORIGINAL_MOUTH"] = "روبين";
+Blockly.Msg["ROOBIN_PATTERN_GAME"] = "لعبة الأنماط دون اتصال %1";
+Blockly.Msg["ROOBIN_PUCKER_MOUTH"] = "تجعد";
+Blockly.Msg["ROOBIN_RANDOM_GEN"] = "قم بعمل رقم عشوائي بين %1 و %2";
+Blockly.Msg["ROOBIN_RECOVERY"] = "التعافي";
+Blockly.Msg["ROOBIN_RIDDLE_GAME"] = "لغز";
+Blockly.Msg["ROOBIN_RIGHT"] = "اليمين";
+Blockly.Msg["ROOBIN_RIGHT_EYE"] = "العين اليمنى";
+Blockly.Msg["ROOBIN_ROTATE_MOTOR"] = "قم بتدوير محرك %1 بنسبة %2";
+Blockly.Msg["ROOBIN_ROTATE_MOTOR_BY_DEGREES"] = "تدوير محرك %1 بمقدار %2 درجة";
+Blockly.Msg["ROOBIN_SAY_HELLO"] = "قل مرحبا";
+Blockly.Msg["ROOBIN_SEARCH_IN_WIKI"] = "البحث في ويكيبيديا";
+Blockly.Msg["ROOBIN_SEARCH_WORD_IN_WIKI"] = "البحث في %1 في ويكيبيديا";
+Blockly.Msg["ROOBIN_SET_LANG"] = "تغيير اللغة إلى %1";
+Blockly.Msg["ROOBIN_SET_LANG_EN"] = "الإنجليزية";
+Blockly.Msg["ROOBIN_SET_LANG_FA"] = "الفارسية";
+Blockly.Msg["ROOBIN_SET_SPEAK_PITCH"] = "تعيين درجة التحدث إلى %1";
+Blockly.Msg["ROOBIN_SET_SPEAK_SPEED"] = "تعيين سرعة التحدث إلى %1";
+Blockly.Msg["ROOBIN_SET_STT_VAR"] = "تحويل الكلام إلى نص";
+Blockly.Msg["ROOBIN_SPONGE_BOB"] = "سبونجبوب";
+Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_ONE"] = "مزرعة الحيوانات 1";
+Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_THREE"] = "مزرعة الحيوانات 3";
+Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_TWO"] = "مزرعة الحيوانات 2";
+Blockly.Msg["ROOBIN_STORY_LIST_BOY_IN_DRUM"] = "فتى في طبلة";
+Blockly.Msg["ROOBIN_STORY_LIST_CINDERELLA"] = "سندريلا";
+Blockly.Msg["ROOBIN_STORY_LIST_EMPERORS_CLOTHES"] = "ثياب الإمبراطور الجديدة";
+Blockly.Msg["ROOBIN_STORY_LIST_FINGERBOY"] = "الاصبع";
+Blockly.Msg["ROOBIN_STORY_LIST_GULLIVER"] = "جاليفر";
+Blockly.Msg["ROOBIN_STORY_LIST_JACK_AND_BEANSTALK"] = "جاك وشجرة الفاصولياء";
+Blockly.Msg["ROOBIN_STORY_LIST_LITTLE_PRINCE_ONE"] = "الأمير الصغير 1";
+Blockly.Msg["ROOBIN_STORY_LIST_LITTLE_PRINCE_TWO"] = "الأمير الصغير 2";
+Blockly.Msg["ROOBIN_STORY_LIST_MY_GLASSES"] = "نظارتي";
+Blockly.Msg["ROOBIN_STORY_LIST_NOSE"] = "أنف";
+Blockly.Msg["ROOBIN_STORY_LIST_ONE_BELOW"] = "واحد تحت الآخر";
+Blockly.Msg["ROOBIN_STORY_LIST_PUSS_IN_BOOTS"] = "سنور في الأحذية";
+Blockly.Msg["ROOBIN_STORY_LIST_SNOWMAN"] = "الرجل الثلجي";
+Blockly.Msg["ROOBIN_STORY_TELLING"] = "اختر قصة %1";
+Blockly.Msg["ROOBIN_STT"] = "تحويل الكلام إلى نص";
+Blockly.Msg["ROOBIN_SULLIVAN"] = "سوليفان";
+Blockly.Msg["ROOBIN_TODAY_DATE"] = "تاريخ اليوم";
+Blockly.Msg["ROOBIN_TRIANGULAR"] = "الثلاثي";
+Blockly.Msg["ROOBIN_TTS"] = "تحويل النص: %1 إلى كلام";
+Blockly.Msg["RUN"] = "يركض";
+Blockly.Msg["SELECT_LANGUAGE"] = "اختار اللغة";
+Blockly.Msg["SHOW_CODE"] = "أظهر الكود";
+Blockly.Msg["STOP"] = "قف";
 Blockly.Msg["TEXT_APPEND_HELPURL"] = "https://github.com/google/blockly/wiki/Text#text-modification";  // untranslated
 Blockly.Msg["TEXT_APPEND_TITLE"] = "إلى %1 إلصق نص %2";
 Blockly.Msg["TEXT_APPEND_TOOLTIP"] = "إلصق جزءا من النص إلى متغير '%1'.";
@@ -482,6 +494,7 @@ Blockly.Msg["TEXT_TRIM_OPERATOR_BOTH"] = "إزالة الفراغات من كل�
 Blockly.Msg["TEXT_TRIM_OPERATOR_LEFT"] = "إزالة الفراغات من الجانب الأيسر من";
 Blockly.Msg["TEXT_TRIM_OPERATOR_RIGHT"] = "إزالة الفراغات من الجانب الأيمن من";
 Blockly.Msg["TEXT_TRIM_TOOLTIP"] = "يرجع نسخة من النص مع حذف من أحد أو كلا الفراغات من أطرافه.";
+Blockly.Msg["TIMEOUT"] = "تم تجاوز الحد الأقصى لتكرارات التنفيذ .";
 Blockly.Msg["TODAY"] = "اليوم";
 Blockly.Msg["UNDO"] = "رجوع";
 Blockly.Msg["UNNAMED_KEY"] = "غير مسمى";
@@ -518,13 +531,14 @@ Blockly.Msg["PROCEDURES_DEFRETURN_PROCEDURE"] = Blockly.Msg["PROCEDURES_DEFNORET
 Blockly.Msg["PROCEDURES_DEFRETURN_TITLE"] = Blockly.Msg["PROCEDURES_DEFNORETURN_TITLE"];
 Blockly.Msg["TEXT_APPEND_VARIABLE"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
 Blockly.Msg["TEXT_CREATE_JOIN_ITEM_TITLE_ITEM"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
+Blockly.Msg['ROOBIN_WHEN_KEY_PRESSED'] = "عند الضغط على مفتاح %1";
 
-Blockly.Msg["MATH_HUE"] = "230";
-Blockly.Msg["LOOPS_HUE"] = "120";
-Blockly.Msg["LISTS_HUE"] = "260";
 Blockly.Msg["LOGIC_HUE"] = "210";
-Blockly.Msg["VARIABLES_HUE"] = "330";
+Blockly.Msg["LOOPS_HUE"] = "120";
+Blockly.Msg["MATH_HUE"] = "230";
 Blockly.Msg["TEXTS_HUE"] = "160";
-Blockly.Msg["PROCEDURES_HUE"] = "290";
+Blockly.Msg["LISTS_HUE"] = "260";
 Blockly.Msg["COLOUR_HUE"] = "20";
+Blockly.Msg["VARIABLES_HUE"] = "330";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
+Blockly.Msg["PROCEDURES_HUE"] = "290";

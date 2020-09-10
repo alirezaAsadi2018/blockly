@@ -7,6 +7,62 @@ Blockly.JavaScript['TTS'] = function(block) {
 	return 'if(' + text +')\nrequestServer(\'' + query + '\' + ' + text + ');\n';
 };
 
+
+var keyBoardEventDefinitionJson = {
+	"type": "roobin_keyBoard_event",
+	"message0": "%{BKY_ROOBIN_WHEN_KEY_PRESSED}",   //   Blockly.Msg['ROOBIN_SET_LANG'], -> not available yet!
+	"style": "roobin_blocks",
+	"args0": [{
+		"type": "field_dropdown",
+		"name": "SEL_ROOBIN_KEY_PRESSED",
+		"options": [
+			["Arrow up", 'ArrowUp'],
+			["Arrow down", 'ArrowDown'],
+			["Arrow left", 'ArrowLeft'],
+			["Arrow right", 'ArrowRight'],
+			["w", 'KeyW'],
+			["a", 'KeyA'],
+			["s", 'KeyS'],
+			["d", 'KeyD'],
+			["Space", 'Space']
+		]
+	}],
+	"message1": "%{BKY_CONTROLS_IF_MSG_THEN} %1", // This is the same as if statement
+    "args1": [
+      {
+        "type": "input_statement",
+        "name": "DO"
+      }
+    ]
+	// "tooltip": ""
+};
+
+Blockly.Blocks['roobin_keyBoard_event'] = {
+	init: function() {
+		this.jsonInit(keyBoardEventDefinitionJson);
+	}
+};
+
+Blockly.JavaScript['roobin_keyBoard_event'] = function(block) {
+	var code = 'var keyPressed;\n';
+	if (Blockly.JavaScript.STATEMENT_PREFIX) {
+		// Automatic prefix insertion is switched off for this block.  Add manually.
+		code += Blockly.JavaScript.injectId(Blockly.JavaScript.STATEMENT_PREFIX,
+			block);
+	}
+	var keyCode = block.getFieldValue('SEL_ROOBIN_KEY_PRESSED');
+	var conditionCode = 'keyPressed === \'' + keyCode + '\'';
+	var branchCode = Blockly.JavaScript.statementToCode(block, 'DO');
+	if (Blockly.JavaScript.STATEMENT_SUFFIX) {
+		branchCode = Blockly.JavaScript.prefixLines(
+			Blockly.JavaScript.injectId(Blockly.JavaScript.STATEMENT_SUFFIX,
+			block), Blockly.JavaScript.INDENT) + branchCode;
+	}
+	code += 'if (' + conditionCode + ') {\n' + branchCode + '}';
+	return code + '\n';
+};
+
+
 var setLangDefinitionJson = {
 	"type": "roobin_set_lang",
 	"message0": "%{BKY_ROOBIN_SET_LANG}",   //   Blockly.Msg['ROOBIN_SET_LANG'], -> not available yet!
