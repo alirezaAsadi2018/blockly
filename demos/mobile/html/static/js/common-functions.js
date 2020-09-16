@@ -37,7 +37,7 @@ function downloadCode(){
 window.onload = function(){
     init();
     loadLastWorkspaceBlocks();
-    runButtons = document.querySelectorAll('#runButton');
+    runButtons = document.querySelectorAll('#runBtn');
 }
 window.addEventListener('resize', onresizeFunc, false);
 
@@ -97,19 +97,19 @@ function initLanguage() {
     // Inject language strings.
     var els = document.querySelectorAll('#showCode');
     for(var i = 0; i < els.length; ++i){
-        els[i].textContent = Blockly.Msg['SHOW_CODE'];
+        els[i].innerHTML = '<i class="code icon"></i>' + Blockly.Msg['SHOW_CODE'];
     }
-    els = document.querySelectorAll('#runButton');
+    els = document.querySelectorAll('#runBtn');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="green play icon"></i>' + Blockly.Msg['RUN'];
     }
-    els = document.querySelectorAll('#stopButton');
+    els = document.querySelectorAll('#stopBtn');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="red stop icon"></i>' + Blockly.Msg['STOP'];
     }
-    els = document.querySelectorAll('#bluetoothButton');
+    els = document.querySelectorAll('#bluetoothBtn');
     for(var i = 0; i < els.length; ++i){
-        els[i].textContent = Blockly.Msg['BLUETOOTH_CONNECTION'];
+        els[i].innerHTML = '<i class="blue bluetooth icon"></i>' + Blockly.Msg['BLUETOOTH_CONNECTION'];
     }
     els = document.querySelectorAll('#bluetooth_select_item');
     for(var i = 0; i < els.length; ++i){
@@ -147,7 +147,8 @@ function init() {
     $('.ui.sidebar').sidebar({
 		context: $('.ui.pushable.segment'),
 		transition: 'overlay'
-	}).sidebar('attach events', '#mobile_item');
+    }).sidebar('attach events', '#mobile_item');
+    
 	$('.ui.dropdown').dropdown();
 
 	$('.combo.dropdown').dropdown({

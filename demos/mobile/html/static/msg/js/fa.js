@@ -5,7 +5,7 @@
 Blockly.Msg["ADD_COMMENT"] = "افزودن نظر";
 Blockly.Msg["ARABIC"] = "عربی";
 Blockly.Msg["BAD_CODE"] = "خطای برنامه: %1";
-Blockly.Msg["BLUETOOTH_CONNECTION"] = "اتصال بلوتوث";
+Blockly.Msg["BLUETOOTH_CONNECTION"] = "بلوتوث";
 Blockly.Msg["BLUETOOTH_SELECT_DEVICE"] = "یک دستگاه را برای اتصال انتخاب کنید";
 Blockly.Msg["CANNOT_DELETE_VARIABLE_PROCEDURE"] = "متغیر '%1' را نمی‌توان پاک کرد، زیرا جزیی از تعریف تابع '%2' می‌باشد";
 Blockly.Msg["CHANGE_VALUE_TITLE"] = "تغییر مقدار:";
@@ -423,7 +423,7 @@ Blockly.Msg["ROOBIN_TRIANGULAR"] = "مثلثی";
 Blockly.Msg["ROOBIN_TTS"] = "تبدیل متن: %1 به صوت";
 Blockly.Msg["RUN"] = "اجرا";
 Blockly.Msg["SELECT_LANGUAGE"] = "انتخاب زبان";
-Blockly.Msg["SHOW_CODE"] = "نمایش کد";
+Blockly.Msg["SHOW_CODE"] = "کد";
 Blockly.Msg["STOP"] = "توقف";
 Blockly.Msg["TEXT_APPEND_HELPURL"] = "https://github.com/google/blockly/wiki/Text#text-modification";  // untranslated
 Blockly.Msg["TEXT_APPEND_TITLE"] = "به %1 الحاق متن %2";

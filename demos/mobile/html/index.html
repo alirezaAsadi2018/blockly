@@ -58,35 +58,26 @@
 						<button id='showCode' class="large ui button" onclick="showCode()"></button>
 					</div>
 					<div class="item">
-						<div id="downloadBtn" class="large ui icon button" onclick="downloadCode()">
-							<i class="download icon"></i>
-						</div>
+						<button id='runBtn' class="large ui button" onclick="runCode()"></button>
 					</div>
 					<div class="item">
-						<div id="runButton" class="large ui left labeled icon button" onclick="runCode()">
-						<i class="green play icon"></i>
-						</div>
-					</div>
-					<div class="item">
-						<div id="stopButton" class="large ui left labeled icon button" onclick="stopCode()">
-						<i class="red stop icon"></i>
-						</div>
+						<button id='stopBtn' class="large ui button" onclick="stopCode()"></button>
 					</div>
 					<div class="item">
 						<div class="large ui buttons">
-							<div id="bluetoothButton" class="ui button connect-bluetooth-device"></div>
-							<div class="ui combo top right pointing dropdown icon button select-bluetooth-device">
+							<div class="ui combo top left pointing dropdown icon button select-bluetooth-device">
 								<i class="dropdown icon"></i>
 								<div class="menu bluetooth-drop">
 									<div id="bluetooth_select_item" class="item"></div>
 								</div>
 							</div>
+							<div id="bluetoothBtn" class="ui button connect-bluetooth-device"></div>
 						</div>
 					</div>
 					<div class="item">
-						<div class="large ui floating top right pointing dropdown icon button">
-							<div id="jsItem" class="text"></div>
+						<div class="large ui floating top left pointing dropdown icon button">
 							<i class="dropdown icon"></i>
+							<div id="jsItem" class="text"></div>
 							<div class="menu">
 								<div id="jsItem" class="item" onclick="setCodingLang('js')">
 								<i class="js icon"></i>
@@ -95,14 +86,6 @@
 								<i class="python icon"></i>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="ui action input">
-							<input type="file">
-						</div>
-						<div id='uploadBtn' class="ui icon button">
-							<i class="cloud upload alternate icon"></i>
 						</div>
 					</div>
 					<div class="right menu">
@@ -118,10 +101,23 @@
 							</div>
 						</div>
 						<div class="item">
+							<div class="ui small icon buttons">
+								<button id='downloadBtn' class="large ui icon button" onclick="downloadCode()">
+									<i class="download icon"></i>
+								</button>
+								<div class="ui action input">
+									<input type="file">
+								</div>
+								<button id='uploadBtn' class="large ui icon button">
+									<i class="upload icon"></i>
+								</button>
+							</div>
+						</div>
+						<div class="item">
 							<div class="ui logo shape">
 								<div class="sides">
 									<div class="active ui side">
-										<img class="ui tiny  image" src="static/media/roobin5.png">
+										<img class="ui tiny image" src="static/media/roobin5.png">
 									</div>
 								</div>
 							</div>
@@ -148,6 +144,19 @@
 							</div>
 						</div>
 						<div class="item">
+							<div class="ui small icon buttons">
+								<button id='downloadBtn' class="large ui icon button" onclick="downloadCode()">
+									<i class="download icon"></i>
+								</button>
+								<div class="ui action input">
+									<input type="file">
+								</div>
+								<button id='uploadBtn' class="large ui icon button">
+									<i class="upload icon"></i>
+								</button>
+							</div>
+						</div>
+						<div class="item">
 							<div class="ui logo shape">
 								<div class="sides">
 									<div class="active ui side">
@@ -168,30 +177,26 @@
 				<button id='showCode' class="large ui button" onclick="showCode()"></button>
 			</div>
 			<div class="item">
-				<div id="runButton" class="large ui left labeled icon button" onclick="runCode()">
-				<i class="green play icon"></i>
-				</div>
+				<button id='runBtn' class="large ui button" onclick="runCode()"></button>
 			</div>
 			<div class="item">
-				<div id="stopButton" class="large ui left labeled icon button" onclick="stopCode()">
-				<i class="red stop icon"></i>
-				</div>
+				<button id='stopBtn' class="large ui button" onclick="stopCode()"></button>
 			</div>
 			<div class="item">
 				<div class="large ui buttons">
-					<div id="bluetoothButton" class="ui button connect-bluetooth-device"></div>
-					<div class="ui combo top right pointing dropdown icon button select-bluetooth-device">
+					<div class="ui combo top left pointing dropdown icon button select-bluetooth-device">
 						<i class="dropdown icon"></i>
 						<div class="menu bluetooth-drop">
 							<div id="bluetooth_select_item" class="item"></div>
 						</div>
 					</div>
+					<div id="bluetoothBtn" class="ui button connect-bluetooth-device"></div>
 				</div>
 			</div>
 			<div class="item">
-				<div class="large ui floating top right pointing dropdown icon button">
-					<div id="selectCodeLang" class="text"></div>
+				<div class="large ui floating top left pointing dropdown icon button">
 					<i class="dropdown icon"></i>
+					<div id="jsItem" class="text"></div>
 					<div class="menu">
 						<div id="jsItem" class="item" onclick="setCodingLang('js')">
 						<i class="js icon"></i>

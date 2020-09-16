@@ -5,7 +5,7 @@
 Blockly.Msg["ADD_COMMENT"] = "أضف تعليقًا";
 Blockly.Msg["ARABIC"] = "عربی";
 Blockly.Msg["BAD_CODE"] = "خطأ في البرنامج: %1";
-Blockly.Msg["BLUETOOTH_CONNECTION"] = "اتصال بلوتوث";
+Blockly.Msg["BLUETOOTH_CONNECTION"] = "بلوتوث";
 Blockly.Msg["BLUETOOTH_SELECT_DEVICE"] = "حدد جهازًا للاتصال";
 Blockly.Msg["CANNOT_DELETE_VARIABLE_PROCEDURE"] = "لايمكن حذف متغير \"%1\" بسبب انه جزء من الدالة \"%2\"";
 Blockly.Msg["CHANGE_VALUE_TITLE"] = "تغيير قيمة:";
@@ -423,7 +423,7 @@ Blockly.Msg["ROOBIN_TRIANGULAR"] = "الثلاثي";
 Blockly.Msg["ROOBIN_TTS"] = "تحويل النص: %1 إلى كلام";
 Blockly.Msg["RUN"] = "يركض";
 Blockly.Msg["SELECT_LANGUAGE"] = "اختار اللغة";
-Blockly.Msg["SHOW_CODE"] = "أظهر الكود";
+Blockly.Msg["SHOW_CODE"] = "الكود";
 Blockly.Msg["STOP"] = "قف";
 Blockly.Msg["TEXT_APPEND_HELPURL"] = "https://github.com/google/blockly/wiki/Text#text-modification";  // untranslated
 Blockly.Msg["TEXT_APPEND_TITLE"] = "إلى %1 إلصق نص %2";
