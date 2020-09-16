@@ -42,17 +42,25 @@
 		.pushable.segment{
 			margin: 0 !important;
 		}
+		.ui.action.input input[type="file"] {
+			display: none;
+		}
 	</style>
-	<script src="static/js/common_functions_compressed.js"></script>
+	<title>Roobin</title>
+	<script src="static/js/common-functions.js"></script>
 </head>
 <body>
-
 	<div class="ui grid">
 		<div class="computer only row">
 			<div class="column">
 				<div class="ui orange borderless top inverted menu">
 					<div class="item">
 						<button id='showCode' class="large ui button" onclick="showCode()"></button>
+					</div>
+					<div class="item">
+						<div id="downloadBtn" class="large ui icon button" onclick="downloadCode()">
+							<i class="download icon"></i>
+						</div>
 					</div>
 					<div class="item">
 						<div id="runButton" class="large ui left labeled icon button" onclick="runCode()">
@@ -77,7 +85,7 @@
 					</div>
 					<div class="item">
 						<div class="large ui floating top right pointing dropdown icon button">
-							<div id="selectCodeLang" class="text"></div>
+							<div id="jsItem" class="text"></div>
 							<i class="dropdown icon"></i>
 							<div class="menu">
 								<div id="jsItem" class="item" onclick="setCodingLang('js')">
@@ -87,6 +95,14 @@
 								<i class="python icon"></i>
 								</div>
 							</div>
+						</div>
+					</div>
+					<div class="item">
+						<div class="ui action input">
+							<input type="file">
+						</div>
+						<div id='uploadBtn' class="ui icon button">
+							<i class="cloud upload alternate icon"></i>
 						</div>
 					</div>
 					<div class="right menu">

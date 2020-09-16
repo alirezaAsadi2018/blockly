@@ -532,6 +532,10 @@ Blockly.Msg["PROCEDURES_DEFRETURN_TITLE"] = Blockly.Msg["PROCEDURES_DEFNORETURN_
 Blockly.Msg["TEXT_APPEND_VARIABLE"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
 Blockly.Msg["TEXT_CREATE_JOIN_ITEM_TITLE_ITEM"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
 Blockly.Msg['ROOBIN_WHEN_KEY_PRESSED'] = "عند الضغط على مفتاح %1";
+Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS'] = "يجب عليك شراء الروبین لفتح هذه الكتل!!";
+Blockly.Msg['ROOBIN_DOWNLOAD'] = "تنزیل الکود";
+Blockly.Msg['ROOBIN_UPLOAD'] = "تحميل الکود";
+
 
 Blockly.Msg["LOGIC_HUE"] = "210";
 Blockly.Msg["LOOPS_HUE"] = "120";

@@ -8,7 +8,6 @@ var workspaceLang = getLang();
 var myWorkspace;
 var borderStylePropertyName;
 var codingLangSelected = 'js';
-// Exit is used to signal the end of a script.
 var myInterpreter = null;
 var runner;
 var code;
@@ -16,8 +15,28 @@ var runButtons;
 var keyEventBlocksOnWorkspace = {};
 var deviceArray;
 
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+}
+
+function downloadCode(){
+    var text = worspaceToBlockText();
+    download("blocks.txt", text);
+}
+
 window.onload = function(){
     init();
+    loadLastWorkspaceBlocks();
     runButtons = document.querySelectorAll('#runButton');
 }
 window.addEventListener('resize', onresizeFunc, false);
@@ -96,10 +115,6 @@ function initLanguage() {
     for(var i = 0; i < els.length; ++i){
         els[i].textContent = Blockly.Msg['BLUETOOTH_SELECT_DEVICE'];
     }
-    els = document.querySelectorAll('#selectCodeLang');
-    for(var i = 0; i < els.length; ++i){
-        els[i].textContent = Blockly.Msg['SELECT_LANGUAGE'];
-    }
     els = document.querySelectorAll('#jsItem');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="js icon"></i>' + Blockly.Msg['JAVASCRIPT'];
@@ -118,7 +133,17 @@ function isRtl() {
     return LANGUAGE_RTL.indexOf(workspaceLang) != -1;
 };
 
+function addPopupToDisabledBlocks(){
+    $('g .blocklyDisabled.blocklyDraggable').each(function(index) {
+        $(this).popup({
+          content  : Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS']
+        });
+    });
+}
+
 function init() {
+    document.title = Blockly.Msg['ROOBIN_CATEGORY'];
+
     $('.ui.sidebar').sidebar({
 		context: $('.ui.pushable.segment'),
 		transition: 'overlay'
@@ -127,7 +152,41 @@ function init() {
 
 	$('.combo.dropdown').dropdown({
 		action: 'combo'
-	});
+    });
+
+    // popup for download and upload btns
+    $('#downloadBtn').popup({
+        position   : 'bottom right',
+        content : Blockly.Msg['ROOBIN_DOWNLOAD']
+    });
+
+    $('#uploadBtn').popup({
+        position   : 'bottom right',
+        content : Blockly.Msg['ROOBIN_UPLOAD']
+    });
+
+    addPopupToDisabledBlocks();
+
+    // upload button click handler
+    $('#uploadBtn').click(function() {
+        $(this).parent().find("input:file").click();
+    });
+      
+    // upload button action handler
+    $('input:file', '.ui.action.input').on('change', function(e) {
+        var file = e.target.files[0];
+        if(file && file.type.match('text')){
+            var reader = new FileReader();
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    var text = e.target.result;
+                    blockTextToWorkspace(text);
+                };
+            })(file);
+            reader.readAsText(file);
+        }
+    });
+
     initLanguage();
 
 	setLanguageRelatedProps(workspaceLang);
@@ -147,15 +206,22 @@ function init() {
 };
 
 function blocksEventListener(event) {
+    if(event instanceof Blockly.Events.Ui && event.element === 'category' && event.newValue === 'Roobin'){
+        addPopupToDisabledBlocks();
+    }
     if (event instanceof Blockly.Events.Ui &&  event.element === 'click') {
         var block_clicked = myWorkspace.getBlockById(event.blockId);
         // This line initializes variable_db_  
         Blockly.JavaScript.workspaceToCode(Blockly.getMainWorkspace());
-        var code_to_run = Blockly.JavaScript.blockToCode(block_clicked);
-        if(typeof code_to_run !== 'string'){
-            code_to_run = code_to_run[0];
+        try{
+            var code_to_run = Blockly.JavaScript.blockToCode(block_clicked);
+            if(typeof code_to_run !== 'string'){
+                code_to_run = code_to_run[0];
+            }
+            runCode(code_to_run);
+        }catch(e){
+            //Do sth
         }
-        runCode(code_to_run);
     }
     else if(event instanceof Blockly.Events.BlockCreate){
         var block_created_id = event.blockId;
@@ -163,10 +229,48 @@ function blocksEventListener(event) {
         if(block_created && (block_created.type === 'roobin_keyBoard_event')){
             keyEventBlocksOnWorkspace[block_created_id] = block_created;
         }
+        // new blocks added to workspace
+        saveLastWorkspaceBlocks();
     }
     else if(event instanceof Blockly.Events.BlockDelete){
         var block_deleted_id = event.blockId;
+        // some blocks were deleted from workspace
+        saveLastWorkspaceBlocks();
     }
+}
+
+function worspaceToBlockText(){
+    var xml = Blockly.Xml.workspaceToDom(myWorkspace);
+    var text = Blockly.Xml.domToText(xml);
+    return text;
+}
+
+function saveLastWorkspaceBlocks(text){
+    var text = worspaceToBlockText();
+    if (window.sessionStorage) {
+        window.localStorage.lastWorkspaceBlocks = text;
+    }
+}
+
+function loadLastWorkspaceBlocks(){
+    try {
+        var lastWorkspaceBlocks = window.localStorage.lastWorkspaceBlocks;
+    } catch(e) {
+        var lastWorkspaceBlocks = null;
+    }
+    if (lastWorkspaceBlocks) {
+        // Language switching stores the blocks during the reload.
+        delete window.localStorage.lastWorkspaceBlocks;
+        blockTextToWorkspace(lastWorkspaceBlocks);
+    }
+}
+
+function blockTextToWorkspace(text){
+    if(arguments.length < 1){
+        return;
+    }
+    var xml = Blockly.Xml.textToDom(text);
+    Blockly.Xml.domToWorkspace(xml, myWorkspace);  
 }
 
 function keyPressedBlocksEventListener(e){
