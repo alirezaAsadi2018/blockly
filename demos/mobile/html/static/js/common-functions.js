@@ -12,6 +12,10 @@ var myInterpreter = null;
 var runner;
 var code;
 var runButtons;
+var serverIndicatorIcons;
+var serverIndicatorInterval;
+var serverOnIndicatorColor = 'green';
+var serverOffIndicatorColor = 'yellow';
 var keyEventBlocksOnWorkspace = {};
 var deviceArray;
 
@@ -38,6 +42,8 @@ window.onload = function(){
     init();
     loadLastWorkspaceBlocks();
     runButtons = document.querySelectorAll('#runBtn');
+    serverIndicatorIcons = document.querySelectorAll('#serverIndicator');
+    // serverIndicatorInterval = setInterval(checkServerConnected, 5000);
 }
 window.addEventListener('resize', onresizeFunc, false);
 
@@ -54,6 +60,7 @@ document.write('<script src="static/js/python_compressed.js"></script>\n');
 document.write('<script src="static/js/toolbox_standard.js"></script>\n');
 document.write('<script src="static/msg/js/' + workspaceLang + '.js"></script>\n');
 document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
+document.write('<script src="static/js/block_defs.js"></script>\n');
 
 function onresizeFunc(){
     Blockly.svgResize(myWorkspace);
@@ -95,35 +102,35 @@ function initLanguage() {
     document.head.parentElement.setAttribute('lang', workspaceLang);
 
     // Inject language strings.
-    var els = document.querySelectorAll('#showCode');
+    var els = document.querySelectorAll('.show-code-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="code icon"></i>' + Blockly.Msg['SHOW_CODE'];
     }
-    els = document.querySelectorAll('#runBtn');
+    els = document.querySelectorAll('.run-button-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="green play icon"></i>' + Blockly.Msg['RUN'];
     }
-    els = document.querySelectorAll('#stopBtn');
-    for(var i = 0; i < els.length; ++i){
+    els = document.querySelectorAll('.stop-button-translate');
+   for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="red stop icon"></i>' + Blockly.Msg['STOP'];
     }
-    els = document.querySelectorAll('#bluetoothBtn');
+    els = document.querySelectorAll('.bluetooth-button-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="blue bluetooth icon"></i>' + Blockly.Msg['BLUETOOTH_CONNECTION'];
     }
-    els = document.querySelectorAll('#bluetooth_select_item');
+    els = document.querySelectorAll('.bluetooth-select-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].textContent = Blockly.Msg['BLUETOOTH_SELECT_DEVICE'];
     }
-    els = document.querySelectorAll('#jsItem');
+    els = document.querySelectorAll('.js-item-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="js icon"></i>' + Blockly.Msg['JAVASCRIPT'];
     }
-    els = document.querySelectorAll('#pythonItem');
+    els = document.querySelectorAll('.python-item-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="python icon"></i>' + Blockly.Msg['PYTHON'];
     }
-    els = document.querySelectorAll('#selectLang');
+    els = document.querySelectorAll('.lang-button-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].textContent = LANGUAGE_NAME[getLang()];
     }
@@ -143,17 +150,43 @@ function addPopupToDisabledBlocks(){
 
 function init() {
     document.title = Blockly.Msg['ROOBIN_CATEGORY'];
-
-    $('.ui.sidebar').sidebar({
-		context: $('.ui.pushable.segment'),
-		transition: 'overlay'
-    }).sidebar('attach events', '#mobile_item');
     
 	$('.ui.dropdown').dropdown();
 
 	$('.combo.dropdown').dropdown({
 		action: 'combo'
     });
+
+    // enable all popups for mobile div top menu
+    $('.show-code-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['SHOW_CODE']
+    });
+    $('.run-code-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['RUN']
+    });
+    $('.stop-code-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['STOP']
+    });
+    $('.bluetooth-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['BLUETOOTH_CONNECTION']
+    });
+    $('.code-lang-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['SELECT_LANGUAGE']
+    });
+    $('.download-popup').popup({
+        position   : 'bottom right',
+        content : Blockly.Msg['ROOBIN_DOWNLOAD']
+    });
+    $('.upload-popup').popup({
+        position   : 'bottom right',
+        content : Blockly.Msg['ROOBIN_UPLOAD']
+    });
+    
 
     // popup for download and upload btns
     $('#downloadBtn').popup({
@@ -188,6 +221,8 @@ function init() {
         }
     });
 
+    
+
     initLanguage();
 
 	setLanguageRelatedProps(workspaceLang);
@@ -196,7 +231,7 @@ function init() {
     // UI part
 	convertCategoriesTosemantic();
 
-    addEventsToBluetoothButton();
+   // addEventsToBluetoothButton();
 
     // Listen to events on primary workspace.
 	myWorkspace.addChangeListener(blocksEventListener);
@@ -207,6 +242,7 @@ function init() {
 };
 
 function blocksEventListener(event) {
+    saveLastWorkspaceBlocks();
     if(event instanceof Blockly.Events.Ui && event.element === 'category' && event.newValue === 'Roobin'){
         addPopupToDisabledBlocks();
     }
@@ -231,12 +267,10 @@ function blocksEventListener(event) {
             keyEventBlocksOnWorkspace[block_created_id] = block_created;
         }
         // new blocks added to workspace
-        saveLastWorkspaceBlocks();
     }
     else if(event instanceof Blockly.Events.BlockDelete){
         var block_deleted_id = event.blockId;
         // some blocks were deleted from workspace
-        saveLastWorkspaceBlocks();
     }
 }
 
@@ -459,20 +493,40 @@ function stopCode(){
     }
 }
 
-function requestServer(query){
-    var serverUrl = 'http://localhost:1234';
-    // server is only accessible from browser for now!!
-    if(!navigator.userAgent.match(/Android/i)){
-        // sendIfServerConnected(serverUrl, query);
-        fetch('http://localhost:1234')
-        .then(function(data){if(data.status === 200) serverFunc();})
-        .catch(function(error){alert('server not connected!')});
-        var serverFunc = function(){
-            var url = 'http://localhost:1234/' + query;
-            fetch(url)
-            .then(function(data){})
-            .catch(function(error){});
+function changeServerIndicatorColor(){
+    for(var i = 0; i < serverIndicatorIcons.length; ++i){
+        if(serverIndicatorIcons[i].classList.contains(serverOnIndicatorColor)){
+            serverIndicatorIcons[i].classList.remove(serverOnIndicatorColor);
+            serverIndicatorIcons[i].classList.add(serverOffIndicatorColor);
+        }else if(serverIndicatorIcons[i].classList.contains(serverOffIndicatorColor)){
+            serverIndicatorIcons[i].classList.remove(serverOffIndicatorColor);
+            serverIndicatorIcons[i].classList.add(serverOnIndicatorColor);
         }
+    }   
+}
+
+function checkServerConnected(){
+    href = 'http://localhost:1234';
+    req = new XMLHttpRequest();
+    req.open('GET', href, true);
+    
+    req.onreadystatechange = function() {
+        if(req.readyState == 4 && req.status == 200){
+            clearInterval(serverIndicatorInterval);
+            changeServerIndicatorColor();
+        }
+    };
+    req.send(null);
+}
+
+function requestServer(query){
+    var href = 'http://localhost:1234';
+    if(!navigator.userAgent.match(/Android/i)){
+        var url = href + '/' + query;
+        console.log(url);
+        req = new XMLHttpRequest();
+        req.open('GET', url, true);
+        req.send(null);
     }
 }
 
