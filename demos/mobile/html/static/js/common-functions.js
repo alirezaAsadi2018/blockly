@@ -60,7 +60,6 @@ document.write('<script src="static/js/python_compressed.js"></script>\n');
 document.write('<script src="static/js/toolbox_standard.js"></script>\n');
 document.write('<script src="static/msg/js/' + workspaceLang + '.js"></script>\n');
 document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
-document.write('<script src="static/js/block_defs.js"></script>\n');
 
 function onresizeFunc(){
     Blockly.svgResize(myWorkspace);
@@ -523,7 +522,6 @@ function requestServer(query){
     var href = 'http://localhost:1234';
     if(!navigator.userAgent.match(/Android/i)){
         var url = href + '/' + query;
-        console.log(url);
         req = new XMLHttpRequest();
         req.open('GET', url, true);
         req.send(null);
