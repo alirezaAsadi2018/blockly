@@ -19,12 +19,6 @@ var serverOffIndicatorColor = 'yellow';
 var keyEventBlocksOnWorkspace = {};
 var deviceArray;
 
-function getWorkspace(){
-    if (!myWorkspace) {
-        myWorkspace = Blockly.getMainWorkspace();
-    }
-    return myWorkspace;
-}
 
 function download(filename, text) {
     var element = document.createElement('a');
@@ -68,7 +62,7 @@ document.write('<script src="static/msg/js/' + workspaceLang + '.js"></script>\n
 document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
 
 function onresizeFunc(){
-    Blockly.svgResize(getWorkspace());
+    Blockly.svgResize(myWorkspace);
 }
 
 function getStringParamFromUrl(name, defaultValue) {
@@ -149,7 +143,7 @@ function addPopupToDisabledBlocks(){
     // this array includes blocks that are in myWorkspace and
     // are disabled by the user. We don't want them to have
     // a popup message!!
-    var userAddedToWorkspaceBlocks = getWorkspace().getTopBlocks().map(function(e) { 
+    var userAddedToWorkspaceBlocks = myWorkspace.getTopBlocks().map(function(e) { 
         return e.svgGroup_;
     });
     
@@ -257,7 +251,9 @@ function init() {
 
 function blockIdToCode(id){
     try{
-        getWorkspace();
+        if (!myWorkspace) {
+            myWorkspace = Blockly.getMainWorkspace();
+        }
         Blockly.JavaScript.init(myWorkspace);
         var block = myWorkspace.getBlockById(id);
         var line = Blockly.JavaScript.blockToCode(block);
@@ -299,7 +295,7 @@ function blocksEventListener(event) {
     else if(event instanceof Blockly.Events.BlockCreate){
         // new blocks added to workspace
         var block_created_id = event.blockId;
-        var block_created = getWorkspace().getBlockById(block_created_id);
+        var block_created = myWorkspace.getBlockById(block_created_id);
         if(block_created && (block_created.type === 'roobin_keyBoard_event')){
             keyEventBlocksOnWorkspace[block_created_id] = block_created;
         }   
@@ -311,7 +307,7 @@ function blocksEventListener(event) {
 }
 
 function worspaceToBlockText(){
-    var xml = Blockly.Xml.workspaceToDom(getWorkspace());
+    var xml = Blockly.Xml.workspaceToDom(myWorkspace);
     var text = Blockly.Xml.domToText(xml);
     return text;
 }
@@ -337,12 +333,11 @@ function loadLastWorkspaceBlocks(){
 }
 
 function blockTextToWorkspace(text){
-    getWorkspace().clear();
     if(arguments.length < 1){
         return;
     }
     var xml = Blockly.Xml.textToDom(text);
-    Blockly.Xml.domToWorkspace(xml, getWorkspace());  
+    Blockly.Xml.domToWorkspace(xml, myWorkspace);  
 }
 
 function keyPressedBlocksEventListener(e){
@@ -381,14 +376,14 @@ function showCode(){
 function showPython() {
     // Generate JavaScript code and display it.
     Blockly.Python.INFINITE_LOOP_TRAP = null;
-    var code = Blockly.Python.workspaceToCode(getWorkspace());
+    var code = Blockly.Python.workspaceToCode(myWorkspace);
     alert(code);
 }
 
 function showJs() {
     // Generate JavaScript code and display it.
     Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-    var code = Blockly.JavaScript.workspaceToCode(getWorkspace());
+    var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
     alert(code);
 }
 
@@ -436,7 +431,7 @@ function createWorker(){
 
 function runCode(code){
     if(arguments.length < 1){
-        code = Blockly.JavaScript.workspaceToCode(getWorkspace());
+        code = Blockly.JavaScript.workspaceToCode(myWorkspace);
     }
     if(!code){
         resetInterpreter();
