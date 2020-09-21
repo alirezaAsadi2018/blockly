@@ -535,6 +535,8 @@ Blockly.Msg['ROOBIN_WHEN_KEY_PRESSED'] = "وقتی کلید %1 فشرده شد";
 Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS'] = "برای باز کردن این بلوک ها باید روبین را خریداری کنید!!";
 Blockly.Msg['ROOBIN_DOWNLOAD'] = "دانلود کد";
 Blockly.Msg['ROOBIN_UPLOAD'] = "آپلود کد";
+Blockly.Msg['SERVER_INDICATOR_PENDING'] = "درحال آماده سازی";
+Blockly.Msg['SERVER_INDICATOR_ONLINE'] = "آماده";
 
 
 Blockly.Msg["LOGIC_HUE"] = "210";

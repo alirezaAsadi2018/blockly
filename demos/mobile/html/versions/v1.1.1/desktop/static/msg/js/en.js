@@ -535,6 +535,8 @@ Blockly.Msg['ROOBIN_WHEN_KEY_PRESSED'] = "when %1 key pressed";
 Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS'] = "You should buy Roobin to unlock these blocks!!";
 Blockly.Msg['ROOBIN_DOWNLOAD'] = "Download Code";
 Blockly.Msg['ROOBIN_UPLOAD'] = "Upload Code";
+Blockly.Msg['SERVER_INDICATOR_PENDING'] = "pending";
+Blockly.Msg['SERVER_INDICATOR_ONLINE'] = "online";
 
 
 Blockly.Msg["LOGIC_HUE"] = "210";

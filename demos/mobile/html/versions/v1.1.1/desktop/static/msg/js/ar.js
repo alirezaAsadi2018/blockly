@@ -535,6 +535,8 @@ Blockly.Msg['ROOBIN_WHEN_KEY_PRESSED'] = "عند الضغط على مفتاح %1
 Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS'] = "يجب عليك شراء الروبین لفتح هذه الكتل!!";
 Blockly.Msg['ROOBIN_DOWNLOAD'] = "تنزیل الکود";
 Blockly.Msg['ROOBIN_UPLOAD'] = "تحميل الکود";
+Blockly.Msg['SERVER_INDICATOR_PENDING'] = "معلق";
+Blockly.Msg['SERVER_INDICATOR_ONLINE'] = "عبر الإنترنت";
 
 
 Blockly.Msg["LOGIC_HUE"] = "210";

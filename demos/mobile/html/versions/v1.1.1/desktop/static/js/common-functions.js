@@ -19,6 +19,12 @@ var serverOffIndicatorColor = 'yellow';
 var keyEventBlocksOnWorkspace = {};
 var deviceArray;
 
+function getWorkspace(){
+    if (!myWorkspace) {
+        myWorkspace = Blockly.getMainWorkspace();
+    }
+    return myWorkspace;
+}
 
 function download(filename, text) {
     var element = document.createElement('a');
@@ -43,7 +49,7 @@ window.onload = function(){
     loadLastWorkspaceBlocks();
     runButtons = document.querySelectorAll('#runBtn');
     serverIndicatorIcons = document.querySelectorAll('#serverIndicator');
-    // serverIndicatorInterval = setInterval(checkServerConnected, 5000);
+    serverIndicatorInterval = setInterval(checkServerConnected, 5000);
 }
 window.addEventListener('resize', onresizeFunc, false);
 
@@ -62,7 +68,7 @@ document.write('<script src="static/msg/js/' + workspaceLang + '.js"></script>\n
 document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
 
 function onresizeFunc(){
-    Blockly.svgResize(myWorkspace);
+    Blockly.svgResize(getWorkspace());
 }
 
 function getStringParamFromUrl(name, defaultValue) {
@@ -113,14 +119,6 @@ function initLanguage() {
    for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="red stop icon"></i>' + Blockly.Msg['STOP'];
     }
-    els = document.querySelectorAll('.bluetooth-button-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].innerHTML = '<i class="blue bluetooth icon"></i>' + Blockly.Msg['BLUETOOTH_CONNECTION'];
-    }
-    els = document.querySelectorAll('.bluetooth-select-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].textContent = Blockly.Msg['BLUETOOTH_SELECT_DEVICE'];
-    }
     els = document.querySelectorAll('.js-item-translate');
     for(var i = 0; i < els.length; ++i){
         els[i].innerHTML = '<i class="js icon"></i>' + Blockly.Msg['JAVASCRIPT'];
@@ -143,7 +141,7 @@ function addPopupToDisabledBlocks(){
     // this array includes blocks that are in myWorkspace and
     // are disabled by the user. We don't want them to have
     // a popup message!!
-    var userAddedToWorkspaceBlocks = myWorkspace.getTopBlocks().map(function(e) { 
+    var userAddedToWorkspaceBlocks = getWorkspace().getTopBlocks().map(function(e) { 
         return e.svgGroup_;
     });
     
@@ -168,6 +166,12 @@ function init() {
     });
 
     // enable all popups for mobile div top menu
+    $('.server-indicator-popup').each(function(index) {
+        $(this).popup({
+            position   : 'bottom center',
+            content : Blockly.Msg['SERVER_INDICATOR_PENDING']
+        });
+    });
     $('.show-code-popup').popup({
         position   : 'bottom center',
         content : Blockly.Msg['SHOW_CODE']
@@ -179,10 +183,6 @@ function init() {
     $('.stop-code-popup').popup({
         position   : 'bottom center',
         content : Blockly.Msg['STOP']
-    });
-    $('.bluetooth-popup').popup({
-        position   : 'bottom center',
-        content : Blockly.Msg['BLUETOOTH_CONNECTION']
     });
     $('.code-lang-popup').popup({
         position   : 'bottom center',
@@ -239,8 +239,6 @@ function init() {
     // UI part
 	convertCategoriesTosemantic();
 
-   // addEventsToBluetoothButton();
-
     // Listen to events on primary workspace.
 	myWorkspace.addChangeListener(blocksEventListener);
 	document.addEventListener('keydown', keyPressedBlocksEventListener);
@@ -251,9 +249,7 @@ function init() {
 
 function blockIdToCode(id){
     try{
-        if (!myWorkspace) {
-            myWorkspace = Blockly.getMainWorkspace();
-        }
+        getWorkspace();
         Blockly.JavaScript.init(myWorkspace);
         var block = myWorkspace.getBlockById(id);
         var line = Blockly.JavaScript.blockToCode(block);
@@ -295,7 +291,7 @@ function blocksEventListener(event) {
     else if(event instanceof Blockly.Events.BlockCreate){
         // new blocks added to workspace
         var block_created_id = event.blockId;
-        var block_created = myWorkspace.getBlockById(block_created_id);
+        var block_created = getWorkspace().getBlockById(block_created_id);
         if(block_created && (block_created.type === 'roobin_keyBoard_event')){
             keyEventBlocksOnWorkspace[block_created_id] = block_created;
         }   
@@ -307,7 +303,7 @@ function blocksEventListener(event) {
 }
 
 function worspaceToBlockText(){
-    var xml = Blockly.Xml.workspaceToDom(myWorkspace);
+    var xml = Blockly.Xml.workspaceToDom(getWorkspace());
     var text = Blockly.Xml.domToText(xml);
     return text;
 }
@@ -333,11 +329,12 @@ function loadLastWorkspaceBlocks(){
 }
 
 function blockTextToWorkspace(text){
+    getWorkspace().clear();
     if(arguments.length < 1){
         return;
     }
     var xml = Blockly.Xml.textToDom(text);
-    Blockly.Xml.domToWorkspace(xml, myWorkspace);  
+    Blockly.Xml.domToWorkspace(xml, getWorkspace());  
 }
 
 function keyPressedBlocksEventListener(e){
@@ -376,14 +373,14 @@ function showCode(){
 function showPython() {
     // Generate JavaScript code and display it.
     Blockly.Python.INFINITE_LOOP_TRAP = null;
-    var code = Blockly.Python.workspaceToCode(myWorkspace);
+    var code = Blockly.Python.workspaceToCode(getWorkspace());
     alert(code);
 }
 
 function showJs() {
     // Generate JavaScript code and display it.
     Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-    var code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+    var code = Blockly.JavaScript.workspaceToCode(getWorkspace());
     alert(code);
 }
 
@@ -431,7 +428,7 @@ function createWorker(){
 
 function runCode(code){
     if(arguments.length < 1){
-        code = Blockly.JavaScript.workspaceToCode(myWorkspace);
+        code = Blockly.JavaScript.workspaceToCode(getWorkspace());
     }
     if(!code){
         resetInterpreter();
@@ -530,11 +527,23 @@ function changeServerIndicatorColor(){
         if(serverIndicatorIcons[i].classList.contains(serverOnIndicatorColor)){
             serverIndicatorIcons[i].classList.remove(serverOnIndicatorColor);
             serverIndicatorIcons[i].classList.add(serverOffIndicatorColor);
+            $('.server-indicator-popup').each(function(index) {
+                $(this).popup({
+                    position   : 'bottom center',
+                    content : Blockly.Msg['SERVER_INDICATOR_PENDING']
+                });
+            });
         }else if(serverIndicatorIcons[i].classList.contains(serverOffIndicatorColor)){
             serverIndicatorIcons[i].classList.remove(serverOffIndicatorColor);
             serverIndicatorIcons[i].classList.add(serverOnIndicatorColor);
+            $('.server-indicator-popup').each(function(index) {
+                $(this).popup({
+                    position   : 'bottom center',
+                    content : Blockly.Msg['SERVER_INDICATOR_ONLINE']
+                });
+            });
         }
-    }   
+    }
 }
 
 function checkServerConnected(){
@@ -641,41 +650,6 @@ function loadWorkspace(){
         }
     });
     return myWorkspace;
-}
-
-function addEventsToBluetoothButton(){
-    document.querySelector('.connect-bluetooth-device').addEventListener('click', function(evnet){
-		if(!deviceArray || deviceArray.length === 0){
-            populateBluetoothDevicesForm();
-		}else{
-			bluetoothDeviceSelected = $(".select-bluetooth-device").dropdown('get value');
-            if(!bluetoothDeviceSelected || bluetoothDeviceSelected === Blockly.Msg['BLUETOOTH_SELECT_DEVICE']){
-				return;
-            }
-            if(isAndroidUserAgent()){
-                Android.connectBluetooth(bluetoothDeviceSelected);
-            }
-		}
-	});
-
-	document.querySelector('.select-bluetooth-device').addEventListener('click', populateBluetoothDevicesForm);
-}
-
-function populateBluetoothDevicesForm(){
-    if(!isAndroidUserAgent())
-        return;
-    deviceArray = Android.list().split(',');
-    $.each(deviceArray, function (i, item) {
-        item = item.trim();
-        item = item.split(" ").join("-").split('_').join("-");
-        if (!$('.bluetooth-drop .' + item).length) {
-            $('.bluetooth-drop').append($('<div>', {
-                value: i.toString(),
-                text: item.toString(),
-                class: 'item ' + item
-            }));
-        }
-    });
 }
 
 function convertCategoriesTosemantic(){
