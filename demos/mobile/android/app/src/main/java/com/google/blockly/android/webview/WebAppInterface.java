@@ -22,6 +22,7 @@ import com.google.blockly.android.webview.utility.TTS;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -111,15 +112,15 @@ public class WebAppInterface implements Codes {
         boolean isBonded = false;
         try {
             for (BluetoothDevice pairedDevice : pairedDevices) {
-                if (pairedDevice.getName().equals(name)) {
+                if (pairedDevice.getName().equalsIgnoreCase(name)) {
                     BluetoothDevice remoteDevice = BA.getRemoteDevice(pairedDevice.getAddress());
                     isBonded = remoteDevice.createBond();
                     ParcelUuid[] uuids = remoteDevice.getUuids();
                     if (uuids != null) {
                         bluetoothSocket = remoteDevice.createRfcommSocketToServiceRecord(uuids[0].getUuid());
                         bluetoothSocket.connect();
-                        outputStream = new ObjectOutputStream(bluetoothSocket.getOutputStream());
                     }
+                    break;
                 }
             }
 
@@ -151,10 +152,13 @@ public class WebAppInterface implements Codes {
     @JavascriptInterface
     public void send(String text) {
         try {
+            text = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+            System.out.println("sending to blue: " + text);
             for (char c : text.toCharArray()) {
                 bluetoothSocket.getOutputStream().write((byte) c);
             }
             bluetoothSocket.getOutputStream().write((byte) '\n');
+            bluetoothSocket.getOutputStream().flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
