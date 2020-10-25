@@ -14,6 +14,12 @@ goog.provide('Blockly.Python.loops');
 
 goog.require('Blockly.Python');
 
+Blockly.Python['loop_forever'] = function(block) {
+  // Loop forever.  
+  var branch = Blockly.Python.statementToCode(block, 'DO');
+  branch = Blockly.Python.addLoopTrap(branch, block) || Blockly.Python.PASS;
+  return 'while true:\n' + branch;
+};
 
 Blockly.Python['controls_repeat_ext'] = function(block) {
   // Repeat n times.

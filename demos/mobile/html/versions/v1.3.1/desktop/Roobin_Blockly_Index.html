@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+	<meta charset="UTF-8">
+	<meta name="google" value="notranslate">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<style type="text/css">
+		#blockly\:0 {
+			width: 114px;
+		}
+		.zelos-renderer .blocklyText {
+			fill: #fff;
+		}
+		.blocklySvg {
+			background-color: rgb(236,240,241);
+		}
+		.blocklyTreeRoot {
+			padding-top: 14px;
+			width: 114px !important;
+		}
+		.blocklyTreeRow {
+			margin-bottom: 14px;
+		}
+		.blocklyToolboxDiv {
+			width: 114px;
+			background-color: #FFFFFF;
+			color: #575E75;
+		}
+		.blocklyFlyoutBackground {
+			fill: #4b4949;
+			fill-opacity: 1;
+		}
+		#content {
+			min-height: 100px;
+		}
+		.ui.grid{
+			padding: 0 !important;
+		}
+		.pushable.segment{
+			margin: 0 !important;
+		}
+		.ui.action.input input[type="file"] {
+			display: none;
+		}
+	</style>
+	<title>Roobin</title>
+	<script src="static/js/common-functions-compressed.js"></script>
+</head>
+<body>
+	<div class="ui grid">
+		<div class="computer only row">
+			<div class="column">
+				<div class="ui orange borderless top inverted menu">
+					<div class="item">
+						<button id='showCode' class="large ui button show-code-translate" onclick="showCode()"></button>
+					</div>
+					<div class="item">
+						<div class="large ui floating top left pointing dropdown icon button">
+							<i class="dropdown icon"></i>
+							<div id="jsItem" class="text js-item-translate"></div>
+							<div class="menu">
+								<div id="jsItem" class="item js-item-translate" onclick="setCodingLang('js')">
+								<i class="js icon"></i>
+								</div>
+								<div id="pythonItem" class="item python-item-translate" onclick="setCodingLang('py')">
+								<i class="python icon"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<button id='runBtn' class="large ui button run-button-translate" onclick="runCode()"></button>
+					</div>
+					<div class="item">
+						<button id='stopBtn' class="large ui button stop-button-translate" onclick="stopCode()"></button>
+					</div>
+					<div class="right menu">
+						<div class="item">
+							<div class="large ui language floating dropdown link">
+								<i class="world icon"></i>
+								<span id="selectLang" class="text lang-button-translate"></span>
+								<div class="menu">
+								<div class="item" onclick="changeLanguage('fa')">فارسی</div>
+								<div class="item" onclick="changeLanguage('en')">English</div>
+								<div class="item" onclick="changeLanguage('ar')">عربی</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="ui small icon buttons">
+								<button class="large ui icon button download-popup" onclick="downloadCode()">
+									<i class="download icon"></i>
+								</button>
+								<div class="ui action input">
+									<input type="file">
+								</div>
+								<button class="large ui icon button upload-popup upload-action">
+									<i class="upload icon"></i>
+								</button>
+							</div>
+						</div>
+						<div class="item">		
+							<i id='serverIndicator' class="large yellow circle icon server-indicator-popup"></i>
+						</div>
+						<div class="item">
+							<div class="ui logo shape">
+								<div class="sides">
+									<div class="active ui side">
+										<a href="https://roobin.co/">
+											<img class="ui tiny image" src="static/media/roobin.png">
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="tablet only row">
+			<div class="column">
+				<div class="ui orange inverted borderless menu">
+					<div class="item">
+						<div class="ui icon buttons">
+							<button id='showCode' class="Mini ui icon button show-code-popup" onclick="showCode()">
+								<i class="Mini code icon"></i>
+							</button>
+							<button id='runBtn' class="Mini ui icon button run-code-popup" onclick="runCode()">
+								<i class="Mini green play icon"></i>
+							</button>
+							<button id='stopBtn' class="Mini ui icon button stop-code-popup" onclick="stopCode()">
+								<i class="Mini red stop icon"></i>
+							</button>
+						</div>
+					</div>
+					<div class="item">
+						<div class="Mini ui floating top left pointing dropdown icon button code-lang-popup">
+							<i class="dropdown icon"></i>
+							<div id="jsItem" class="text">
+								<i class="Mini js icon"></i>
+							</div>
+							<div class="menu">
+								<div id="jsItem" class="item" onclick="setCodingLang('js')">
+								<i class="Mini js icon"></i>
+								</div>
+								<div id="pythonItem" class="item" onclick="setCodingLang('py')">
+								<i class="Mini python icon"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="right menu">
+						<div class="item">
+							<div class="Mini ui language floating dropdown link">
+								<i class="world icon"></i>
+								<span id="selectLang" class="text lang-button-translate"></span>
+								<div class="menu">
+								<div class="item" onclick="changeLanguage('fa')">فارسی</div>
+								<div class="item" onclick="changeLanguage('en')">English</div>
+								<div class="item" onclick="changeLanguage('ar')">عربی</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="ui small icon buttons">
+								<button class="Mini ui icon button download-popup" onclick="downloadCode()">
+									<i class="Mini download icon"></i>
+								</button>
+								<div class="ui action input">
+									<input type="file">
+								</div>
+								<button class="Mini ui icon button upload-popup upload-action">
+									<i class="Mini upload icon"></i>
+								</button>
+							</div>
+						</div>
+						<div class="item">		
+							<i id='serverIndicator' class="large yellow circle icon server-indicator-popup"></i>
+						</div>
+						<div class="item">
+							<div class="ui logo shape">
+								<div class="sides">
+									<div class="active ui side">
+										<a href="https://roobin.co/">
+											<img class="ui tiny image" src="static/media/roobin.png">
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="mobile only row">
+			<div class="column">
+				<div class="ui orange inverted borderless menu">
+					<a id="mobile_item" class="item"><i class="bars icon"></i></a>
+					<div class="right menu">
+						<div class="item">
+							<div class="large ui language floating dropdown link">
+								<i class="world icon"></i>
+								<span id="selectLang" class="text lang-button-translate"></span>
+								<div class="menu">
+								<div class="item" onclick="changeLanguage('fa')">فارسی</div>
+								<div class="item" onclick="changeLanguage('en')">English</div>
+								<div class="item" onclick="changeLanguage('ar')">عربی</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="ui small icon buttons">
+								<button class="large ui icon button download-popup" onclick="downloadCode()">
+									<i class="download icon"></i>
+								</button>
+								<div class="ui action input">
+									<input type="file">
+								</div>
+								<button class="large ui icon button upload-popup upload-action">
+									<i class="upload icon"></i>
+								</button>
+							</div>
+						</div>
+						<div class="item">		
+							<i id='serverIndicator' class="large yellow circle icon server-indicator-popup"></i>
+						</div>
+						<div class="item">
+							<div class="ui logo shape">
+								<div class="sides">
+									<div class="active ui side">
+										<a href="https://roobin.co/">
+											<img class="ui tiny image" src="static/media/roobin.png">
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="ui pushable segment">
+		<div class="ui orange inverted sidebar borderless vertical menu" style="height:100%;">
+			<div class="item">
+				<button id='showCode' class="large ui button show-code-translate" onclick="showCode()"></button>
+			</div>
+			<div class="item">
+				<div class="large ui floating top left pointing dropdown icon button">
+					<i class="dropdown icon"></i>
+					<div id="jsItem" class="text js-item-translate"></div>
+					<div class="menu">
+						<div id="jsItem" class="item js-item-translate" onclick="setCodingLang('js')">
+						<i class="js icon"></i>
+						</div>
+						<div id="pythonItem" class="item python-item-translate" onclick="setCodingLang('py')">
+						<i class="python icon"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<button id='runBtn' class="large ui button run-button-translate" onclick="runCode()"></button>
+			</div>
+			<div class="item">
+				<button id='stopBtn' class="large ui button stop-button-translate" onclick="stopCode()"></button>
+			</div>
+		</div>
+		<div class="pusher">
+			<div id="blocklyDiv" style="height: 550px;" ></div>
+		</div>
+	</div>
+	
+<script type="text/js-worker" src="worker.js">
+	var hasMore = false;
+	var req;
+	var href = 'http://localhost:1234';
+	function initApi(interpreter, globalObject) {
+		// Add an API function for the alert() block.
+		var wrapper = function(text) {
+			postMessage('alert("' + (arguments.length ? text : '') + '")');
+		};
+		interpreter.setProperty(globalObject, 'alert',
+			interpreter.createNativeFunction(wrapper));
+		
+		// Add an API function for the prompt() block.
+		wrapper = function(text) {
+			postMessage('prompt("' + text + '")');
+		};
+		interpreter.setProperty(globalObject, 'prompt',
+			interpreter.createNativeFunction(wrapper));
+		
+		// Add an API function for the callStt() block.
+		wrapper = function() {
+			if(!navigator.userAgent.match(/Android/i)){
+				var query = 'set_stt_var';
+				postMessage('requestServer("' + (arguments.length ? query : '') + '")');
+			}else{
+				postMessage('callStt()');
+			}
+		};
+		interpreter.setProperty(globalObject, 'callStt',
+			interpreter.createNativeFunction(wrapper));
+
+		// Add an API function for the callTts() block.
+		wrapper = function(text) {
+			if(!navigator.userAgent.match(/Android/i)){
+				var query = 'begoo/' + text;
+				postMessage('requestServer("' + (arguments.length ? query : '') + '")');
+			}else{
+				postMessage('callTts("' + (arguments.length ? text : '') + '")');
+			}
+		};
+		interpreter.setProperty(globalObject, 'callTts',
+			interpreter.createNativeFunction(wrapper));
+
+		wrapper = function(command, arg1, arg2, arg3, arg4, callback) {
+			var query;
+			commandKeys = {
+				'say' : 'begoo',
+				'setLanguage' : 'set_language',
+				'setSpeakingSpeed' : 'set_speak_speed',
+				'setSpeakingPitch' : 'set_speak_pitch',
+				'changeSpeakingPitch' : 'change_speak_pitch',
+				'listenAndSave' : 'set_stt_var',
+				'changeEye' : 'change_eye',
+				'changeMouthForm' : 'change_mouth',
+				'recovery' : 'recovery',
+				'introduce' : 'introduce',
+				'sayHello' : 'say_hello',
+				'chuckle' : 'chuckle',
+				'ask' : 'askNwait',
+				'wikipediaSearch' : 'search_in_wikipedia',
+				'wikipediaTextSearch' : 'search_sth_in_wikipedia',
+				'todaysDate' : 'today',
+				'whatDaysDate' : 'chan_shanbeh',
+				'riddleGame' : 'riddle_game',
+				'arrowGame' : 'arrow_game',
+				'patternGameTwo' : 'repeating_pattern_game2',
+				'numberSeries' : 'number_series',
+				'amazingFacts' : 'amazing_facts',
+				'gameExplanation' : 'games_explanation',
+				'tellStory' : 'story_telling',
+				'blink' : 'roobinBlink',
+				'lookSides' : 'roobinLookSides',
+				'lookAhead' : 'roobinNeutral',
+				'drawOnEyes' : 'draw_on_eyes',
+				'drawOnMouth' : 'draw_on_mouth',
+				'turnOffEyeOrMouth' : 'clean_the_matrices'
+			}
+			var query = commandKeys[command];
+			for(var i = 1; i < arguments.length - 1; ++i){
+				if(arguments[i]){
+					query += '/' + arguments[i];
+				}
+			}
+			var callback = arguments[arguments.length - 1];
+			var url = href + '/' + query;
+			req = new XMLHttpRequest();
+			req.open('GET', url, true);
+			req.responseType = 'json';
+			
+			req.onreadystatechange = function() {
+				if (req.readyState == 4 && req.status == 200) {
+					if(req.response){
+						callback(req.response.string);
+					}else{
+						callback('request sent successfully');
+					}
+				}else{
+					callback('error');
+				}
+			};
+			req.send(null);
+		};
+		interpreter.setProperty(globalObject, 'roobin',
+			interpreter.createAsyncFunction(wrapper));
+
+		wrapper = function(command, arg1, arg2){
+			var query;
+			if(command === 'moveMotorDroplist'){
+				query = 'move_motor_droplist' + '/' + arg1 + '/' + arg2;
+			}else if(command === 'moveMotor'){
+				query = 'move_motor' + '/' + arg1 + '/' + arg2;
+			}else{
+				return;
+			}
+			postMessage('requestServer(\'' + query + '\')');
+		}
+		interpreter.setProperty(globalObject, 'roobinMotor',
+			interpreter.createNativeFunction(wrapper));		
+
+		// Add an API function for the rotate() block.
+		wrapper = function(text) {
+			postMessage('rotate("' + (arguments.length ? text : '') + '")');
+		};
+		interpreter.setProperty(globalObject, 'rotate',
+			interpreter.createNativeFunction(wrapper));
+	}
+</script>
+<script type="text/js-worker">
+	var code;
+	var myInterpreter;
+	var loopCounter = 0;
+	var runner = function() {
+		if (myInterpreter) {
+			try{
+				hasMore = myInterpreter.run(); 
+				if (hasMore) {
+					// Ran until an async call.  Give this call a chance to run.
+					// Then start running again later.
+					// 1000ms is waaay too long, but is used here to demo the pause.
+					setTimeout(runner, 1000);
+				}
+			}catch(error){
+				postMessage('error:' + error);
+			}finally{
+				if (!hasMore){
+					// Program is complete.
+					myInterpreter = undefined;
+					loopCounter = 0;
+					postMessage('fin');
+				}
+			}
+		}
+	};
+	onmessage = function(oEvent) {
+		var data = oEvent.data;
+		if (data.url) {
+			var url = data.url;
+			acorn_interpreter_url = url + '/static/js/acorn_interpreter.js';
+			importScripts(acorn_interpreter_url);
+		}else if(data.code){
+			code = data.code;
+			if(!code){
+				postMessage('fin');
+				return;
+			}
+			// window is not recognized here in this worker context!
+			while(code.indexOf('window.') !== -1){
+				code = code.replace('window.', '');
+			}
+			if(myInterpreter === undefined){
+				myInterpreter = new Interpreter(code, initApi);
+				runner();
+			}
+		}
+	};
+</script>
+</body>
+</html>

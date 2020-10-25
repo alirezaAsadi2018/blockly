@@ -14,6 +14,13 @@ goog.provide('Blockly.JavaScript.loops');
 
 goog.require('Blockly.JavaScript');
 
+Blockly.JavaScript['loop_forever'] = function(block) {
+  // Loop forever.
+  var branch = Blockly.JavaScript.statementToCode(block, 'DO');
+  branch = Blockly.JavaScript.addLoopTrap(branch, block);
+  return 'while (true) {\n' + branch + '}\n';
+};
+
 Blockly.JavaScript['controls_repeat_ext'] = function(block) {
   // Repeat n times.
   if (block.getField('TIMES')) {

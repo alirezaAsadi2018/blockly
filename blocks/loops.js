@@ -34,6 +34,18 @@ goog.require('Blockly.Warning');
 Blockly.Constants.Loops.HUE = 120;
 
 Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
+  // Block for 'loop forever' loop.
+  {
+    "type": "loop_forever",	
+    "message0": "%{BKY_LOOP_FOREVER} %1",
+    "args0": [{
+      "type": "input_statement",
+      "name": "DO"
+    }],
+    "previousStatement": null,
+    "nextStatement": null,
+    "style": "loop_blocks"
+  },
   // Block for repeat n times (external number).
   {
     "type": "controls_repeat_ext",
