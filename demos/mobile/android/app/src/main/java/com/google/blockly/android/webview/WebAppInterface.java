@@ -189,7 +189,7 @@ public class WebAppInterface implements Codes {
     @JavascriptInterface
     public void tts(String text, String lang) {
         if (checkIfEspeakIsInstalled(lang)) {
-            mainActivity.getMTtsInstance().tts(text, IDLE_UTTERANCE_ID);
+            mainActivity.getMTtsInstance().sayFromFile(text);
         }
     }
 

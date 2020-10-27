@@ -56,6 +56,7 @@ Blockly.Msg["CONTROLS_IF_TOOLTIP_3"] = "إذا كانت القيمة الأول�
 Blockly.Msg["CONTROLS_IF_TOOLTIP_4"] = "إذا كانت القيمة الأولى تساوي \"صحيح\", إذن قم بتنفيذ القطعة الأولى من الأوامر. والا , إذا كانت القيمة الثانية تساوي \"صحيح\", قم بتنفيذ القطعة الثانية من الأوامر. إذا لم تكن هناك أي قيمة تساوي صحيح, قم بتنفيذ آخر قطعة من الأوامر.";
 Blockly.Msg["CONTROLS_REPEAT_HELPURL"] = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg["CONTROLS_REPEAT_INPUT_DO"] = "نفّذ";
+Blockly.Msg["LOOP_FOREVER"] = "كرر إلى الأبد";
 Blockly.Msg["CONTROLS_REPEAT_TITLE"] = "كرر  %1 مرات";
 Blockly.Msg["CONTROLS_REPEAT_TOOLTIP"] = "نفّذ بعض الأوامر عدة مرات.";
 Blockly.Msg["CONTROLS_WHILEUNTIL_HELPURL"] = "https://github.com/google/blockly/wiki/Loops#repeat";  // untranslated
@@ -420,10 +421,10 @@ Blockly.Msg["ROOBIN_STT"] = "تحويل الكلام إلى نص";
 Blockly.Msg["ROOBIN_SULLIVAN"] = "سوليفان";
 Blockly.Msg["ROOBIN_TODAY_DATE"] = "تاريخ اليوم";
 Blockly.Msg["ROOBIN_TRIANGULAR"] = "الثلاثي";
-Blockly.Msg["ROOBIN_TTS"] = "تحويل النص: %1 إلى كلام";
+Blockly.Msg["ROOBIN_TTS"] = "قل %1";
 Blockly.Msg["RUN"] = "يركض";
 Blockly.Msg["SELECT_LANGUAGE"] = "اختار اللغة";
-Blockly.Msg["SHOW_CODE"] = "الكود";
+Blockly.Msg["SHOW_CODE"] = "إظهار الكود";
 Blockly.Msg["STOP"] = "قف";
 Blockly.Msg["TEXT_APPEND_HELPURL"] = "https://github.com/google/blockly/wiki/Text#text-modification";  // untranslated
 Blockly.Msg["TEXT_APPEND_TITLE"] = "إلى %1 إلصق نص %2";
@@ -532,9 +533,11 @@ Blockly.Msg["PROCEDURES_DEFRETURN_TITLE"] = Blockly.Msg["PROCEDURES_DEFNORETURN_
 Blockly.Msg["TEXT_APPEND_VARIABLE"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
 Blockly.Msg["TEXT_CREATE_JOIN_ITEM_TITLE_ITEM"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
 Blockly.Msg['ROOBIN_WHEN_KEY_PRESSED'] = "عند الضغط على مفتاح %1";
-Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS'] = "يجب عليك شراء الروبین لفتح هذه الكتل!!";
+Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS'] = "من الأفضل أن يكون لديك روبين وبرامجه لاستخدام هذه الكتل !!";
 Blockly.Msg['ROOBIN_DOWNLOAD'] = "تنزیل الکود";
 Blockly.Msg['ROOBIN_UPLOAD'] = "تحميل الکود";
+Blockly.Msg['SERVER_INDICATOR_PENDING'] = "معلق";
+Blockly.Msg['SERVER_INDICATOR_ONLINE'] = "عبر الإنترنت";
 
 
 Blockly.Msg["LOGIC_HUE"] = "210";

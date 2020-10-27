@@ -41,7 +41,7 @@ function download(filename, text) {
 
 function downloadCode(){
     var text = worspaceToBlockText();
-    download("blocks.txt", text);
+    download("RoobinBlocks.txt", text);
 }
 
 window.onload = function(){
@@ -66,6 +66,7 @@ document.write('<script src="static/js/python_compressed.js"></script>\n');
 document.write('<script src="static/js/toolbox_standard.js"></script>\n');
 document.write('<script src="static/msg/js/' + workspaceLang + '.js"></script>\n');
 document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
+document.write('<script src="static/js/roobin_controller.js"></script>\n');
 
 function onresizeFunc(){
     Blockly.svgResize(getWorkspace());
@@ -155,18 +156,26 @@ function addPopupToDisabledBlocks(){
     
     $('g .blocklyDisabled.blocklyDraggable').each(function(index) {
         if(userAddedToWorkspaceBlocks.includes($(this)[0])){
-            console.log('includes');
             return;
         }
         $(this).popup({
           content  : Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS']
         });
+		$(this).click(function() {
+			openTab('https://www.roobin.co/product/roobin', true);
+			//$("<a href='www.google.com' target='_blank'></a>").trigger('click');
+		});
     });
 }
 
 function init() {
     document.title = Blockly.Msg['ROOBIN_CATEGORY'];
-    
+	
+    $('.ui.sidebar').sidebar({
+		context: $('.ui.pushable.segment'),
+		transition: 'overlay'
+	}).sidebar('attach events', '#mobile_item');
+	
 	$('.ui.dropdown').dropdown();
 
 	$('.combo.dropdown').dropdown({
@@ -174,68 +183,72 @@ function init() {
     });
 
     // enable all popups for mobile div top menu
-    $('.show-code-popup').popup({
-        position   : 'bottom center',
-        content : Blockly.Msg['SHOW_CODE']
-    });
-    $('.run-code-popup').popup({
-        position   : 'bottom center',
-        content : Blockly.Msg['RUN']
-    });
-    $('.stop-code-popup').popup({
-        position   : 'bottom center',
-        content : Blockly.Msg['STOP']
-    });
-    $('.bluetooth-popup').popup({
-        position   : 'bottom center',
-        content : Blockly.Msg['BLUETOOTH_CONNECTION']
-    });
-    $('.code-lang-popup').popup({
-        position   : 'bottom center',
-        content : Blockly.Msg['SELECT_LANGUAGE']
-    });
-    $('.download-popup').popup({
-        position   : 'bottom right',
-        content : Blockly.Msg['ROOBIN_DOWNLOAD']
-    });
-    $('.upload-popup').popup({
-        position   : 'bottom right',
-        content : Blockly.Msg['ROOBIN_UPLOAD']
-    });
-    
-
-    // popup for download and upload btns
-    $('#downloadBtn').popup({
-        position   : 'bottom right',
-        content : Blockly.Msg['ROOBIN_DOWNLOAD']
-    });
-
-    $('#uploadBtn').popup({
-        position   : 'bottom right',
-        content : Blockly.Msg['ROOBIN_UPLOAD']
-    });
+    $('.show-code-popup').each(function(index) {
+		$(this).popup({
+			position   : 'bottom center',
+			content : Blockly.Msg['SHOW_CODE']
+		});
+	});
+    $('.run-code-popup').each(function(index) {
+		$(this).popup({
+			position   : 'bottom center',
+			content : Blockly.Msg['RUN']
+    	});
+	});
+    $('.stop-code-popup').each(function(index) {
+		$(this).popup({
+			position   : 'bottom center',
+			content : Blockly.Msg['STOP']
+		});
+	});
+    $('.bluetooth-popup').each(function(index) {
+		$(this).popup({
+			position   : 'bottom center',
+			content : Blockly.Msg['BLUETOOTH_CONNECTION']
+		});
+	});
+    $('.code-lang-popup').each(function(index) {
+		$(this).popup({
+			position   : 'bottom center',
+			content : Blockly.Msg['SELECT_LANGUAGE']
+		});
+	});
+    $('.download-popup').each(function(index) {
+		$(this).popup({
+			position   : 'bottom right',
+			content : Blockly.Msg['ROOBIN_DOWNLOAD']
+		});
+	});
+    $('.upload-popup').each(function(index) {
+		$(this).popup({
+			position   : 'bottom right',
+			content : Blockly.Msg['ROOBIN_UPLOAD']
+		});
+	});
 
     // upload button click handler
-    $('#uploadBtn').click(function() {
-        $(this).parent().find("input:file").click();
+    $('.upload-action').each(function(index) {
+		$(this).click(function() {
+			$(this).parent().find("input:file").click();
+		});
     });
       
     // upload button action handler
-    $('input:file', '.ui.action.input').on('change', function(e) {
-        var file = e.target.files[0];
-        if(file && file.type.match('text')){
-            var reader = new FileReader();
-            reader.onload = (function(theFile) {
-                return function(e) {
-                    var text = e.target.result;
-                    blockTextToWorkspace(text);
-                };
-            })(file);
-            reader.readAsText(file);
-        }
-    });
-
-    
+	$('input:file', '.ui.action.input').each(function(index){
+		$(this).on('change', function(e) {
+			var file = e.target.files[0];
+			if(file && file.type.match('text')){
+				var reader = new FileReader();
+				reader.onload = (function(theFile) {
+					return function(e) {
+						var text = e.target.result;
+						blockTextToWorkspace(text);
+					};
+				})(file);
+				reader.readAsText(file);
+			}
+		});
+	});    
 
     initLanguage();
 
@@ -245,7 +258,7 @@ function init() {
     // UI part
 	convertCategoriesTosemantic();
 
-   // addEventsToBluetoothButton();
+    addEventsToBluetoothButton();
 
     // Listen to events on primary workspace.
 	myWorkspace.addChangeListener(blocksEventListener);
@@ -412,6 +425,15 @@ function initApi(interpreter, globalObject) {
         interpreter.createNativeFunction(wrapper));
 }
 
+function includesOneFromList(message, list){
+    for(var l of list){
+        if(message.indexOf(l) !== -1){
+            return true;
+        }
+    }
+    return false;
+}
+
 function createWorker(){
     try{
         var blob;
@@ -429,9 +451,48 @@ function createWorker(){
         var windowUrl = window.URL || window.webkitURL;
         var blobUrl = windowUrl.createObjectURL(blob);
         document.worker = new Worker(blobUrl);
+        document.worker.onmessage = function(oEvent) {
+            workerEvalMessages = [
+                'alert', 'prompt', 'callStt', 'callTts', 'rotate', 'requestServer'
+            ]
+            workerAndroidQueryMessages = [
+                "say", "setLanguage", "setSpeakingSpeed", "setSpeakingPitch", "changeSpeakingPitch", "listenAndSave", "changeEye", 
+                "changeMouthForm", "recovery", "introduce", "sayHello", "chuckle", "ask", "wikipediaSearch", "wikipediaTextSearch", 
+                "todaysDate", "whatDaysDate", "riddleGame", "arrowGame", "patternGameTwo", "numberSeries", "amazingFacts", 
+                "gameExplanation", "tellStory", "blink", "lookSides", "lookAhead", "drawOnEyes", "drawOnMouth", "turnOffEyeOrMouth",
+                "move_motor",  "move_motor_droplist"
+            ]
+            if(oEvent.data === 'fin'){
+                resetInterpreter();
+            }else if(includesOneFromList(oEvent.data, workerEvalMessages)){
+                eval(oEvent.data);
+            }else if(includesOneFromList(oEvent.data, workerAndroidQueryMessages)){
+                roobinBlocksQueryToCode(oEvent.data, workerAndroidQueryMessages);
+                //AndroidSendBluetooth(code);
+            }else if(oEvent.data.indexOf('error:') !== -1){
+                alert(oEvent.data.substr(oEvent.data.indexOf('error:') + 'error:'.length));
+                resetInterpreter();
+            }
+        };
     }catch (e2) {
         // can do nothing more
     }
+}
+
+function roobinBlocksQueryToCode(msg, queries){
+    parts = msg.split('/');
+    cmd = parts[0];
+    args = parts.splice(1);
+    if(cmd === 'say'){
+        callTts(args[0]);
+        //return lipSynchCmd(audio);
+    }else if(cmd === 'listenAndSave'){
+        speech = callStt();
+        // saveSpeech(speech);
+    }else if(cmd === 'move_motor'){
+        move_motor(args[0], args[1]);
+    }
+    return msg;
 }
 
 function runCode(code){
@@ -476,32 +537,9 @@ function runCode(code){
         return;
     }
 
-    document.worker.onmessage = function(oEvent) {
-		if(oEvent.data === 'fin'){
-			resetInterpreter();
-		}else if(oEvent.data.indexOf('alert') !== -1){
-            eval(oEvent.data);
-        }else if(oEvent.data.indexOf('prompt') !== -1){
-            eval(oEvent.data);
-        }else if(oEvent.data.indexOf('callStt') !== -1){
-            eval(oEvent.data);
-        }else if(oEvent.data.indexOf('callTts') !== -1){
-            eval(oEvent.data);
-        }else if(oEvent.data.indexOf('rotate') !== -1){
-            eval(oEvent.data);
-        }else if(oEvent.data.indexOf('requestServer') !== -1){
-            eval(oEvent.data);
-        }else if(oEvent.data.indexOf('error:') !== -1){
-            alert(oEvent.data.substr(oEvent.data.indexOf('error:') + 'error:'.length));
-            resetInterpreter();
-        }
-    };
     var url =  window.location.protocol + '//' +
         window.location.host + window.location.pathname;
-    var index = url.indexOf('index.html');;
-    if (index != -1) {
-        url = url.substring(0, index - 1);
-    }
+    url = url.replace(/\/?\w+\.html\/?/gi, '');
     // this is really odd but without this line english page url is not correct!!!
     if(!isAndroidUserAgent()){
         url = url + '/';
@@ -535,11 +573,23 @@ function changeServerIndicatorColor(){
         if(serverIndicatorIcons[i].classList.contains(serverOnIndicatorColor)){
             serverIndicatorIcons[i].classList.remove(serverOnIndicatorColor);
             serverIndicatorIcons[i].classList.add(serverOffIndicatorColor);
+            $('.server-indicator-popup').each(function(index) {
+                $(this).popup({
+                    position   : 'bottom center',
+                    content : Blockly.Msg['SERVER_INDICATOR_PENDING']
+                });
+            });
         }else if(serverIndicatorIcons[i].classList.contains(serverOffIndicatorColor)){
             serverIndicatorIcons[i].classList.remove(serverOffIndicatorColor);
             serverIndicatorIcons[i].classList.add(serverOnIndicatorColor);
+            $('.server-indicator-popup').each(function(index) {
+                $(this).popup({
+                    position   : 'bottom center',
+                    content : Blockly.Msg['SERVER_INDICATOR_ONLINE']
+                });
+            });
         }
-    }   
+    }
 }
 
 function checkServerConnected(){
@@ -569,7 +619,7 @@ function requestServer(query){
 function callTts(text){
     var busy = false;
     if(!isAndroidUserAgent()){
-        alert('not supported!');
+        alert('oops!! Tts is only available on Android!!');
         return;
     }
     Android.tts(text, workspaceLang);
@@ -577,7 +627,7 @@ function callTts(text){
 
 function callStt(){
     if(!isAndroidUserAgent()){
-        alert("Sorry!! Stt is available only on Android!!");
+        alert("oops!! Stt is only available on Android!!");
         return;
     }
     var string = "";
@@ -587,6 +637,17 @@ function callStt(){
         alert(e);
     }
     return string;
+}
+
+function openTab(url, blank){
+	if(!isAndroidUserAgent()){
+		if(blank){
+			window.open(url, '_blank');
+		}else{
+			// open popup
+			window.open(url);
+		}
+	}
 }
 
 function redirectToUri(uri){
@@ -599,12 +660,6 @@ function redirectToUri(uri){
 
 function isAndroidUserAgent(){
     return navigator.userAgent.match(/Android/i);
-}
-
-function callAndroidStt(btn) {
-    string = "default string";
-    string = Android.stt();
-    alert(string);
 }
 
 function loadWorkspace(){
@@ -649,21 +704,24 @@ function loadWorkspace(){
 }
 
 function addEventsToBluetoothButton(){
-    document.querySelector('.connect-bluetooth-device').addEventListener('click', function(evnet){
-		if(!deviceArray || deviceArray.length === 0){
-            populateBluetoothDevicesForm();
-		}else{
-			bluetoothDeviceSelected = $(".select-bluetooth-device").dropdown('get value');
-            if(!bluetoothDeviceSelected || bluetoothDeviceSelected === Blockly.Msg['BLUETOOTH_SELECT_DEVICE']){
-				return;
+    $('.connect-bluetooth-device').each(function(index){
+        $(this).on('click', function(evnet){
+            if(!deviceArray || deviceArray.length === 0){
+                populateBluetoothDevicesForm();
+            }else{
+                var bluetoothDeviceSelected = $(this).parent().find(".select-bluetooth-device").dropdown('get value');
+                if(!bluetoothDeviceSelected || bluetoothDeviceSelected === Blockly.Msg['BLUETOOTH_SELECT_DEVICE']){
+                    return;
+                }
+                if(isAndroidUserAgent()){
+                    Android.connectBluetooth(bluetoothDeviceSelected);
+                }
             }
-            if(isAndroidUserAgent()){
-                Android.connectBluetooth(bluetoothDeviceSelected);
-            }
-		}
-	});
-
-	document.querySelector('.select-bluetooth-device').addEventListener('click', populateBluetoothDevicesForm);
+        });
+    });
+	$('.select-bluetooth-device').each(function(index){
+        $(this).on('click', populateBluetoothDevicesForm);
+    });
 }
 
 function populateBluetoothDevicesForm(){
@@ -673,13 +731,22 @@ function populateBluetoothDevicesForm(){
     $.each(deviceArray, function (i, item) {
         item = item.trim();
         item = item.split(" ").join("-").split('_').join("-");
-        if (!$('.bluetooth-drop .' + item).length) {
-            $('.bluetooth-drop').append($('<div>', {
-                value: i.toString(),
-                text: item.toString(),
-                class: 'item ' + item
-            }));
-        }
+        $('.bluetooth-drop').each(function(index){
+            if(!$(this).find('.' + item).length){
+                $(this).append($('<div>', {
+                    value: i.toString(),
+                    text: item.toString(),
+                    class: 'item ' + item
+                }));
+            } 
+        });
+        // if (!$('.bluetooth-drop .' + item).length) {
+        //     $('.bluetooth-drop').append($('<div>', {
+        //         value: i.toString(),
+        //         text: item.toString(),
+        //         class: 'item ' + item
+        //     }));
+        // }
     });
 }
 
