@@ -396,8 +396,8 @@ Blockly.Msg["ROOBIN_SEARCH_WORD_IN_WIKI"] = "البحث في %1 في ويكيب�
 Blockly.Msg["ROOBIN_SET_LANG"] = "تغيير اللغة إلى %1";
 Blockly.Msg["ROOBIN_SET_LANG_EN"] = "الإنجليزية";
 Blockly.Msg["ROOBIN_SET_LANG_FA"] = "الفارسية";
-Blockly.Msg["ROOBIN_SET_SPEAK_PITCH"] = "تعيين درجة التحدث إلى %1";
-Blockly.Msg["ROOBIN_SET_SPEAK_SPEED"] = "تعيين سرعة التحدث إلى %1";
+Blockly.Msg["ROOBIN_SET_SPEAK_PITCH"] = "درجة التحدث = %1";
+Blockly.Msg["ROOBIN_SET_SPEAK_SPEED"] = "سرعة التحدث = %1";
 Blockly.Msg["ROOBIN_SET_STT_VAR"] = "تحويل الكلام إلى نص";
 Blockly.Msg["ROOBIN_SPONGE_BOB"] = "سبونجبوب";
 Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_ONE"] = "مزرعة الحيوانات 1";

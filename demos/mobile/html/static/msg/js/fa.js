@@ -397,7 +397,7 @@ Blockly.Msg["ROOBIN_SET_LANG"] = "تغییر زبان به %1";
 Blockly.Msg["ROOBIN_SET_LANG_EN"] = "انگلیسی";
 Blockly.Msg["ROOBIN_SET_LANG_FA"] = "فارسی";
 Blockly.Msg["ROOBIN_SET_SPEAK_PITCH"] = "نازکی صدا = %1";
-Blockly.Msg["ROOBIN_SET_SPEAK_SPEED"] = "سرعت صدا را %1 تغییر بده";
+Blockly.Msg["ROOBIN_SET_SPEAK_SPEED"] = "سرعت صدا = %1";
 Blockly.Msg["ROOBIN_SET_STT_VAR"] = "صدا را بشنو و در جواب ذخیره کن";
 Blockly.Msg["ROOBIN_SPONGE_BOB"] = "باب اسفنجی";
 Blockly.Msg["ROOBIN_STORY_LIST_ANIMAL_FARM_ONE"] = "قلعه حیوانات ۱";
