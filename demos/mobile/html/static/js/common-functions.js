@@ -521,7 +521,7 @@ function runCode(code){
     for(var i = 0; i < runButtons.length; ++i){
         runButtons[i].classList.add('disabled');
     }
-    Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout,exit');
+    Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout,exit,arg,arg1,arg2');
 
     createWorker();
 

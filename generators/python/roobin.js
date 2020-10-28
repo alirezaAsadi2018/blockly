@@ -5,16 +5,20 @@ goog.provide('Blockly.Python.roobin');
 goog.require('Blockly.Python');
 
 Blockly.Python['TTS'] = function(block) {
-  var text = Blockly.Python.valueToCode(block, 'TTS_INPUT',
-  Blockly.Python.ORDER_NONE) || '';
-  if(!text)
-    return '';
-  return 'if ' + text +':\n' + Blockly.Python.INDENT + 'roobin(\'say\', ' + text + ')\n';
+	var text = Blockly.Python.valueToCode(block, 'TTS_INPUT',
+	Blockly.Python.ORDER_NONE) || '';
+	if(!text)
+		return '';
+	var code = 'arg = ' + text + '\n';
+	code += 'if arg:\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'say\', arg)\n';
+	return code;
 };
 
 Blockly.Python['STT'] = function(block) {
-  var code = "callStt()";
-  return [code, Blockly.Python.ORDER_ATOMIC];
+	var code = "callStt()";
+	return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['motor_change_rotation_to_given_degree'] = function(block){
@@ -79,19 +83,31 @@ Blockly.Python['roobin_set_lang'] = function(block) {
 Blockly.Python['roobin_set_speak_speed'] = function(block) {
 	var arg = Blockly.Python.valueToCode(block, 'SPEED',
 		Blockly.Python.ORDER_NONE) || '0';
-	return 'if ' + arg +' or ' + arg + ' == 0:\n' + Blockly.Python.INDENT + 'roobin(\'setSpeakingSpeed\', \'' + arg + '\')\n';
+	var code = 'arg = ' + arg + '\n';
+	code += 'if arg or arg == 0\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'setSpeakingSpeed\', str(arg))\n';
+	return code;
 };
 
 Blockly.Python['roobin_set_speak_pitch'] = function(block) {
 	var arg = Blockly.Python.valueToCode(block, 'PITCH',
 		Blockly.Python.ORDER_NONE) || '0';
-	return 'if ' + arg +' or ' + arg + ' == 0:\n' + Blockly.Python.INDENT + 'roobin(\'setSpeakingPitch\', \'' + arg +'\')\n';
+	var code = 'arg = ' + arg + '\n';
+	code += 'if arg or arg == 0\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'setSpeakingPitch\', str(arg))\n';
+	return code;
 };
 
 Blockly.Python['roobin_change_speak_pitch'] = function(block) {
 	var arg = Blockly.Python.valueToCode(block, 'PITCH',
 		Blockly.Python.ORDER_NONE) || '0';
-	return 'if ' + arg +' or ' + arg + ' == 0:\n' + Blockly.Python.INDENT + 'roobin(\'changeSpeakingPitch\', \'' + arg +'\')\n';
+	var code = 'arg = ' + arg + '\n';
+	code += 'if arg or arg == 0\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'changeSpeakingPitch\', str(arg))\n';
+	return code;
 };
 
 Blockly.Python['roobin_set_stt_var'] = function(block) {
@@ -141,7 +157,11 @@ Blockly.Python['roobin_ask_wait'] = function(block) {
 		Blockly.Python.ORDER_NONE) || '';
 	if(!text)
 		return '';
-	return 'if ' + text +':\n' + Blockly.Python.INDENT + 'roobin(\'ask\', ' + text + ')\n';
+	var code = 'arg = ' + text + '\n';
+	code += 'if arg:\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'ask\', arg)\n';
+	return code;
 };
 
 Blockly.Python['roobin_search_in_wikipedia'] = function(block) {
@@ -153,7 +173,11 @@ Blockly.Python['roobin_search_word_in_wikipedia'] = function(block) {
 		Blockly.Python.ORDER_NONE) || '';
 	if(!text)
 		return '';
-	return 'if ' + text +':\n' + Blockly.Python.INDENT + 'roobin(\'wikipediaTextSearch\', ' + text + ')\n';
+	var code = 'arg = ' + text + '\n';
+	code += 'if arg:\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'wikipediaTextSearch\', arg)\n';
+	return code;
 };
 
 Blockly.Python['roobin_today_date'] = function(block) {
@@ -201,14 +225,22 @@ Blockly.Python['roobin_move_motor'] = function(block) {
 	var headOrNeck = block.getFieldValue('SEL_NECK_HEAD');
 	var arg = Blockly.Python.valueToCode(block, 'ROTATION_INPUT',
 		Blockly.Python.ORDER_NONE) || '0';
-	return 'if ' + arg +' or ' + arg + ' == 0:\n' + Blockly.Python.INDENT + 'roobinMotor(\'moveMotor\', \'' + headOrNeck +'\', \'' + arg + '\')\n';
+	var code = 'arg = ' + arg + '\n';
+	code += 'if arg or arg == 0:\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobinMotor(\'moveMotor\', \'' + headOrNeck +'\', str(arg))\n';
+	return code;
 };
 
 Blockly.Python['roobin_rotate_motor'] = function(block) {
 	var headOrNeck = block.getFieldValue('SEL_NECK_HEAD');
 	var arg = Blockly.Python.valueToCode(block, 'ROTATION_INPUT',
 		Blockly.Python.ORDER_NONE) || '0';
-	return 'if ' + arg +' or ' + arg + ' == 0:\n' + Blockly.Python.INDENT + 'roobinMotor(\'moveMotorDroplist\', \'' + headOrNeck +'\', \'' + arg + '\')\n';
+	var code = 'arg = ' + arg + '\n';
+	code += 'if arg or arg == 0:\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobinMotor(\'moveMotorDroplist\', \'' + headOrNeck +'\', str(arg))\n';
+	return code;
 };
 
 Blockly.Python['roobin_blink'] = function(block) {
@@ -230,7 +262,12 @@ Blockly.Python['roobin_draw_on_eyes'] = function(block) {
 		Blockly.Python.ORDER_NONE) || '0';
 	var arg2 = Blockly.Python.valueToCode(block, 'Y',
 		Blockly.Python.ORDER_NONE) || '0';
-	return 'if (' + arg1 +' or ' + arg1 + ' == 0) and (' + arg2 +' or ' + arg2 + ' == 0):\n' + Blockly.Python.INDENT + 'roobin(\'drawOnEyes\', \'' + leftOrRight + '\', \'' + arg1 + '\', \'' + arg2 + '\', \'' + onOrOff + '\')\n';
+	var code = 'arg1 = ' + arg1 + '\n';
+	code += 'arg2 = ' + arg2 + '\n';
+	code += 'if (arg1 or arg1 == 0) and (arg2 or arg2 == 0):\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'drawOnEyes\', \'' + leftOrRight + '\', str(arg1), str(arg2), \'' + onOrOff + '\')\n';
+	return code;
 };
 
 Blockly.Python['roobin_draw_on_mouth'] = function(block) {
@@ -239,7 +276,12 @@ Blockly.Python['roobin_draw_on_mouth'] = function(block) {
 		Blockly.Python.ORDER_NONE) || '0';
 	var arg2 = Blockly.Python.valueToCode(block, 'Y',
 		Blockly.Python.ORDER_NONE) || '0';
-	return 'if (' + arg1 +' or ' + arg1 + ' == 0) and (' + arg2 +' or ' + arg2 + ' == 0):\n' + Blockly.Python.INDENT + 'roobin(\'drawOnMouth\', \'' + arg1 + '\', \'' + arg2 + '\', \'' + onOrOff + '\')\n';
+	var code = 'arg1 = ' + arg1 + '\n';
+	code += 'arg2 = ' + arg2 + '\n';
+	code += 'if (arg1 or arg1 == 0) and (arg2 or arg2 == 0):\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'drawOnMouth\', str(arg1), str(arg2), \'' + onOrOff + '\')\n';
+	return code;
 };
 
 Blockly.Python['roobin_clean_matrices'] = function(block) {

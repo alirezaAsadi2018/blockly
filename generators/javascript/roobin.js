@@ -9,7 +9,10 @@ Blockly.JavaScript['TTS'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '';
 	if(!text)
 		return '';
-	return 'if(' + text +')\nroobin(\'say\', ' + text + ');\n';
+	var code = 'var arg = ' + text + ';\n';
+	code += 'if(arg)\n';
+	code += 'roobin(\'say\', arg);\n';
+	return code;
 };
 
 Blockly.JavaScript['STT'] = function(block) {
@@ -80,19 +83,28 @@ Blockly.JavaScript['roobin_set_lang'] = function(block) {
 Blockly.JavaScript['roobin_set_speak_speed'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'SPEED',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	return 'if(' + arg +' || ' + arg + ' === 0)roobin(\'setSpeakingSpeed\', \'' + arg + '\');\n';
+	var code = 'var arg = ' + arg + ';\n';
+	code += 'if(arg || arg === 0)\n';
+	code += 'roobin(\'setSpeakingSpeed\', arg.toString());\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_set_speak_pitch'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'PITCH',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	return 'if(' + arg +' || ' + arg + ' === 0)roobin(\'setSpeakingPitch\', \'' + arg +'\');\n';
+	var code = 'var arg = ' + arg + ';\n';
+	code += 'if(arg || arg === 0)\n';
+	code += 'roobin(\'setSpeakingPitch\', arg.toString());\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_change_speak_pitch'] = function(block) {
 	var arg = Blockly.JavaScript.valueToCode(block, 'PITCH',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	return 'if(' + arg +' || ' + arg + ' === 0)roobin(\'changeSpeakingPitch\', \'' + arg +'\');\n';
+	var code = 'var arg = ' + arg + ';\n';
+	code += 'if(arg || arg === 0)\n';
+	code += 'roobin(\'changeSpeakingPitch\', arg.toString());\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_set_stt_var'] = function(block) {
@@ -142,7 +154,10 @@ Blockly.JavaScript['roobin_ask_wait'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '';
 	if(!text)
 		return '';
-	return 'if(' + text +')\nroobin(\'ask\', ' + text + ');\n';
+	var code = 'var arg = ' + text + ';\n';
+	code += 'if(arg)\n';
+	code += 'roobin(\'ask\', arg);\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_search_in_wikipedia'] = function(block) {
@@ -154,7 +169,10 @@ Blockly.JavaScript['roobin_search_word_in_wikipedia'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '';
 	if(!text)
 		return '';
-	return 'if(' + text +')\nroobin(\'wikipediaTextSearch\', ' + text + ');\n';
+	var code = 'var arg = ' + text + ';\n';
+	code += 'if(arg)\n';
+	code += 'roobin(\'wikipediaTextSearch\', arg);\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_today_date'] = function(block) {
@@ -202,14 +220,20 @@ Blockly.JavaScript['roobin_move_motor'] = function(block) {
 	var headOrNeck = block.getFieldValue('SEL_NECK_HEAD');
 	var arg = Blockly.JavaScript.valueToCode(block, 'ROTATION_INPUT',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	return 'if(' + arg +' || ' + arg + ' === 0)\nroobinMotor(\'moveMotor\', \'' + headOrNeck +'\', \'' + arg + '\');\n';
+	var code = 'var arg = ' + arg + ';\n';
+	code += 'if(arg || arg === 0)\n';
+	code += 'roobinMotor(\'moveMotor\', \'' + headOrNeck +'\', arg.toString());\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_rotate_motor'] = function(block) {
 	var headOrNeck = block.getFieldValue('SEL_NECK_HEAD');
 	var arg = Blockly.JavaScript.valueToCode(block, 'ROTATION_INPUT',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	return 'if(' + arg +' || ' + arg + ' === 0)\nroobinMotor(\'moveMotorDroplist\', \'' + headOrNeck +'\', \'' + arg + '\');\n';
+	var code = 'var arg = ' + arg + ';\n';
+	code += 'if(arg || arg === 0)\n';
+	code += 'roobinMotor(\'moveMotorDroplist\', \'' + headOrNeck +'\', arg.toString());\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_blink'] = function(block) {
@@ -231,7 +255,12 @@ Blockly.JavaScript['roobin_draw_on_eyes'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	var arg2 = Blockly.JavaScript.valueToCode(block, 'Y',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	return 'if((' + arg1 +' || ' + arg1 + ' === 0) && (' + arg2 +' || ' + arg2 + ' === 0))\nroobin(\'drawOnEyes\', \'' + leftOrRight + '\', \'' + arg1 + '\', \'' + arg2 + '\', \'' + onOrOff + '\');\n';
+	var code = 'var arg1 = ' + arg1 + ';\n';
+	code += 'var arg2 = ' + arg2 + ';\n';
+	code += 'if((arg1 || arg1 === 0) && (arg2 || arg2 === 0))\n';
+	code += 'roobin(\'drawOnEyes\', \'' + leftOrRight + '\', arg1.toString(), arg2.toString(), \'' + onOrOff + '\');\n';
+	return code;
+
 };
 
 Blockly.JavaScript['roobin_draw_on_mouth'] = function(block) {
@@ -240,7 +269,11 @@ Blockly.JavaScript['roobin_draw_on_mouth'] = function(block) {
 		Blockly.JavaScript.ORDER_NONE) || '0';
 	var arg2 = Blockly.JavaScript.valueToCode(block, 'Y',
 		Blockly.JavaScript.ORDER_NONE) || '0';
-	return 'if((' + arg1 +' || ' + arg1 + ' === 0) && (' + arg2 +' || ' + arg2 + ' === 0))\nroobin(\'drawOnMouth\', \'' + arg1 + '\', \'' + arg2 + '\', \'' + onOrOff + '\');\n';
+	var code = 'var arg1 = ' + arg1 + ';\n';
+	code += 'var arg2 = ' + arg2 + ';\n';
+	code += 'if((arg1 || arg1 === 0) && (arg2 || arg2 === 0))\n';
+	code += 'roobin(\'drawOnMouth\', arg1.toString(), arg2.toString(), \'' + onOrOff + '\');\n';
+	return code;
 };
 
 Blockly.JavaScript['roobin_clean_matrices'] = function(block) {
