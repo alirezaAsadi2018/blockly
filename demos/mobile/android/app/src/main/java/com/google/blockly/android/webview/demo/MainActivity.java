@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.blockly.android.webview.MediaPlayerService;
 import com.google.blockly.android.webview.R;
+import com.google.blockly.android.webview.utility.BluetoothController;
 import com.google.blockly.android.webview.utility.Codes;
 import com.google.blockly.android.webview.utility.STT;
 import com.google.blockly.android.webview.utility.TTS;
@@ -34,6 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MainActivity extends AppCompatActivity implements Codes {
     private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
     private TTS mTtsInstance;
+    private BluetoothController mBluetoothControllerInstance;
     public String sttResult;
     public final AtomicBoolean isBluetoothEnabled = new AtomicBoolean(false);
     public final AtomicBoolean isBluetoothDiscoverable = new AtomicBoolean(false);
@@ -323,6 +325,13 @@ public class MainActivity extends AppCompatActivity implements Codes {
 
     public TTS getMTtsInstance() {
         return mTtsInstance;
+    }
+
+    public BluetoothController getmBluetoothControllerInstance() {
+        if(mBluetoothControllerInstance == null){
+            mBluetoothControllerInstance = new BluetoothController(getApplicationContext(), this);
+        }
+        return mBluetoothControllerInstance;
     }
 
     public void setMTtsInstance(TTS mTtsInstance) {

@@ -1,6 +1,7 @@
 package com.google.blockly.android.webview.utility;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -8,10 +9,13 @@ import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 
 import com.google.blockly.android.webview.demo.MainActivity;
+import com.semantive.waveformandroid.waveform.soundfile.WavFile;
+import com.semantive.waveformandroid.waveform.soundfile.WavFileException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,9 +28,11 @@ public class TTS implements Codes {
     private final File ttsOutputFile;
     private TextToSpeech textToSpeech;
     private String lang;
+    private Context mContext;
 
     public TTS(final Context mContext, final MainActivity mainActivity, String engine, String lang) {
         mMainActivity = mainActivity;
+        this.mContext = mContext;
         // create a folder and a file name to save the temp tts output in
 //        String exStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
 //        File ttsOutputDirFile = new File(exStoragePath + tempDirFileName);
@@ -75,12 +81,16 @@ public class TTS implements Codes {
                         case SYNTHESIZE_To_FILE_UTTERANCE_ID:
                             Log.i(this.getClass().getName(), "tts temp file created successfully!");
                             try {
+                                setStreamVolumeToMaximum();
                                 playTtsOutputFile();
-                                deleteTtsOutputFile();
                             } catch (FileNotFoundException e) {
-                                Log.e(this.getClass().getName(), Objects.requireNonNull(e.getMessage()));
+                                Log.e(this.getClass().getName(), "tts output file not found!! " +
+                                        Objects.requireNonNull(e.getMessage()));
                             } catch (IOException e) {
                                 Log.e(this.getClass().getName(), "can't play media player!");
+                            } catch (WavFileException e) {
+                                Log.e(this.getClass().getName(), "There is a problem with temp wav file created by TTS: "
+                                        + e.getMessage());
                             }
                         case IDLE_UTTERANCE_ID:
                         default:
@@ -115,14 +125,81 @@ public class TTS implements Codes {
         });
     }
 
-    private void playTtsOutputFile() throws IOException {
+    private long getCurrentTimeInMillis() {
+        return System.currentTimeMillis();
+    }
+
+    private String mouthing(int ph) throws IOException {
+        String msg = "p0" + ph + "\n";
+        return msg;
+//        mMainActivity.getmBluetoothControllerInstance().send(msg);
+    }
+
+    private void lipSync() {
+        // duration = eyed3.load(name).info.time_secs
+        try {
+            File ttsOutputFile = null;
+            ttsOutputFile = getTtsOutputFile();
+            WavFile wavFile = WavFile.openWavFile(ttsOutputFile);
+            double duration = (double) wavFile.getNumFrames() / (double) wavFile.getSampleRate();
+            //long currentTimeMillis ()-Returns the current time in milliseconds.
+            SecureRandom secureRandom = new SecureRandom();
+            StringBuilder stringBuilder = new StringBuilder();
+            double stop = getCurrentTimeInMillis() + duration * 0.91;
+            while (getCurrentTimeInMillis() < stop) {
+                // create a random number ranging from [1-3] both inclusive
+                int ph = secureRandom.nextInt(3) + 1;
+                stringBuilder.append(mouthing(ph));
+            }
+            mMainActivity.getmBluetoothControllerInstance().send(stringBuilder.toString());
+            Thread.sleep((long) 0.5);
+            stringBuilder = new StringBuilder();
+            for (int i = 0; i < 10; ++i) {
+                stringBuilder.append(mouthing(1));
+                stringBuilder.append(mouthing(1));
+                stringBuilder.append(mouthing(1));
+//                mouthing(1);
+//                mouthing(1);
+//                mouthing(1);
+            }
+            mMainActivity.getmBluetoothControllerInstance().send(stringBuilder.toString());
+//            stringBuilder = new StringBuilder();
+//            stringBuilder.append(mouthing(1));
+//            stringBuilder.append(mouthing(1));
+//            mouthing(1);
+//            mouthing(1);
+//            mMainActivity.getmBluetoothControllerInstance().send(stringBuilder.toString());
+        } catch (FileNotFoundException e) {
+            Log.e(this.getClass().getName(), "lipsync sleeping thread was interrupted!");
+        } catch (IOException | WavFileException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setStreamVolumeToMaximum() {
+        AudioManager am = (AudioManager) mMainActivity.getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+    }
+
+    private void playTtsOutputFile() throws IOException, WavFileException {
         File ttsOutputFile = getTtsOutputFile();
         MediaPlayer player = new MediaPlayer();
         player.setDataSource(ttsOutputFile.getPath());
         player.prepare();
-        player.start();
-        player.setOnCompletionListener(MediaPlayer::release);
+        player.setOnPreparedListener((mediaPlayer) -> {
+            lipSync();
+        });
+        player.setOnCompletionListener((mediaPlayer) -> {
+            Log.i(TTS.class.getName(), "finished playing TTS wav file.");
+            try {
+                deleteTtsOutputFile();
+            } catch (FileNotFoundException e) {
+                Log.e(TTS.class.getName(), "can not delete temp output file created for TTS!");
+            }
+            mediaPlayer.release();
+        });
         player.setLooping(false);
+        player.start();
     }
 
     private void deleteTtsOutputFile() throws FileNotFoundException {
