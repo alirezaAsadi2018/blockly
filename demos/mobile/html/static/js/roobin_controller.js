@@ -130,7 +130,14 @@ function say_hello(){
         //TODO
     }
 }
-    
+
+function setSpeakingSpeed(speed){
+    Android.setTtsSpeakingSpeed(+speed);
+}
+
+function setSpeakingPitch(pitch){
+    Android.setTtsSpeakingPitch(+pitch);
+}
 
 // Changes eyes form
 function change_eye_command(eye_state, eye_side){

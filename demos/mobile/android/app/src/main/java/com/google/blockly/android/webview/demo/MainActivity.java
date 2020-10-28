@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,7 @@ import com.google.blockly.android.webview.utility.WeatherApiRequestState;
 import com.google.blockly.android.webview.utility.WeatherReport;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -33,12 +35,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * {@link com.google.blockly.android.webview.BlocklyWebViewFragment}.
  */
 public class MainActivity extends AppCompatActivity implements Codes {
-    private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
-    private TTS mTtsInstance;
-    private BluetoothController mBluetoothControllerInstance;
-    public String sttResult;
     public final AtomicBoolean isBluetoothEnabled = new AtomicBoolean(false);
     public final AtomicBoolean isBluetoothDiscoverable = new AtomicBoolean(false);
+    private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
+    public String sttResult;
+    private TTS mTtsInstance;
+    private BluetoothController mBluetoothControllerInstance;
+    private final AtomicBoolean isTtsLocaleInstallationDone = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,25 +76,25 @@ public class MainActivity extends AppCompatActivity implements Codes {
                 }, 1000);
             }
         }
-        if(requestCode == BLUETOOTH_ACTION_REQUEST_ENABLE){
-            synchronized (isBluetoothEnabled){
+        if (requestCode == BLUETOOTH_ACTION_REQUEST_ENABLE) {
+            synchronized (isBluetoothEnabled) {
                 isBluetoothEnabled.notifyAll();
             }
             System.out.println("resultCode on: " + resultCode);
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 isBluetoothEnabled.set(true);
-            }else{
+            } else {
                 isBluetoothEnabled.set(false);
             }
         }
-        if(requestCode == BLUETOOTH_ACTION_REQUEST_DISCOVERABLE){
+        if (requestCode == BLUETOOTH_ACTION_REQUEST_DISCOVERABLE) {
             System.out.println("resultCode discover: " + resultCode);
-            synchronized (isBluetoothDiscoverable){
+            synchronized (isBluetoothDiscoverable) {
                 isBluetoothDiscoverable.notifyAll();
             }
-            if(resultCode == RESULT_OK || resultCode == BLUETOOTH_DISCOVERABLE_DURATION){
+            if (resultCode == RESULT_OK || resultCode == BLUETOOTH_DISCOVERABLE_DURATION) {
                 isBluetoothDiscoverable.set(true);
-            }else{
+            } else {
                 isBluetoothDiscoverable.set(false);
             }
         }
@@ -323,18 +326,103 @@ public class MainActivity extends AppCompatActivity implements Codes {
         this.isSttButtonActive.set(isSttButtonActive);
     }
 
-    public TTS getMTtsInstance() {
-        return mTtsInstance;
+    public TTS getMTtsInstance() throws Exception {
+        // default language is Persian
+        return getMTtsInstanceForLanguage("fa");
+    }
+
+    public TTS getMTtsInstanceForLanguage(String lang) throws Exception {
+        // call this twice to ensure that engine installation is done!
+        checkIfEspeakIsInstalled(lang);
+        if (checkIfEspeakIsInstalled(lang)) {
+            return mTtsInstance;
+        }
+        throw new Exception("tts is not installed!!");
+    }
+
+    public void setMTtsInstance(TTS mTtsInstance) {
+        this.mTtsInstance = mTtsInstance;
     }
 
     public BluetoothController getmBluetoothControllerInstance() {
-        if(mBluetoothControllerInstance == null){
+        if (mBluetoothControllerInstance == null) {
             mBluetoothControllerInstance = new BluetoothController(getApplicationContext(), this);
         }
         return mBluetoothControllerInstance;
     }
 
-    public void setMTtsInstance(TTS mTtsInstance) {
-        this.mTtsInstance = mTtsInstance;
+    private synchronized boolean initTts(PackageManager pm, String lang) {
+        if (mTtsInstance == null) {
+            boolean isPackageInstalled = false;
+            List<String> enginesList = new ArrayList<>();
+            enginesList.add("com.redzoc.ramees.tts.espeak");
+            enginesList.add("com.reecedunn.espeak");
+            enginesList.add("com.googlecode.eyesfree.espeak");
+            for (String engineName : enginesList) {
+                if (isPackageInstalled(engineName, pm)) {
+                    setMTtsInstance(new TTS(getApplicationContext(), this, engineName, lang));
+                    isPackageInstalled = true;
+                    break;
+                }
+            }
+            return isPackageInstalled;
+        }
+        return true;
+    }
+
+    private boolean checkIfEspeakIsInstalled(String lang) {
+        PackageManager pm = getApplicationContext().getPackageManager();
+        if (mTtsInstance == null) {
+            boolean isPackageInstalled = initTts(pm, lang);
+            if (!isPackageInstalled) {
+                showInstallEspeakDialog();
+                return false;
+            }
+        }
+        if (mTtsInstance != null
+                && mTtsInstance.getIsLocaleInitialized().get()
+                && mTtsInstance.getLang().equals(lang)) {
+            return true;
+        }
+        if (mTtsInstance != null) {
+            mTtsInstance.getIsLocaleInitialized().set(false);
+            isTtsLocaleInstallationDone.set(false);
+            synchronized (mTtsInstance.getIsLocaleInitialized()) {
+                try {
+                    mTtsInstance.getIsLocaleInitialized().wait(1000);
+                    if (!mTtsInstance.getIsLocaleInitialized().get()) {
+                        mTtsInstance.setLanguage(lang);
+                        mTtsInstance.getIsLocaleInitialized().wait(1000);
+                    }
+                    if (mTtsInstance.getIsLocaleInitialized().get()) {
+                        return true;
+                    } else {
+                        // run only once with one thread
+                        if (!isTtsLocaleInstallationDone.get()) {
+                            setIsSttButtonActive(false);
+                            Intent installIntent = new Intent();
+                            installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                            startActivityForResult(installIntent, INSTALL_TTS_DATA_CODE);
+                            isTtsLocaleInstallationDone.set(true);
+                        }
+                        return false;
+                    }
+                } catch (InterruptedException e) {
+                    Log.e(this.getClass().getName(), "thread interrupted waiting " +
+                            "for tts init", e);
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+        try {
+            packageManager.getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

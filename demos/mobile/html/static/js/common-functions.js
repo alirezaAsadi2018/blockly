@@ -491,6 +491,10 @@ function roobinBlocksQueryToCode(msg, queries){
         // saveSpeech(speech);
     }else if(cmd === 'move_motor'){
         move_motor(args[0], args[1]);
+    }else if(cmd === 'setSpeakingSpeed'){
+        setSpeakingSpeed(args[0]);
+    }else if(cmd === 'setSpeakingPitch'){
+        setSpeakingPitch(args[0]);
     }
     return msg;
 }

@@ -29,6 +29,8 @@ public class TTS implements Codes {
     private TextToSpeech textToSpeech;
     private String lang;
     private Context mContext;
+    private float speechRate = 1;
+    private float speakingPitch = 1;
 
     public TTS(final Context mContext, final MainActivity mainActivity, String engine, String lang) {
         mMainActivity = mainActivity;
@@ -58,6 +60,9 @@ public class TTS implements Codes {
             } else
                 Log.e("TTS", "Initialization Failed!");
         }, engine);
+
+        textToSpeech.setSpeechRate(speechRate);
+        textToSpeech.setPitch(speakingPitch);
 
         textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
@@ -257,6 +262,16 @@ public class TTS implements Codes {
         if (speechStatus == TextToSpeech.ERROR) {
             Log.e("TTS", "Error in tts function!");
         }
+    }
+
+    public void setSpeakingPitch(float pitch){
+        this.speakingPitch = pitch;
+        textToSpeech.setPitch(speakingPitch);
+    }
+
+    public void setSpeakingSpeed(float speed){
+        this.speechRate = speed;
+        textToSpeech.setSpeechRate(speechRate);
     }
 
     public void say(String text) {

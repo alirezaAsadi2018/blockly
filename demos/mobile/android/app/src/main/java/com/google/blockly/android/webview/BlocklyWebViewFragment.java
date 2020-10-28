@@ -2,17 +2,13 @@ package com.google.blockly.android.webview;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.PermissionRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -24,8 +20,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.blockly.android.webview.demo.MainActivity;
-
-import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -41,10 +35,11 @@ public class BlocklyWebViewFragment extends Fragment {
     private final int MY_PERMISSIONS_REQUEST_INTERNET = 15;
     private final int MY_PERMISSIONS_REQUEST_BLUETOOTH = 16;
     private final int MY_PERMISSIONS_REQUEST_BLUETOOTH_ADMIN = 17;
-    protected @Nullable WebView mWebView = null;
+    protected @Nullable
+    WebView mWebView = null;
 
     private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             System.out.println("Permission is not granted");
             // Permission is not granted
@@ -55,7 +50,7 @@ public class BlocklyWebViewFragment extends Fragment {
             System.out.println("Permission is granted");
         }
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             System.out.println("Permission is not granted");
             // Permission is not granted
@@ -66,7 +61,7 @@ public class BlocklyWebViewFragment extends Fragment {
             System.out.println("Permission is granted");
         }
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             System.out.println("Permission is not granted");
             // Permission is not granted
@@ -77,35 +72,35 @@ public class BlocklyWebViewFragment extends Fragment {
             System.out.println("Permission is granted");
         }
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.READ_CONTACTS},
                     MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         }
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.GET_ACCOUNTS},
                     MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
         }
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.INTERNET},
                     MY_PERMISSIONS_REQUEST_INTERNET);
         }
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.BLUETOOTH},
                     MY_PERMISSIONS_REQUEST_BLUETOOTH);
         }
 
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.BLUETOOTH_ADMIN},
@@ -221,7 +216,7 @@ public class BlocklyWebViewFragment extends Fragment {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
                 Log.d(TAG, "onPermissionRequest");
-                Objects.requireNonNull(getActivity()).runOnUiThread(() ->
+                requireActivity().runOnUiThread(() ->
                         request.grant(request.getResources()));
             }
 
@@ -240,9 +235,9 @@ public class BlocklyWebViewFragment extends Fragment {
         return mWebView;
     }
 
-    private int getScale(int PIC_WIDTH){
+    private int getScale(int PIC_WIDTH) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
-        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().
+        requireActivity().getWindowManager().getDefaultDisplay().
                 getMetrics(displaymetrics);
         int width = displaymetrics.widthPixels;
         double val = (double) width / (double) PIC_WIDTH;
