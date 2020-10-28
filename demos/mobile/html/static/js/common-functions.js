@@ -453,7 +453,7 @@ function createWorker(){
         document.worker = new Worker(blobUrl);
         document.worker.onmessage = function(oEvent) {
             workerEvalMessages = [
-                'alert', 'prompt', 'callStt', 'callTts', 'rotate', 'requestServer'
+                'alert', 'prompt', 'callTts', 'rotate', 'requestServer'
             ]
             workerAndroidQueryMessages = [
                 "say", "setLanguage", "setSpeakingSpeed", "setSpeakingPitch", "changeSpeakingPitch", "listenAndSave", "changeEye", 
@@ -464,11 +464,14 @@ function createWorker(){
             ]
             if(oEvent.data === 'fin'){
                 resetInterpreter();
+            }if(oEvent.data.indexOf('callStt') !== -1){
+                var stt_result = callStt();
+                document.worker.postMessage({stt_result:stt_result});
             }else if(includesOneFromList(oEvent.data, workerEvalMessages)){
                 eval(oEvent.data);
             }else if(includesOneFromList(oEvent.data, workerAndroidQueryMessages)){
+                // android part
                 roobinBlocksQueryToCode(oEvent.data, workerAndroidQueryMessages);
-                //AndroidSendBluetooth(code);
             }else if(oEvent.data.indexOf('error:') !== -1){
                 alert(oEvent.data.substr(oEvent.data.indexOf('error:') + 'error:'.length));
                 resetInterpreter();

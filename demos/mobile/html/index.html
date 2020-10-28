@@ -293,6 +293,7 @@
 	var hasMore = false;
 	var req;
 	var href = 'http://localhost:1234';
+	var sttCallback = undefined;
 	var commandKeys = {
 		'say' : 'begoo',
 		'setLanguage' : 'set_language',
@@ -325,6 +326,24 @@
 		'drawOnMouth' : 'draw_on_mouth',
 		'turnOffEyeOrMouth' : 'clean_the_matrices'
 	}
+	function sendHttpRequestWithCallback(url, callback){
+		req = new XMLHttpRequest();
+		req.open('GET', url, true);
+		req.responseType = 'json';
+		
+		req.onreadystatechange = function() {
+			if (req.readyState == 4 && req.status == 200) {
+				if(req.response){
+					callback(req.response.string);
+				}else{
+					callback('request sent successfully');
+				}
+			}else{
+				callback('error');
+			}
+		};
+		req.send(null);
+	}
 	function initApi(interpreter, globalObject) {
 		// Add an API function for the alert() block.
 		var wrapper = function(text) {
@@ -341,16 +360,18 @@
 			interpreter.createNativeFunction(wrapper));
 		
 		// Add an API function for the callStt() block.
-		wrapper = function() {
+		wrapper = function(callback) {
+			debugger
 			if(!navigator.userAgent.match(/Android/i)){
-				var query = 'set_stt_var';
-				postMessage('requestServer("' + (arguments.length ? query : '') + '")');
+				var url = href + '/set_stt_var';
+				sendHttpRequestWithCallback(url, callback);
 			}else{
 				postMessage('callStt()');
+				sttCallback = callback;
 			}
 		};
-		interpreter.setProperty(globalObject, 'callStt',
-			interpreter.createNativeFunction(wrapper));
+		interpreter.setProperty(globalObject, 'listen',
+			interpreter.createAsyncFunction(wrapper));
 
 		// Add an API function for the callTts() block.
 		wrapper = function(text) {
@@ -386,22 +407,7 @@
 				}
 				var callback = arguments[arguments.length - 1];
 				var url = href + '/' + query;
-				req = new XMLHttpRequest();
-				req.open('GET', url, true);
-				req.responseType = 'json';
-				
-				req.onreadystatechange = function() {
-					if (req.readyState == 4 && req.status == 200) {
-						if(req.response){
-							callback(req.response.string);
-						}else{
-							callback('request sent successfully');
-						}
-					}else{
-						callback('error');
-					}
-				};
-				req.send(null);
+				sendHttpRequestWithCallback(url, callback);
 			};
 			interpreter.setProperty(globalObject, 'roobin',
 				interpreter.createAsyncFunction(wrapper));
@@ -479,6 +485,8 @@
 				myInterpreter = new Interpreter(code, initApi);
 				runner();
 			}
+		}else if(data.stt_result){
+			sttCallback(data.stt_result);
 		}
 	};
 </script>

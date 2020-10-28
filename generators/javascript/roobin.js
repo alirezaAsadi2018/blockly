@@ -96,7 +96,8 @@ Blockly.JavaScript['roobin_change_speak_pitch'] = function(block) {
 };
 
 Blockly.JavaScript['roobin_set_stt_var'] = function(block) {
-	var code = 'roobin(\'listenAndSave\')'
+	// var code = 'roobin(\'listenAndSave\')'
+	var code = 'listen()';
 	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
