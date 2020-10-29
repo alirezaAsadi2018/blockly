@@ -58,6 +58,7 @@ if(workspaceLang === 'ar'){
     document.write('<style type="text/css">\n.ui {\nfont-family: "Helvetica Neue", "Segoe UI", Helvetica, sans-serif !important;\n}\n</style>');
 }
 document.write('<script src="static/js/jquery.min.js" type="text/javascript"></script>\n');
+document.write('<script src="static/js/jalaali.min.js" type="text/javascript"></script>\n');
 document.write('<link rel="stylesheet" type="text/css" href="static/css/semantic' + (isRtl()?'.rtl':'') + '.min.css">\n');
 document.write('<script src="static/js/semantic.min.js" type="text/javascript"></script>\n');
 document.write('<script src="static/js/blockly_compressed.js"></script>\n');
@@ -515,6 +516,8 @@ function roobinBlocksQueryToCode(msg, queries){
         chuckle();
     }else if(cmd === 'ask'){
         ask(args[0]);
+    }else if(cmd === 'todaysDate'){
+        todaysDate();
     }
     
     else if(cmd === 'move_motor'){

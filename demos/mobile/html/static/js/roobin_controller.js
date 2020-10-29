@@ -132,6 +132,53 @@ function change_eye(eyes_side_list, eyes_list){
     }
 }
 
+function nth(day) {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+        case 1:  return "st";
+        case 2:  return "nd";
+        case 3:  return "rd";
+        default: return "th";
+    }
+}
+
+function whatDay(date){
+    if(roobinLang === 'en'){
+        var year = date.getFullYear();
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var month = months[date.getMonth()];
+        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var dayInWeek = days[date.getDay()];
+        var day = date.getDate();
+        var text = "today is , ";
+        text += dayInWeek + " , ";
+        text += day.toString() + nth(day) + " , ";
+        text += month.toString() + " , ";
+        text += year.toString();
+        Android.tts(text, roobinLang);
+    }else if(roobinLang === 'fa'){
+        date_jalali = jalaali.toJalaali(date);
+        var year = date_jalali.jy;
+        var months = ["فروردينه", "ارديبهشته", "خرداده", "تيره", "مرداده", "شهريوره", "مهره", "آبانه", "آذره", "ديه", "بهمنه", "اسفنده"];
+        var month = months[date_jalali.jm];
+        var days = ["يکشنبه", "دوشنبه", "سه شنبه", "چهار شنبه", "پنج شنبه", "جمعه", "شنبه"];
+        var dayInWeek = days[date.getDay()];
+        var day = date_jalali.jd;
+        var text = "امروز" + " , ";
+        text += dayInWeek + " , ";
+        text += day.toString() + nth(day) + "ه , ";
+        text += month.toString() + " , ";
+        text += year.toString();
+        text += "مي باشد.";
+        Android.tts(text, roobinLang);
+    }
+}
+
+function todaysDate(){
+    var today = new Date();
+    whatDay(today);
+}
+
 function change_mouth(mouth_list){
     // Changes mouth form
     var mouth_state = {
@@ -229,8 +276,6 @@ function move_motor(motor, angle){
 }
 
 function move(m, pos, spd){
-    console.log("m is: " + m.toString());
-    console.log("pos is: " + pos.toString());
     //Limit values to keep then within range
     var pos = limit(pos);
     var spd = limit(spd);
