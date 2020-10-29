@@ -11,6 +11,7 @@ import com.google.blockly.android.webview.utility.Codes;
 import com.google.blockly.android.webview.utility.STT;
 
 import java.io.IOException;
+import java.util.logging.Handler;
 
 
 public class WebAppInterface implements Codes {
@@ -65,6 +66,13 @@ public class WebAppInterface implements Codes {
     @JavascriptInterface
     public void scan() {
         mainActivity.getmBluetoothControllerInstance().scan();
+    }
+
+    @JavascriptInterface
+    public void restartBluetooth(){
+        new Thread(()->{
+            mainActivity.getmBluetoothControllerInstance().restart();
+        }).start();
     }
 
     @JavascriptInterface

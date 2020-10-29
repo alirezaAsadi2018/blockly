@@ -114,7 +114,7 @@ function change_mouth_command(mouth_state){
 
 function recovery(){
     try{
-        restartBluetooth();
+        Android.restartBluetooth();
     }catch(e){
         //TODO
     }

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.ParcelUuid;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.blockly.android.webview.demo.MainActivity;
 
@@ -28,7 +27,7 @@ public class BluetoothController implements Codes {
     private BluetoothAdapter BA = BluetoothAdapter.getDefaultAdapter();
     private Set<BluetoothDevice> pairedDevices;
     private BluetoothSocket bluetoothSocket;
-    private ObjectOutputStream outputStream;
+    private BluetoothDevice lastConnectedBluetoothDevice;
 
     public BluetoothController(Context mContext, MainActivity mainActivity) {
         this.mContext = mContext;
@@ -95,18 +94,23 @@ public class BluetoothController implements Codes {
     public void connectBluetooth(String name) throws IOException {
         on();
         visible();
-        boolean isBonded = false;
         for (BluetoothDevice pairedDevice : pairedDevices) {
             if (pairedDevice.getName().equalsIgnoreCase(name)) {
-                BluetoothDevice remoteDevice = BA.getRemoteDevice(pairedDevice.getAddress());
-                isBonded = remoteDevice.createBond();
-                ParcelUuid[] uuids = remoteDevice.getUuids();
-                if (uuids != null) {
-                    bluetoothSocket = remoteDevice.createRfcommSocketToServiceRecord(uuids[0].getUuid());
-                    bluetoothSocket.connect();
-                }
+                lastConnectedBluetoothDevice = BA.getRemoteDevice(pairedDevice.getAddress());
+                connectBluetooth();
                 break;
             }
+        }
+    }
+
+    private void connectBluetooth() throws IOException {
+        on();
+        visible();
+        boolean isBonded = lastConnectedBluetoothDevice.createBond();
+        ParcelUuid[] uuids = lastConnectedBluetoothDevice.getUuids();
+        if (uuids != null) {
+            bluetoothSocket = lastConnectedBluetoothDevice.createRfcommSocketToServiceRecord(uuids[0].getUuid());
+            bluetoothSocket.connect();
         }
     }
 
@@ -143,5 +147,18 @@ public class BluetoothController implements Codes {
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         mainActivity.registerReceiver(mReceiver, filter);
+    }
+
+    public void restart() {
+        try {
+            bluetoothSocket.close();
+            Thread.sleep(5000);
+            connectBluetooth();
+        } catch (IOException e) {
+            Log.e(this.getClass().getName(), "error when trying to close bluetooth socket!");
+        } catch (InterruptedException e) {
+            Log.e(this.getClass().getName(), "bluetooth restart method thread interrupted while sleeping!");
+        }
+
     }
 }
