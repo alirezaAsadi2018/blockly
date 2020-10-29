@@ -120,10 +120,23 @@ function recovery(){
     }
 }
 
+function introduce(){
+    try{
+        if(roobinLang === 'en'){
+            var text = 'Hello . I am roobin. Your good friend !';
+        }else if(roobinLang === 'fa'){
+            var text = 'سلام ، من روبین هستم ، دوسته خوبه شما';
+        }
+        Android.tts(text, roobinLang);
+    }catch(e){
+        //TODO
+    }
+}
+
 function say_hello(){
     try{
         if(roobinLang === 'en'){
-            var text = "Hello. I am Roobin. Nice to meet you !";
+            var text = 'Hello. I am Roobin. Nice to meet you !';
         }else if(roobinLang === 'fa'){
             var text = 'سلام.من روبین هستم.از آشنایی با شما خوشحالم';
         }

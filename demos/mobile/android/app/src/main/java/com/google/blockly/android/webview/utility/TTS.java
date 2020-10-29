@@ -78,7 +78,7 @@ public class TTS implements Codes {
                         case SYNTHESIZE_To_FILE_UTTERANCE_ID:
                             Log.i(this.getClass().getName(), "tts temp file created successfully!");
                             try {
-                                setStreamVolumeToMaximum();
+//                                setStreamVolumeToMaximum();
                                 playTtsOutputFile();
                                 lipSync();
                             } catch (FileNotFoundException e) {

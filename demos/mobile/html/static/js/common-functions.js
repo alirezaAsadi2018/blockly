@@ -507,6 +507,8 @@ function roobinBlocksQueryToCode(msg, queries){
         change_mouth(args[0]);
     }else if(cmd === 'recovery'){
         recovery();
+    }else if(cmd === 'introduce'){
+        introduce();
     }
     
     else if(cmd === 'move_motor'){
