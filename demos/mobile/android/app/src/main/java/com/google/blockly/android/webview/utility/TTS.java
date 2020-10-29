@@ -146,7 +146,7 @@ public class TTS implements Codes {
                 mouthing(1);
                 mouthing(1);
             }
-            Thread.sleep((long) 100);
+            Thread.sleep(500);
             mouthing(1);
             mouthing(1);
         } catch (InterruptedException e) {

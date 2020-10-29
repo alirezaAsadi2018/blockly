@@ -1,6 +1,7 @@
 package com.google.blockly.android.webview;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -11,7 +12,6 @@ import com.google.blockly.android.webview.utility.Codes;
 import com.google.blockly.android.webview.utility.STT;
 
 import java.io.IOException;
-import java.util.logging.Handler;
 
 
 public class WebAppInterface implements Codes {
@@ -69,8 +69,8 @@ public class WebAppInterface implements Codes {
     }
 
     @JavascriptInterface
-    public void restartBluetooth(){
-        new Thread(()->{
+    public void restartBluetooth() {
+        new Thread(() -> {
             mainActivity.getmBluetoothControllerInstance().restart();
         }).start();
     }
@@ -85,6 +85,12 @@ public class WebAppInterface implements Codes {
     }
 
     @JavascriptInterface
+    public void laugh() {
+        MediaPlayer mediaPlayer = MediaPlayer.create(mContext, R.raw.laugh);
+        mediaPlayer.start();
+    }
+
+    @JavascriptInterface
     public void setTtsSpeakingPitch(float pitch) {
         try {
             mainActivity.getMTtsInstance().setSpeakingPitch(pitch);
@@ -94,7 +100,7 @@ public class WebAppInterface implements Codes {
     }
 
     @JavascriptInterface
-    public void changeTtsSpeakingPitch(float pitchChange){
+    public void changeTtsSpeakingPitch(float pitchChange) {
         try {
             mainActivity.getMTtsInstance().changeSpeakingPitch(pitchChange);
         } catch (Exception e) {

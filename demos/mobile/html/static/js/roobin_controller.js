@@ -1,33 +1,27 @@
-// define constants for motors
-HEADNOD = 6
-HEADTURN = 1
-EYETURN = 2
-LIDBLINK = 3
-TOPLIP = 4
-BOTTOMLIP = 5
-EYETILT = 0
-
-// array to hold 
-sensors = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-
 // define a module level variable for the serial port
-port=""
+var port=""
 // define library version
-version ="2.85"
+var version ="2.85"
 // flag to stop writing when writing for threading
-writing = false
+var writing = false
 // global to set the params to speech synthesizer which control the voice
-voice = ""
-// Global flag to set synthesizer, default is festival, espeak also supported.
-// If it's not festival then it needs to support -w parameter to write to file e.g. espeak or espeak-NG
-synthesizer = "festival"
-
-ser = undefined
 
 // Function to check if a number is a digit including negative numbers
 function is_digit(n){
     return Boolean(+n);
 }
+
+// define constants for motors
+var HEADNOD = 6
+var HEADTURN = 1
+var EYETURN = 2
+var LIDBLINK = 3
+var TOPLIP = 4
+var BOTTOMLIP = 5
+var EYETILT = 0
+
+// array to hold 
+var sensors = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 
 root = [{"Name":"HeadTurn", "Min":"0", "Max":"1000", "Motor":"1", "Speed":"40", "Reverse":"false", "Acceleration":"60", "RestPosition":"5", "Avoid":""},
         {"Name":"HeadNod", "Min":"140", "Max":"700", "Motor":"0", "Speed":"0", "Reverse":"true", "Acceleration":"60", "RestPosition":"5", "Avoid":""},
@@ -39,24 +33,76 @@ root = [{"Name":"HeadTurn", "Min":"0", "Max":"1000", "Motor":"1", "Speed":"40", 
         {"Name":"MouthOpen", "Min":"80", "Max":"460", "Motor":"7", "Speed":"0", "Reverse":"false", "Acceleration":"0", "RestPosition":"10", "Avoid":""}]
 
 // Put motor ranges into lists
-motorPos = [11,11,11,11,11,11,11,11]
-motorMins = [0,0,0,0,0,0,0,0]
-motorMaxs = [0,0,0,0,0,0,0,0]
-motorRev = [false,false,false,false,false,false,false,false]
-restPos = [0,0,0,0,0,0,0,0]
-isAttached = [false,false,false,false,false,false,false,false]
+var motorPos = [11,11,11,11,11,11,11,11]
+var motorMins = [0,0,0,0,0,0,0,0]
+var motorMaxs = [0,0,0,0,0,0,0,0]
+var motorRev = [false,false,false,false,false,false,false,false]
+var restPos = [0,0,0,0,0,0,0,0]
+var isAttached = [false,false,false,false,false,false,false,false]
 
-function moveSpeechMouth(text){
-    for(var i = 0; i < 10; ++i){
-        mouthing(1);
-        mouthing(1);
-        mouthing(1);
+
+// For each line in motor defs file
+for(child of root){
+    var index = +child["Motor"];
+    motorMins[index] = parseInt(child["Min"] / 1000 * 180);
+    motorMaxs[index] = parseInt(child["Max"] / 1000 * 180);
+    motorPos[index] = parseInt(child["RestPosition"]);
+    restPos[index] = parseInt(child["RestPosition"]);
+    if(child["Reverse"] === "true"){
+        motorRev[index] = true;
+    }else{
+        motorRev[index] = false;
     }
-    setTimeout(function(){
-        mouthing(1);
-        mouthing(1);
-    }, 500);
-}    
+}
+
+function laughingLipAndMotorsync(){
+    var durationMillis = 1.5 * 1000;
+    var motor = 1;
+    var deg1 = 10;
+    var deg2 = 30;
+    var stop = new Date().getTime() + durationMillis;
+    var myInterval = setInterval(function() {
+        var ph = Math.floor(Math.random() * 2 + 1)
+        mouthing(ph);
+        move(motor, deg1, 10);
+        move(motor, deg2, 10);
+        if(new Date().getTime() >= stop){
+            clearInterval(myInterval);
+            setTimeout(function() {
+                // std neck pose
+                move(motor, deg2, 10);
+                move(motor, deg2, 0);
+                move(motor, deg2, 0);
+        
+                // std lip pose
+                for (var i = 0; i < 10; ++i) {
+                    mouthing(1);
+                    mouthing(1);
+                    mouthing(1);
+                }
+                for(var i = 0; i < 10; ++i){
+                    detach(motor);
+                    detach(motor);
+                    detach(motor);
+                }
+                setTimeout(function() {
+                    detach(motor);
+                    detach(motor);
+                    mouthing(1);
+                    mouthing(1);
+                }, 500);
+            }, 1000);
+        }
+    }, 30);
+    // while (new Date().getTime() < stop) {
+    //     // create a random number ranging from [1-2] both inclusive
+    //     var ph = Math.floor(Math.random() * 2 + 1)
+    //     mouthing(ph);
+    //     //Thread.sleep(30);
+    //     move(motor, deg1, 10);
+    //     move(motor, deg2, 10);
+    // }
+}
 
 function mouthing(ph){
     var msg = "p0"+String(ph)+"\n";
@@ -146,6 +192,15 @@ function say_hello(){
     }
 }
 
+function chuckle(){
+    try{
+        Android.laugh();
+        laughingLipAndMotorsync();
+    }catch(e){
+        //TODO
+    }
+}
+
 function setSpeakingSpeed(speed){
     Android.setTtsSpeakingSpeed(+speed);
 }
@@ -178,6 +233,8 @@ function move_motor(motor, angle){
 }
 
 function move(m, pos, spd){
+    console.log("m is: " + m.toString());
+    console.log("pos is: " + pos.toString());
     //Limit values to keep then within range
     var pos = limit(pos);
     var spd = limit(spd);
@@ -211,6 +268,13 @@ function limit(val){
         return 0;
      else
         return val;
+}
+
+// Function to detach Roobin's motors.  Argument | m (motor) int (0-6)
+function detach(m){
+    var msg = "d0" + m.toString();
+    serwrite(msg);
+    isAttached[m] = false;
 }
  
 // Function to attach Roobin's motors. Argument | m (motor) int (0-6)

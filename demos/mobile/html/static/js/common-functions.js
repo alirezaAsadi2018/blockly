@@ -511,6 +511,8 @@ function roobinBlocksQueryToCode(msg, queries){
         introduce();
     }else if(cmd === 'sayHello'){
         say_hello();
+    }else if(cmd === 'chuckle'){
+        chuckle();
     }
     
     else if(cmd === 'move_motor'){
