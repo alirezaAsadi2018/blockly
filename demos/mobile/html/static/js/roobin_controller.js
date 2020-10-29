@@ -134,6 +134,83 @@ function change_eye(eyes_side_list, eyes_list){
     }
 }
 
+function blink(){
+    eye("both", "blink");
+}
+
+function lookSides(){
+    eye("both","looksides");
+}
+
+function lookAhead(){
+    eye("both","neutral");
+}
+
+function drawOnEyes(eyes_side_list, x, y, on_or_off){
+    var onOroff = {
+        "خاموش":0,
+        "روشن":1
+    }[on_or_off];
+
+    var eye_side = {
+        'راست':1,
+        'چپ': 2,
+    }[eyes_side_list];
+    matrix_eye(x, y, onOroff, eye_side);
+}
+
+function drawOnMouth(x, y, on_or_off){
+    var onOroff = {
+        "خاموش":0,
+        "روشن":1
+    }[on_or_off];
+    matrix_mouth(x, y, onOroff);
+}
+
+function turnOffEyeOrMouth(matrices){
+    var mat = {
+        'چشم راست':1,
+        'چشم چپ': 2,
+        'دهان': 3,
+    }[matrices];
+    clean_eye(mat.toString());
+}
+
+function clean_eye(side){
+    var tosend;
+    if(side === "2"){
+        tosend = "r";
+    }else if(side === "1"){
+        tosend = "l";
+    }else{
+        tosend = "m"
+    }
+    var msg = "g" + tosend.toString();
+    serwrite(msg);
+}
+
+function matrix_eye(x, y, onOroff, eye_side){
+    msg = "b" + x.toString() + y.toString() + onOroff.toString() + eye_side.toString();
+    serwrite(msg);
+}
+
+function matrix_mouth(x, y, onOroff){
+    msg = "j" + x.toString() + y.toString() + onOroff.toString();
+    serwrite(msg);
+}
+
+function eye(side="both", statement="neutral", delay="2"){
+    var spd = 0;
+    // stateSel = {"blink_left":1 , "blink": 2 , "blink_right" : 3, "look_left": 4 , "look_right" : 5 , "neutral" : 6 }
+    var stateSel = {"looksides":1 , "blink": 2 , "neutral" : 3, "rightArrow": 4, "leftArrow": 5, "upArrow": 6, "downArrow": 7,
+                "full_on":8};
+    var sideSel =  {"right":1 , "left" : 2 , "both" : 3};
+    // right --> 01 # left  --> 10 # both  --> 11
+    var msg = "q" + sideSel[side].toString() + stateSel[statement].toString() + delay.toString() + "," + spd.toString();
+    // Write message to serial port
+    serwrite(msg);
+}
+
 function nth(day) {
     if (day > 3 && day < 21) return 'th';
     switch (day % 10) {

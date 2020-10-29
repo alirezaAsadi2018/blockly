@@ -520,14 +520,23 @@ function roobinBlocksQueryToCode(msg, queries){
         todaysDate();
     }else if(cmd === 'whatDaysDate'){
         //TODO
+    }else if(cmd === 'blink'){
+        blink();
+    }else if(cmd === 'lookSides'){
+        lookSides();
+    }else if(cmd === 'lookAhead'){
+        lookAhead();
+    }else if(cmd === 'drawOnEyes'){
+        drawOnEyes(args[0], args[1], args[2], args[3]);
+    }else if(cmd === 'drawOnMouth'){
+        drawOnMouth(args[0], args[1], args[2]);
+    }else if(cmd === 'turnOffEyeOrMouth'){
+        turnOffEyeOrMouth(args[0]);
     }else if(cmd === 'move_motor'){
         move_motor(args[0], args[1]);
     }else if(cmd === 'move_motor_droplist'){
         move_motor_droplist(args[0], args[1]);
     }
-    
-    
-    return msg;
 }
 
 function runCode(code){
