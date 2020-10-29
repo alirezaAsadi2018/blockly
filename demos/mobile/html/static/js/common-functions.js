@@ -501,7 +501,11 @@ function roobinBlocksQueryToCode(msg, queries){
         setSpeakingPitch(args[0]);
     }else if(cmd === 'changeSpeakingPitch'){
         changeSpeakingPitch(args[0]);
-    }else if(cmd === 'move_motor'){
+    }else if(cmd === 'changeEye'){
+        change_eye(args[0], args[1]);
+    }
+    
+    else if(cmd === 'move_motor'){
         move_motor(args[0], args[1]);
     }
     return msg;

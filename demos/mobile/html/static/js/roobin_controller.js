@@ -110,6 +110,8 @@ function change_mouth_command(mouth_state){
     serwrite(msg);
 }
 
+
+
 function recovery(){
     try{
         restartBluetooth();
