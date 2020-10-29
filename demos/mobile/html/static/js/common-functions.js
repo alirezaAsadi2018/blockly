@@ -518,11 +518,15 @@ function roobinBlocksQueryToCode(msg, queries){
         ask(args[0]);
     }else if(cmd === 'todaysDate'){
         todaysDate();
+    }else if(cmd === 'whatDaysDate'){
+        //TODO
+    }else if(cmd === 'move_motor'){
+        move_motor(args[0], args[1]);
+    }else if(cmd === 'move_motor_droplist'){
+        move_motor_droplist(args[0], args[1]);
     }
     
-    else if(cmd === 'move_motor'){
-        move_motor(args[0], args[1]);
-    }
+    
     return msg;
 }
 

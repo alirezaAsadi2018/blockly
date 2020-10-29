@@ -24,7 +24,7 @@ var EYETILT = 0
 var sensors = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 
 root = [{"Name":"HeadTurn", "Min":"0", "Max":"1000", "Motor":"1", "Speed":"40", "Reverse":"false", "Acceleration":"60", "RestPosition":"5", "Avoid":""},
-        {"Name":"HeadNod", "Min":"140", "Max":"700", "Motor":"0", "Speed":"0", "Reverse":"true", "Acceleration":"60", "RestPosition":"5", "Avoid":""},
+        {"Name":"HeadNod", "Min":"140", "Max":"700", "Motor":"0", "Speed":"0", "Reverse":"false", "Acceleration":"60", "RestPosition":"5", "Avoid":""},
         {"Name":"EyeTurn", "Min":"380", "Max":"780", "Motor":"2", "Speed":"0", "Reverse":"false", "Acceleration":"0", "RestPosition":"5", "Avoid":""},
         {"Name":"EyeTilt", "Min":"520", "Max":"920", "Motor":"6", "Speed":"0", "Reverse":"false", "Acceleration":"30", "RestPosition":"5", "Avoid":""},
         {"Name":"TopLip", "Min":"0", "Max":"550", "Motor":"4", "Speed":"0", "Reverse":"true", "Acceleration":"0", "RestPosition":"5", "Avoid":"BottomLip"},
@@ -39,6 +39,8 @@ var motorMaxs = [0,0,0,0,0,0,0,0]
 var motorRev = [false,false,false,false,false,false,false,false]
 var restPos = [0,0,0,0,0,0,0,0]
 var isAttached = [false,false,false,false,false,false,false,false]
+var NECKPOS = 25;
+var HEADPOS = 25;
 
 
 // For each line in motor defs file
@@ -263,7 +265,7 @@ function change_eye_command(eye_state, eye_side){
 }
 
 function move_motor(motor, angle){
-    motor = {
+    var motor = {
         "گردن":1,
         "سر":0
     }[motor];
@@ -273,6 +275,27 @@ function move_motor(motor, angle){
         //TODO
         //add a nice message 
     }
+}
+
+function move_motor_droplist(motor, angle){
+    var motor = {
+        "گردن":1,
+        "سر":0
+    }[motor];
+    var pos = motorPos[motor] - +angle;
+    move(+motor, parseInt(pos), 10);
+    // if(motor){
+        // NECKPOS -= +angle;
+        // NECKPOS = NECKPOS >= 80 ? 80 : NECKPOS;
+        // NECKPOS = NECKPOS <= 0 ? 0 : NECKPOS;
+        // move(+motor, parseInt(Math.abs(NECKPOS)), 10);
+        
+    // }else{
+        // HEADPOS -= +angle;
+        // HEADPOS = HEADPOS >= 100 ? 100 : HEADPOS;
+        // HEADPOS = HEADPOS <= 0 ? 0 : HEADPOS;
+        // move(+motor, parseInt(Math.abs(HEADPOS)), 10);
+    // }
 }
 
 function move(m, pos, spd){
@@ -298,7 +321,7 @@ function move(m, pos, spd){
     serwrite(msg);
 
     // Update motor positions list
-    motorPos[m] = pos;  
+    motorPos[m] = pos;
 }
 
 //Function to limit values so they are between 0 - 10
