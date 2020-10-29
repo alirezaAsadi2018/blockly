@@ -5,6 +5,7 @@ var LANGUAGE_NAME = {
 };
 var LANGUAGE_RTL = ['ar', 'fa'];
 var workspaceLang = getLang();
+var roobinLang = 'fa';
 var myWorkspace;
 var borderStylePropertyName;
 var codingLangSelected = 'js';
@@ -492,12 +493,16 @@ function roobinBlocksQueryToCode(msg, queries){
     parts = msg.split('/');
     cmd = parts[0];
     args = parts.splice(1);
-    if(cmd === 'move_motor'){
-        move_motor(args[0], args[1]);
+    if(cmd === 'setLanguage'){
+        roobinLang = args[0];
     }else if(cmd === 'setSpeakingSpeed'){
         setSpeakingSpeed(args[0]);
     }else if(cmd === 'setSpeakingPitch'){
         setSpeakingPitch(args[0]);
+    }else if(cmd === 'changeSpeakingPitch'){
+        changeSpeakingPitch(args[0]);
+    }else if(cmd === 'move_motor'){
+        move_motor(args[0], args[1]);
     }
     return msg;
 }
@@ -628,7 +633,7 @@ function callTts(text){
         alert('oops!! Tts is only available on Android!!');
         return;
     }
-    Android.tts(text, workspaceLang);
+    Android.tts(text, roobinLang);
 }
 
 function callStt(){
@@ -638,7 +643,7 @@ function callStt(){
     }
     var string = "";
     try{
-        string = Android.stt(workspaceLang);
+        string = Android.stt(roobinLang);
     }catch(e){
         alert(e);
     }

@@ -120,9 +120,9 @@ function recovery(){
 
 function say_hello(){
     try{
-        if(workspaceLang === 'en'){
+        if(roobinLang === 'en'){
             var text = "Hello. I am Roobin. Nice to meet you !";
-        }else if(workspaceLang === 'fa'){
+        }else if(roobinLang === 'fa'){
             var text = 'سلام.من روبین هستم.از آشنایی با شما خوشحالم';
         }
         Android.tts(text);
@@ -137,6 +137,10 @@ function setSpeakingSpeed(speed){
 
 function setSpeakingPitch(pitch){
     Android.setTtsSpeakingPitch(+pitch);
+}
+
+function changeSpeakingPitch(pitchChange){
+    Android.changeTtsSpeakingPitch(+pitchChange);
 }
 
 // Changes eyes form

@@ -86,6 +86,15 @@ public class WebAppInterface implements Codes {
     }
 
     @JavascriptInterface
+    public void changeTtsSpeakingPitch(float pitchChange){
+        try {
+            mainActivity.getMTtsInstance().changeSpeakingPitch(pitchChange);
+        } catch (Exception e) {
+            Log.e(this.getClass().getName(), "tts engine installation error: " + e.getMessage());
+        }
+    }
+
+    @JavascriptInterface
     public void setTtsSpeakingSpeed(float speed) {
         try {
             mainActivity.getMTtsInstance().setSpeakingSpeed(speed);

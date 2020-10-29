@@ -239,13 +239,24 @@ public class TTS implements Codes {
     }
 
     public void setSpeakingPitch(float pitch) {
-        this.speakingPitch = pitch;
-        textToSpeech.setPitch(speakingPitch);
+        if(pitch > 0){
+            speakingPitch = pitch;
+            textToSpeech.setPitch(speakingPitch);
+        }
+    }
+
+    public void changeSpeakingPitch(float pitchChange) {
+        if(speakingPitch + pitchChange > 0){
+            speakingPitch += pitchChange;
+            textToSpeech.setPitch(speakingPitch);
+        }
     }
 
     public void setSpeakingSpeed(float speed) {
-        this.speechRate = speed;
-        textToSpeech.setSpeechRate(speechRate);
+        if(speed > 0){
+            speechRate = speed;
+            textToSpeech.setSpeechRate(speechRate);
+        }
     }
 
     public void say(String text) {
