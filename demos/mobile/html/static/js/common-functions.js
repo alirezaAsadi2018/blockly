@@ -513,6 +513,8 @@ function roobinBlocksQueryToCode(msg, queries){
         say_hello();
     }else if(cmd === 'chuckle'){
         chuckle();
+    }else if(cmd === 'ask'){
+        ask(args[0]);
     }
     
     else if(cmd === 'move_motor'){

@@ -94,19 +94,15 @@ function laughingLipAndMotorsync(){
             }, 1000);
         }
     }, 30);
-    // while (new Date().getTime() < stop) {
-    //     // create a random number ranging from [1-2] both inclusive
-    //     var ph = Math.floor(Math.random() * 2 + 1)
-    //     mouthing(ph);
-    //     //Thread.sleep(30);
-    //     move(motor, deg1, 10);
-    //     move(motor, deg2, 10);
-    // }
 }
 
 function mouthing(ph){
     var msg = "p0"+String(ph)+"\n";
     serwrite(msg);
+}
+
+function ask(text){
+    Android.tts(text, roobinLang);
 }
 
 function change_eye(eyes_side_list, eyes_list){
