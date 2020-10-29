@@ -35,8 +35,7 @@ public class BlocklyWebViewFragment extends Fragment {
     private final int MY_PERMISSIONS_REQUEST_INTERNET = 15;
     private final int MY_PERMISSIONS_REQUEST_BLUETOOTH = 16;
     private final int MY_PERMISSIONS_REQUEST_BLUETOOTH_ADMIN = 17;
-    protected @Nullable
-    WebView mWebView = null;
+    protected @Nullable WebView mWebView = null;
 
     private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(requireActivity(),
@@ -197,7 +196,7 @@ public class BlocklyWebViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mWebView = new WebView(inflater.getContext());
-        int PIC_WIDTH = mWebView.getRight() - mWebView.getLeft();
+//        int PIC_WIDTH = mWebView.getRight() - mWebView.getLeft();
 
 //        mWebView.setPadding(0, 0, 0, 0);
 //        mWebView.setInitialScale(getScale(PIC_WIDTH));

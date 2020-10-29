@@ -453,10 +453,10 @@ function createWorker(){
         document.worker = new Worker(blobUrl);
         document.worker.onmessage = function(oEvent) {
             workerEvalMessages = [
-                'alert', 'prompt', 'callTts', 'rotate', 'requestServer'
+                'alert', 'prompt', 'rotate', 'requestServer'
             ]
             workerAndroidQueryMessages = [
-                "say", "setLanguage", "setSpeakingSpeed", "setSpeakingPitch", "changeSpeakingPitch", "listenAndSave", "changeEye", 
+                "setLanguage", "setSpeakingSpeed", "setSpeakingPitch", "changeSpeakingPitch", "changeEye", 
                 "changeMouthForm", "recovery", "introduce", "sayHello", "chuckle", "ask", "wikipediaSearch", "wikipediaTextSearch", 
                 "todaysDate", "whatDaysDate", "riddleGame", "arrowGame", "patternGameTwo", "numberSeries", "amazingFacts", 
                 "gameExplanation", "tellStory", "blink", "lookSides", "lookAhead", "drawOnEyes", "drawOnMouth", "turnOffEyeOrMouth",
@@ -464,9 +464,11 @@ function createWorker(){
             ]
             if(oEvent.data === 'fin'){
                 resetInterpreter();
-            }if(oEvent.data.indexOf('callStt') !== -1){
+            }else if(oEvent.data.indexOf('callStt') !== -1){
                 var stt_result = callStt();
                 document.worker.postMessage({stt_result:stt_result});
+            }else if(oEvent.data.indexOf('callTts') !== -1){
+                eval(oEvent.data);
             }else if(includesOneFromList(oEvent.data, workerEvalMessages)){
                 eval(oEvent.data);
             }else if(includesOneFromList(oEvent.data, workerAndroidQueryMessages)){
@@ -482,17 +484,15 @@ function createWorker(){
     }
 }
 
+function ttsFinished(){
+    document.worker.postMessage({tts_finished:'true'});
+}
+
 function roobinBlocksQueryToCode(msg, queries){
     parts = msg.split('/');
     cmd = parts[0];
     args = parts.splice(1);
-    if(cmd === 'say'){
-        callTts(args[0]);
-        //return lipSynchCmd(audio);
-    }else if(cmd === 'listenAndSave'){
-        speech = callStt();
-        // saveSpeech(speech);
-    }else if(cmd === 'move_motor'){
+    if(cmd === 'move_motor'){
         move_motor(args[0], args[1]);
     }else if(cmd === 'setSpeakingSpeed'){
         setSpeakingSpeed(args[0]);
@@ -624,7 +624,6 @@ function requestServer(query){
 }
 
 function callTts(text){
-    var busy = false;
     if(!isAndroidUserAgent()){
         alert('oops!! Tts is only available on Android!!');
         return;

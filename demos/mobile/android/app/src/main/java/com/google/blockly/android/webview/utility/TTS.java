@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
+import android.webkit.WebView;
 
+import com.google.blockly.android.webview.R;
 import com.google.blockly.android.webview.demo.MainActivity;
 import com.semantive.waveformandroid.waveform.soundfile.WavFile;
 import com.semantive.waveformandroid.waveform.soundfile.WavFileException;
@@ -24,7 +26,7 @@ public class TTS implements Codes {
     private static final String tempDirFileName = "/roobin_voices/";
     private static final String ttsOutputFilename = "tts.wav";
     private final AtomicBoolean isLocaleInitialized = new AtomicBoolean(false);
-    private final MainActivity mMainActivity;
+    private final MainActivity mainActivity;
     private final File ttsOutputFile;
     private TextToSpeech textToSpeech;
     private String lang;
@@ -33,19 +35,9 @@ public class TTS implements Codes {
     private float speakingPitch = 1;
 
     public TTS(final Context mContext, final MainActivity mainActivity, String engine, String lang) {
-        mMainActivity = mainActivity;
+        this.mainActivity = mainActivity;
         this.mContext = mContext;
-        // create a folder and a file name to save the temp tts output in
-//        String exStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-//        File ttsOutputDirFile = new File(exStoragePath + tempDirFileName);
-//        boolean isDirectoryCreated = ttsOutputDirFile.mkdirs();
-//        if(isDirectoryCreated){
-//            Log.i(this.getClass().getName(), "tts output directory file was created successfully!!");
-//        }else{
-//            Log.i(this.getClass().getName(), "tts output directory file was already available!!");
-//        }
-        Log.d(this.getClass().getName(), mContext.getExternalFilesDir(null).getAbsolutePath());
-        String destFileLocation = mContext.getExternalFilesDir(null).getAbsolutePath()
+        String destFileLocation = Objects.requireNonNull(mContext.getExternalFilesDir(null)).getAbsolutePath()
                 + File.separator + ttsOutputFilename;
         ttsOutputFile = new File(destFileLocation);
 
@@ -88,14 +80,12 @@ public class TTS implements Codes {
                             try {
                                 setStreamVolumeToMaximum();
                                 playTtsOutputFile();
+                                lipSync();
                             } catch (FileNotFoundException e) {
                                 Log.e(this.getClass().getName(), "tts output file not found!! " +
                                         Objects.requireNonNull(e.getMessage()));
                             } catch (IOException e) {
                                 Log.e(this.getClass().getName(), "can't play media player!");
-                            } catch (WavFileException e) {
-                                Log.e(this.getClass().getName(), "There is a problem with temp wav file created by TTS: "
-                                        + e.getMessage());
                             }
                         case IDLE_UTTERANCE_ID:
                         default:
@@ -134,74 +124,58 @@ public class TTS implements Codes {
         return System.currentTimeMillis();
     }
 
-    private String mouthing(int ph) throws IOException {
+    private void mouthing(int ph) throws IOException {
         String msg = "p0" + ph + "\n";
-        return msg;
-//        mMainActivity.getmBluetoothControllerInstance().send(msg);
+        mainActivity.getmBluetoothControllerInstance().send(msg);
     }
 
     private void lipSync() {
-        // duration = eyed3.load(name).info.time_secs
         try {
-            File ttsOutputFile = null;
-            ttsOutputFile = getTtsOutputFile();
+            File ttsOutputFile = getTtsOutputFile();
             WavFile wavFile = WavFile.openWavFile(ttsOutputFile);
-            double duration = (double) wavFile.getNumFrames() / (double) wavFile.getSampleRate();
-            //long currentTimeMillis ()-Returns the current time in milliseconds.
+            double durationMillis = ((double) wavFile.getNumFrames() / (double) wavFile.getSampleRate()) * 1000;
             SecureRandom secureRandom = new SecureRandom();
-            StringBuilder stringBuilder = new StringBuilder();
-            double stop = getCurrentTimeInMillis() + duration * 0.91;
+            double stop = getCurrentTimeInMillis() + durationMillis * 0.70;
             while (getCurrentTimeInMillis() < stop) {
                 // create a random number ranging from [1-3] both inclusive
                 int ph = secureRandom.nextInt(3) + 1;
-                stringBuilder.append(mouthing(ph));
+                mouthing(ph);
             }
-            mMainActivity.getmBluetoothControllerInstance().send(stringBuilder.toString());
-            Thread.sleep((long) 0.5);
-            stringBuilder = new StringBuilder();
             for (int i = 0; i < 10; ++i) {
-                stringBuilder.append(mouthing(1));
-                stringBuilder.append(mouthing(1));
-                stringBuilder.append(mouthing(1));
-//                mouthing(1);
-//                mouthing(1);
-//                mouthing(1);
+                mouthing(1);
+                mouthing(1);
+                mouthing(1);
             }
-            mMainActivity.getmBluetoothControllerInstance().send(stringBuilder.toString());
-//            stringBuilder = new StringBuilder();
-//            stringBuilder.append(mouthing(1));
-//            stringBuilder.append(mouthing(1));
-//            mouthing(1);
-//            mouthing(1);
-//            mMainActivity.getmBluetoothControllerInstance().send(stringBuilder.toString());
-        } catch (FileNotFoundException e) {
-            Log.e(this.getClass().getName(), "lipsync sleeping thread was interrupted!");
-        } catch (IOException | WavFileException | InterruptedException e) {
+            Thread.sleep((long) 100);
+            mouthing(1);
+            mouthing(1);
+        } catch (InterruptedException e) {
+            Log.e(this.getClass().getName(), "lip sync sleeping thread was interrupted!");
+        } catch (IOException | WavFileException e) {
             e.printStackTrace();
         }
     }
 
     private void setStreamVolumeToMaximum() {
-        AudioManager am = (AudioManager) mMainActivity.getSystemService(Context.AUDIO_SERVICE);
+        AudioManager am = (AudioManager) mainActivity.getSystemService(Context.AUDIO_SERVICE);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
     }
 
-    private void playTtsOutputFile() throws IOException, WavFileException {
+    private void playTtsOutputFile() throws IOException{
         File ttsOutputFile = getTtsOutputFile();
         MediaPlayer player = new MediaPlayer();
         player.setDataSource(ttsOutputFile.getPath());
         player.prepare();
-        player.setOnPreparedListener((mediaPlayer) -> {
-            lipSync();
-        });
-        player.setOnCompletionListener((mediaPlayer) -> {
-            Log.i(TTS.class.getName(), "finished playing TTS wav file.");
+        player.setOnCompletionListener((mediaPlayer)->{
+            Log.d(TTS.class.getName(), "finished playing TTS wav file.");
             try {
                 deleteTtsOutputFile();
             } catch (FileNotFoundException e) {
                 Log.e(TTS.class.getName(), "can not delete temp output file created for TTS!");
             }
             mediaPlayer.release();
+            WebView mWebView = mainActivity.findViewById(R.id.blockly_webview);
+            mWebView.post(() -> mWebView.loadUrl("javascript:ttsFinished();"));
         });
         player.setLooping(false);
         player.start();
@@ -244,15 +218,15 @@ public class TTS implements Codes {
     }
 
     private void showRestartDialog() {
-        mMainActivity.showRestartDialog(
+        mainActivity.showRestartDialog(
                 (dialog, which) -> {
-                    mMainActivity.setMTtsInstance(null);
+                    mainActivity.setMTtsInstance(null);
                     dialog.cancel();
                 },
-                (dialog) -> mMainActivity.setMTtsInstance(null),
+                (dialog) -> mainActivity.setMTtsInstance(null),
                 () -> {
                     stop();
-                    mMainActivity.setMTtsInstance(null);
+                    mainActivity.setMTtsInstance(null);
                 });
     }
 
@@ -264,12 +238,12 @@ public class TTS implements Codes {
         }
     }
 
-    public void setSpeakingPitch(float pitch){
+    public void setSpeakingPitch(float pitch) {
         this.speakingPitch = pitch;
         textToSpeech.setPitch(speakingPitch);
     }
 
-    public void setSpeakingSpeed(float speed){
+    public void setSpeakingSpeed(float speed) {
         this.speechRate = speed;
         textToSpeech.setSpeechRate(speechRate);
     }

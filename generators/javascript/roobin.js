@@ -11,7 +11,7 @@ Blockly.JavaScript['TTS'] = function(block) {
 		return '';
 	var code = 'var arg = ' + text + ';\n';
 	code += 'if(arg)\n';
-	code += 'roobin(\'say\', arg);\n';
+	code += 'say(arg);\n';
 	return code;
 };
 

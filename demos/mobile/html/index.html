@@ -294,6 +294,7 @@
 	var req;
 	var href = 'http://localhost:1234';
 	var sttCallback = undefined;
+	var ttsCallback = undefined;
 	var commandKeys = {
 		'say' : 'begoo',
 		'setLanguage' : 'set_language',
@@ -374,16 +375,17 @@
 			interpreter.createAsyncFunction(wrapper));
 
 		// Add an API function for the callTts() block.
-		wrapper = function(text) {
+		wrapper = function(text, callback) {
 			if(!navigator.userAgent.match(/Android/i)){
-				var query = 'begoo/' + text;
-				postMessage('requestServer("' + (arguments.length ? query : '') + '")');
+				var url = href + '/begoo/' + text;
+				sendHttpRequestWithCallback(url, callback);
 			}else{
 				postMessage('callTts("' + (arguments.length ? text : '') + '")');
+				ttsCallback = callback;
 			}
 		};
-		interpreter.setProperty(globalObject, 'callTts',
-			interpreter.createNativeFunction(wrapper));
+		interpreter.setProperty(globalObject, 'say',
+			interpreter.createAsyncFunction(wrapper));
 
 
 		if(navigator.userAgent.match(/Android/i)){
@@ -487,6 +489,8 @@
 			}
 		}else if(data.stt_result){
 			sttCallback(data.stt_result);
+		}else if(data.tts_finished){
+			ttsCallback('tts finished!');
 		}
 	};
 </script>

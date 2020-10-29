@@ -12,7 +12,7 @@ Blockly.Python['TTS'] = function(block) {
 	var code = 'arg = ' + text + '\n';
 	code += 'if arg:\n';
 	code += Blockly.Python.INDENT;
-	code += 'roobin(\'say\', arg)\n';
+	code += 'say(arg)\n';
 	return code;
 };
 
