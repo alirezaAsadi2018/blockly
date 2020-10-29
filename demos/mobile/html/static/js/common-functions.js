@@ -509,6 +509,8 @@ function roobinBlocksQueryToCode(msg, queries){
         recovery();
     }else if(cmd === 'introduce'){
         introduce();
+    }else if(cmd === 'sayHello'){
+        say_hello();
     }
     
     else if(cmd === 'move_motor'){

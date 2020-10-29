@@ -138,9 +138,9 @@ function say_hello(){
         if(roobinLang === 'en'){
             var text = 'Hello. I am Roobin. Nice to meet you !';
         }else if(roobinLang === 'fa'){
-            var text = 'سلام.من روبین هستم.از آشنایی با شما خوشحالم';
+            var text = 'سلام، من روبین هستم، از آشنایی با شما خوشحالم';
         }
-        Android.tts(text);
+        Android.tts(text, roobinLang);
     }catch(e){
         //TODO
     }
