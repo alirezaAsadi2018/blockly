@@ -90,6 +90,13 @@ public class BluetoothController implements Codes {
         return devices.toString();
     }
 
+    public boolean isConnected(String name){
+        on();
+        visible();
+        return lastConnectedBluetoothDevice != null && lastConnectedBluetoothDevice.getName().equalsIgnoreCase(name)
+                && bluetoothSocket != null;
+    }
+
 
     public void connectBluetooth(String name) throws IOException {
         on();

@@ -77,16 +77,18 @@ public class TTS implements Codes {
                             break;
                         case SYNTHESIZE_To_FILE_UTTERANCE_ID:
                             Log.i(this.getClass().getName(), "tts temp file created successfully!");
-                            try {
-//                                setStreamVolumeToMaximum();
-                                playTtsOutputFile();
-                                lipSync();
-                            } catch (FileNotFoundException e) {
-                                Log.e(this.getClass().getName(), "tts output file not found!! " +
-                                        Objects.requireNonNull(e.getMessage()));
-                            } catch (IOException e) {
-                                Log.e(this.getClass().getName(), "can't play media player!");
-                            }
+                            new Thread(()-> {
+                                try {
+//                                    setStreamVolumeToMaximum();
+                                    playTtsOutputFile();
+                                    lipSync();
+                                } catch (FileNotFoundException e) {
+                                    Log.e(this.getClass().getName(), "tts output file not found!! " +
+                                            Objects.requireNonNull(e.getMessage()));
+                                } catch (IOException e) {
+                                    Log.e(this.getClass().getName(), "can't play media player!");
+                                }
+                            }).start();
                         case IDLE_UTTERANCE_ID:
                         default:
                             break;
@@ -135,7 +137,7 @@ public class TTS implements Codes {
             WavFile wavFile = WavFile.openWavFile(ttsOutputFile);
             double durationMillis = ((double) wavFile.getNumFrames() / (double) wavFile.getSampleRate()) * 1000;
             SecureRandom secureRandom = new SecureRandom();
-            double stop = getCurrentTimeInMillis() + durationMillis * 0.70;
+            double stop = getCurrentTimeInMillis() + durationMillis * 0.75;
             while (getCurrentTimeInMillis() < stop) {
                 // create a random number ranging from [1-3] both inclusive
                 int ph = secureRandom.nextInt(3) + 1;
@@ -175,7 +177,7 @@ public class TTS implements Codes {
             }
             mediaPlayer.release();
             WebView mWebView = mainActivity.findViewById(R.id.blockly_webview);
-            mWebView.post(() -> mWebView.loadUrl("javascript:ttsFinished();"));
+            mWebView.post(() -> mWebView.loadUrl("javascript:androidFinished();"));
         });
         player.setLooping(false);
         player.start();

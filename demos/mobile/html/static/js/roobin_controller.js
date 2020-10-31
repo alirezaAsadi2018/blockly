@@ -104,7 +104,7 @@ function mouthing(ph){
 }
 
 function ask(text){
-    Android.tts(text, roobinLang);
+    callTts(text);
 }
 
 function change_eye(eyes_side_list, eyes_list){
@@ -221,7 +221,7 @@ function nth(day) {
     }
 }
 
-function whatDay(date){
+function sayWhatDay(date){
     if(roobinLang === 'en'){
         var year = date.getFullYear();
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -234,7 +234,6 @@ function whatDay(date){
         text += day.toString() + nth(day) + " , ";
         text += month.toString() + " , ";
         text += year.toString();
-        Android.tts(text, roobinLang);
     }else if(roobinLang === 'fa'){
         date_jalali = jalaali.toJalaali(date);
         var year = date_jalali.jy;
@@ -249,13 +248,13 @@ function whatDay(date){
         text += month.toString() + " , ";
         text += year.toString();
         text += "مي باشد.";
-        Android.tts(text, roobinLang);
     }
+    callTts(text);
 }
 
 function todaysDate(){
     var today = new Date();
-    whatDay(today);
+    sayWhatDay(today);
 }
 
 function change_mouth(mouth_list){
@@ -295,7 +294,7 @@ function introduce(){
         }else if(roobinLang === 'fa'){
             var text = 'سلام ، من روبین هستم ، دوسته خوبه شما';
         }
-        Android.tts(text, roobinLang);
+        callTts(text);
     }catch(e){
         //TODO
     }
@@ -308,7 +307,7 @@ function say_hello(){
         }else if(roobinLang === 'fa'){
             var text = 'سلام، من روبین هستم، از آشنایی با شما خوشحالم';
         }
-        Android.tts(text, roobinLang);
+        callTts(text);
     }catch(e){
         //TODO
     }

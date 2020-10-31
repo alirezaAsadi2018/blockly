@@ -47,20 +47,27 @@ public class WebAppInterface implements Codes {
 
     @JavascriptInterface
     public void connectBluetooth(String name) {
-        try {
-            mainActivity.getmBluetoothControllerInstance().connectBluetooth(name);
-        } catch (IOException e) {
-            Log.e(this.getClass().getName(), e + ", can not pair with the bluetooth device");
-        }
+        new Thread(()->{
+            try {
+                if(!mainActivity.getmBluetoothControllerInstance().isConnected(name)){
+                    mainActivity.getmBluetoothControllerInstance().connectBluetooth(name);
+                }
+            } catch (IOException e) {
+                Log.e(this.getClass().getName(), e + ", can not pair with the bluetooth device");
+            }
+        }).start();
     }
 
     @JavascriptInterface
     public void send(String text) {
-        try {
-            mainActivity.getmBluetoothControllerInstance().send(text);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new Thread(()->{
+            try {
+                mainActivity.getmBluetoothControllerInstance().send(text);
+                androidCallback();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     @JavascriptInterface
@@ -72,28 +79,34 @@ public class WebAppInterface implements Codes {
     public void restartBluetooth() {
         new Thread(() -> {
             mainActivity.getmBluetoothControllerInstance().restart();
+            androidCallback();
         }).start();
     }
 
     @JavascriptInterface
     public void tts(String text, String lang) {
-        try {
-            mainActivity.getMTtsInstanceForLanguage(lang).sayFromFile(text);
-        } catch (Exception e) {
-            Log.e(this.getClass().getName(), "tts engine installation error: " + e.getMessage());
-        }
+        new Thread(()->{
+            try {
+                mainActivity.getMTtsInstanceForLanguage(lang).sayFromFile(text);
+                // android callback is done in TTS after speech is finished!
+            } catch (Exception e) {
+                Log.e(this.getClass().getName(), "tts engine installation error: " + e.getMessage());
+            }
+        }).start();
     }
 
     @JavascriptInterface
     public void laugh() {
         MediaPlayer mediaPlayer = MediaPlayer.create(mContext, R.raw.laugh);
         mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener((m)-> androidCallback());
     }
 
     @JavascriptInterface
     public void setTtsSpeakingPitch(float pitch) {
         try {
             mainActivity.getMTtsInstance().setSpeakingPitch(pitch);
+            androidCallback();
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "tts engine installation error: " + e.getMessage());
         }
@@ -103,6 +116,7 @@ public class WebAppInterface implements Codes {
     public void changeTtsSpeakingPitch(float pitchChange) {
         try {
             mainActivity.getMTtsInstance().changeSpeakingPitch(pitchChange);
+            androidCallback();
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "tts engine installation error: " + e.getMessage());
         }
@@ -112,6 +126,7 @@ public class WebAppInterface implements Codes {
     public void setTtsSpeakingSpeed(float speed) {
         try {
             mainActivity.getMTtsInstance().setSpeakingSpeed(speed);
+            androidCallback();
         } catch (Exception e) {
             Log.e(this.getClass().getName(), "tts engine installation error: " + e.getMessage());
         }
@@ -147,5 +162,10 @@ public class WebAppInterface implements Codes {
         } else {
             return "";
         }
+    }
+
+    private void androidCallback(){
+        WebView mWebView = mainActivity.findViewById(R.id.blockly_webview);
+        mWebView.post(() -> mWebView.loadUrl("javascript:androidFinished();"));
     }
 }

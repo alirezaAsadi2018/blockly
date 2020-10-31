@@ -294,7 +294,7 @@
 	var req;
 	var href = 'http://localhost:1234';
 	var sttCallback = undefined;
-	var ttsCallback = undefined;
+	var androidCallback = undefined;
 	var commandKeys = {
 		'say' : 'begoo',
 		'setLanguage' : 'set_language',
@@ -381,7 +381,7 @@
 				sendHttpRequestWithCallback(url, callback);
 			}else{
 				postMessage('callTts("' + (arguments.length ? text : '') + '")');
-				ttsCallback = callback;
+				androidCallback = callback;
 			}
 		};
 		interpreter.setProperty(globalObject, 'say',
@@ -389,7 +389,7 @@
 
 
 		if(navigator.userAgent.match(/Android/i)){
-			wrapper = function(command, arg1, arg2, arg3, arg4) {
+			wrapper = function(command, arg1, arg2, arg3, arg4, callback) {
 				var query = command;
 				for(var i = 1; i < arguments.length; ++i){
 					if(arguments[i]){
@@ -397,8 +397,9 @@
 					}
 				}
 				postMessage(query);
+				androidCallback = callback;
 			}
-			interpreter.setProperty(globalObject, 'roobin', interpreter.createNativeFunction(wrapper));
+			interpreter.setProperty(globalObject, 'roobin', interpreter.createAsyncFunction(wrapper));
 		}else{
 			wrapper = function(command, arg1, arg2, arg3, arg4, callback) {
 				var query = commandKeys[command];
@@ -488,9 +489,13 @@
 				runner();
 			}
 		}else if(data.stt_result){
-			sttCallback(data.stt_result);
-		}else if(data.tts_finished){
-			ttsCallback('tts finished!');
+			if(sttCallback){
+				sttCallback(data.stt_result);
+			}
+		}else if(data.androidCallback){
+			if(androidCallback){
+				androidCallback('android cmd finished!');
+			}
 		}
 	};
 </script>

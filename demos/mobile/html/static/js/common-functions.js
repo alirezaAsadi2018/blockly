@@ -462,7 +462,7 @@ function createWorker(){
                 'alert', 'prompt', 'rotate', 'requestServer'
             ]
             workerAndroidQueryMessages = [
-                "setLanguage", "setSpeakingSpeed", "setSpeakingPitch", "changeSpeakingPitch", "changeEye", 
+                "say", "setLanguage", "setSpeakingSpeed", "setSpeakingPitch", "changeSpeakingPitch", "changeEye", 
                 "changeMouthForm", "recovery", "introduce", "sayHello", "chuckle", "ask", "wikipediaSearch", "wikipediaTextSearch", 
                 "todaysDate", "whatDaysDate", "riddleGame", "arrowGame", "patternGameTwo", "numberSeries", "amazingFacts", 
                 "gameExplanation", "tellStory", "blink", "lookSides", "lookAhead", "drawOnEyes", "drawOnMouth", "turnOffEyeOrMouth",
@@ -473,8 +473,6 @@ function createWorker(){
             }else if(oEvent.data.indexOf('callStt') !== -1){
                 var stt_result = callStt();
                 document.worker.postMessage({stt_result:stt_result});
-            }else if(oEvent.data.indexOf('callTts') !== -1){
-                eval(oEvent.data);
             }else if(includesOneFromList(oEvent.data, workerEvalMessages)){
                 eval(oEvent.data);
             }else if(includesOneFromList(oEvent.data, workerAndroidQueryMessages)){
@@ -490,16 +488,19 @@ function createWorker(){
     }
 }
 
-function ttsFinished(){
-    document.worker.postMessage({tts_finished:'true'});
+function androidFinished(){
+    document.worker.postMessage({androidCallback:'true'});
 }
 
 function roobinBlocksQueryToCode(msg, queries){
     parts = msg.split('/');
     cmd = parts[0];
     args = parts.splice(1);
-    if(cmd === 'setLanguage'){
+    if(cmd === 'say'){
+        callTts(args[0]);
+    }if(cmd === 'setLanguage'){
         roobinLang = args[0];
+        androidFinished();
     }else if(cmd === 'setSpeakingSpeed'){
         setSpeakingSpeed(args[0]);
     }else if(cmd === 'setSpeakingPitch'){
@@ -524,6 +525,7 @@ function roobinBlocksQueryToCode(msg, queries){
         todaysDate();
     }else if(cmd === 'whatDaysDate'){
         //TODO
+        androidFinished();
     }else if(cmd === 'blink'){
         blink();
     }else if(cmd === 'lookSides'){
