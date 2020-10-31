@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -48,6 +50,23 @@ public class MainActivity extends AppCompatActivity implements Codes {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        STT.getInstance().startLanguageReceiver(getApplicationContext());
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        String jsKeycode = "";
+        if(keyCode==KeyEvent.KEYCODE_VOLUME_DOWN){
+            jsKeycode = "ArrowDown";
+        }
+        if(keyCode==KeyEvent.KEYCODE_VOLUME_UP){
+            jsKeycode = "ArrowUp";
+        }
+        if(jsKeycode.length() > 0){
+            WebView mWebView = findViewById(R.id.blockly_webview);
+            String finalJsKeycode = jsKeycode;
+            mWebView.post(() -> mWebView.loadUrl("javascript:runAllKeyPressedBlocks(\'" + finalJsKeycode + "\');"));
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

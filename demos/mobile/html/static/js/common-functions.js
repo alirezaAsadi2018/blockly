@@ -362,12 +362,16 @@ function blockTextToWorkspace(text){
 
 function keyPressedBlocksEventListener(e){
     var keyCodeRecieved = e.code;
+    runAllKeyPressedBlocks(keyCodeRecieved);
+}
+
+function runAllKeyPressedBlocks(keyCodeRecieved){
     for(blockId in keyEventBlocksOnWorkspace){
         var keyEventBlock = keyEventBlocksOnWorkspace[blockId];
         var keyCodeSelected = keyEventBlock.getFieldValue('SEL_ROOBIN_KEY_PRESSED');
         if(keyCodeRecieved === keyCodeSelected){
             var code = blockIdToCode(blockId);
-            code = 'var keyPressed = \'' + e.code + '\';\n' + code;
+            code = 'var keyPressed = \'' + keyCodeRecieved + '\';\n' + code;
             runCode(code);
         }
     }
