@@ -367,8 +367,8 @@
 				var url = href + '/set_stt_var';
 				sendHttpRequestWithCallback(url, callback);
 			}else{
-				postMessage('callStt()');
 				sttCallback = callback;
+				postMessage('callStt()');
 			}
 		};
 		interpreter.setProperty(globalObject, 'listen',
@@ -380,8 +380,8 @@
 				var url = href + '/begoo/' + text;
 				sendHttpRequestWithCallback(url, callback);
 			}else{
-				postMessage('callTts("' + (arguments.length ? text : '') + '")');
 				androidCallback = callback;
+				postMessage('callTts("' + (arguments.length ? text : '') + '")');
 			}
 		};
 		interpreter.setProperty(globalObject, 'say',
@@ -488,8 +488,10 @@
 				myInterpreter = new Interpreter(code, initApi);
 				runner();
 			}
-		}else if(data.stt_result){
+			// second condition is for when the result of stt is empty or it is cancelled by the user
+		}else if(data.stt_result || data.stt_result === ""){
 			if(sttCallback){
+				console.log(data.stt_result);
 				sttCallback(data.stt_result);
 			}
 		}else if(data.androidCallback){

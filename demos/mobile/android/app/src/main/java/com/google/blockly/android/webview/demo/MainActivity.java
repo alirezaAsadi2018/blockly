@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements Codes {
     public final AtomicBoolean isBluetoothEnabled = new AtomicBoolean(false);
     public final AtomicBoolean isBluetoothDiscoverable = new AtomicBoolean(false);
     private final AtomicBoolean isSttButtonActive = new AtomicBoolean(true);
-    public String sttResult;
     private TTS mTtsInstance;
     private BluetoothController mBluetoothControllerInstance;
     private final AtomicBoolean isTtsLocaleInstallationDone = new AtomicBoolean(false);
@@ -117,10 +116,10 @@ public class MainActivity extends AppCompatActivity implements Codes {
                 isBluetoothDiscoverable.set(false);
             }
         }
+        String sttResult = "";
         if (resultCode == RESULT_OK && data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            String text = Objects.requireNonNull(result).get(0);
-            sttResult = text;
+            sttResult = Objects.requireNonNull(result).get(0);
 //            switch (requestCode) {
 //                case STT_DO_COMMAND_CODE: //STT action from js result -> getting a command
 //                    if (text.contains("آب و هوا") || text.contains("آب وهوا") ||
@@ -155,10 +154,9 @@ public class MainActivity extends AppCompatActivity implements Codes {
         } else {
             Log.i(MainActivity.class.getName(), "result is null in activity results!");
         }
-        //notify the thread waiting for stt result in webView interface
-        synchronized (this) {
-            this.notifyAll();
-        }
+        WebView mWebView = findViewById(R.id.blockly_webview);
+        String finalSttResult = sttResult;
+        mWebView.post(() -> mWebView.loadUrl("javascript:stt_result_ready(\'" + finalSttResult + "\');"));
     }
 
     private void askForCityName() {

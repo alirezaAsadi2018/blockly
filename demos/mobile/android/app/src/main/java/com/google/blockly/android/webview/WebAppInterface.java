@@ -152,16 +152,16 @@ public class WebAppInterface implements Codes {
 
 
     @JavascriptInterface
-    public String stt(String lang) throws InterruptedException {
-        boolean res = STT.getInstance().stt(mContext, mainActivity, STT_DO_COMMAND_CODE, lang);
-        if (res) {
-            synchronized (mainActivity) {
-                mainActivity.wait();
-            }
-            return mainActivity.sttResult;
-        } else {
-            return "";
-        }
+    public boolean stt(String lang){
+        return STT.getInstance().stt(mContext, mainActivity, STT_DO_COMMAND_CODE, lang);
+//        if (res) {
+//            synchronized (mainActivity) {
+//                mainActivity.wait();
+//            }
+//            return mainActivity.sttResult;
+//        } else {
+//            return "";
+//        }
     }
 
     private void androidCallback(){

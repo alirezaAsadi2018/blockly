@@ -471,8 +471,13 @@ function createWorker(){
             if(oEvent.data === 'fin'){
                 resetInterpreter();
             }else if(oEvent.data.indexOf('callStt') !== -1){
-                var stt_result = callStt();
-                document.worker.postMessage({stt_result:stt_result});
+                var is_started = callStt();
+                if(is_started === false){
+                    // stt was busy or could not be started
+                    // send an empty string for stt result
+                    stt_result_ready("");
+                }
+                // document.worker.postMessage({stt_result:stt_result});
             }else if(includesOneFromList(oEvent.data, workerEvalMessages)){
                 eval(oEvent.data);
             }else if(includesOneFromList(oEvent.data, workerAndroidQueryMessages)){
@@ -486,6 +491,10 @@ function createWorker(){
     }catch (e2) {
         // can do nothing more
     }
+}
+
+function stt_result_ready(result){
+    document.worker.postMessage({stt_result:result});
 }
 
 function androidFinished(){
