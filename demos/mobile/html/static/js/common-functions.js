@@ -71,6 +71,18 @@ document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
 document.write('<script src="static/js/roobin_controller.js"></script>\n');
 
 function onresizeFunc(){
+    var blocklyDiv = document.getElementById('blocklyDiv');
+    blocklyDiv.style.height = '75vh';
+    var workspaceHeight = blocklyDiv.offsetHeight;
+    // var items = $('.ui.icon.menu .item');
+    // if(items.length !== 0){
+    //     items.css('line-height', workspaceHeight/(items.length*3.7) + 'px');
+    // }
+    if(workspaceHeight > 550){
+        workspaceHeight = 550;
+    }
+    document.getElementById('blockly-0').style.height = (workspaceHeight) + 'px';
+    document.querySelector('.blocklyTreeRoot').style.height =  (workspaceHeight) + 'px';
     Blockly.svgResize(getWorkspace());
 }
 
@@ -173,10 +185,10 @@ function addPopupToDisabledBlocks(){
 function init() {
     document.title = Blockly.Msg['ROOBIN_CATEGORY'];
 	
-    $('.ui.sidebar').sidebar({
-		context: $('.ui.pushable.segment'),
-		transition: 'overlay'
-	}).sidebar('attach events', '#mobile_item');
+    // $('.ui.sidebar').sidebar({
+	// 	context: $('.ui.pushable.segment'),
+	// 	transition: 'overlay'
+	// }).sidebar('attach events', '#mobile_item');
 	
 	$('.ui.dropdown').dropdown();
 
@@ -266,8 +278,7 @@ function init() {
 	myWorkspace.addChangeListener(blocksEventListener);
 	document.addEventListener('keydown', keyPressedBlocksEventListener);
     
-    Blockly.svgResize(myWorkspace);
-    
+    onresizeFunc();
 };
 
 function blockIdToCode(id){
@@ -728,14 +739,14 @@ function loadWorkspace(){
         toolbox: BLOCKLY_TOOLBOX_XML['standard'],
         collapse : true, 
         comments : true, 
-        disable : true, 
+        // disable : true, 
         maxBlocks : Infinity, 
         trashcan : true,
-        horizontalLayout : false, 
-        toolboxPosition : 'start', 
+        // horizontalLayout : false, 
+        // toolboxPosition : 'start', 
         css : true, 
         rtl : true, 
-        scrollbars : true, 
+        scrollbars : true,
         sounds : true, 
         oneBasedIndex : true, 
         grid : {
@@ -758,6 +769,7 @@ function loadWorkspace(){
             scaleSpeed : 1.2
         }
     });
+    onresizeFunc();
     return myWorkspace;
 }
 
