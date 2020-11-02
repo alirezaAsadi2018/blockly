@@ -255,7 +255,10 @@ function init() {
 				var reader = new FileReader();
 				reader.onload = (function(theFile) {
 					return function(e) {
-						var text = e.target.result;
+                        debugger
+                        var text = e.target.result;
+                        e.target.value = '';
+                        $('.ui.action.input').form('reset');
 						blockTextToWorkspace(text);
 					};
 				})(file);

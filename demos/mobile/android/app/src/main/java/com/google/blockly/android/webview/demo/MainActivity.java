@@ -6,12 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.blockly.android.webview.MediaPlayerService;
 import com.google.blockly.android.webview.R;
+import com.google.blockly.android.webview.WebChromeClient;
 import com.google.blockly.android.webview.utility.BluetoothController;
 import com.google.blockly.android.webview.utility.Codes;
 import com.google.blockly.android.webview.utility.STT;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements Codes {
     private TTS mTtsInstance;
     private BluetoothController mBluetoothControllerInstance;
     private final AtomicBoolean isTtsLocaleInstallationDone = new AtomicBoolean(false);
+    public ValueCallback<Uri> mUploadMessage;
+    public ValueCallback<Uri[]> mValueCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +120,20 @@ public class MainActivity extends AppCompatActivity implements Codes {
             } else {
                 isBluetoothDiscoverable.set(false);
             }
+        }
+
+        if(requestCode == FILE_CHOOSER_RESULT_CODE){
+            if (Build.VERSION.SDK_INT >= 21) {
+                if (mValueCallback == null) return;
+                mValueCallback.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, data));
+                mValueCallback = null;
+            } else {
+                if (mUploadMessage == null) return;
+                Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
+                mUploadMessage.onReceiveValue(result);
+                mValueCallback = null;
+            }
+            return;
         }
         String sttResult = "";
         if (resultCode == RESULT_OK && data != null) {
