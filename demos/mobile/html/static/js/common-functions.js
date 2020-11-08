@@ -122,38 +122,14 @@ function initLanguage() {
     document.head.parentElement.setAttribute('lang', workspaceLang);
 
     // Inject language strings.
-    var els = document.querySelectorAll('.show-code-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].innerHTML = '<i class="code icon"></i>' + Blockly.Msg['SHOW_CODE'];
-    }
-    els = document.querySelectorAll('.run-button-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].innerHTML = '<i class="green play icon"></i>' + Blockly.Msg['RUN'];
-    }
-    els = document.querySelectorAll('.stop-button-translate');
-   for(var i = 0; i < els.length; ++i){
-        els[i].innerHTML = '<i class="red stop icon"></i>' + Blockly.Msg['STOP'];
-    }
-    els = document.querySelectorAll('.bluetooth-button-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].innerHTML = '<i class="blue bluetooth icon"></i>' + Blockly.Msg['BLUETOOTH_CONNECTION'];
-    }
-    els = document.querySelectorAll('.bluetooth-select-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].textContent = Blockly.Msg['BLUETOOTH_SELECT_DEVICE'];
-    }
-    els = document.querySelectorAll('.js-item-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].innerHTML = '<i class="js icon"></i>' + Blockly.Msg['JAVASCRIPT'];
-    }
-    els = document.querySelectorAll('.python-item-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].innerHTML = '<i class="python icon"></i>' + Blockly.Msg['PYTHON'];
-    }
-    els = document.querySelectorAll('.lang-button-translate');
-    for(var i = 0; i < els.length; ++i){
-        els[i].textContent = LANGUAGE_NAME[getLang()];
-    }
+    $('.show-code-translate').html('<i class="code icon"></i>' + Blockly.Msg['SHOW_CODE']);
+    $('.run-button-translate').html('<i class="green play icon"></i>' + Blockly.Msg['RUN']);
+    $('.stop-button-translate').html('<i class="red stop icon"></i>' + Blockly.Msg['STOP']);
+    $('.bluetooth-button-translate').html('<i class="blue bluetooth icon"></i>' + Blockly.Msg['BLUETOOTH_CONNECTION']);
+    $('.bluetooth-select-translate').text(Blockly.Msg['BLUETOOTH_SELECT_DEVICE']);
+    $('.js-item-translate').html('<i class="js icon"></i>' + Blockly.Msg['JAVASCRIPT']);
+    $('.python-item-translate').html('<i class="python icon"></i>' + Blockly.Msg['PYTHON']);
+    $('.lang-button-translate').text(LANGUAGE_NAME[getLang()]);
 };
 
 function isRtl() {
@@ -175,7 +151,7 @@ function addPopupToDisabledBlocks(){
         $(this).popup({
           content  : Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS']
         });
-		$(this).click(function() {
+		$(this).on("click", function() {
 			openTab('https://www.roobin.co/product/roobin', true);
 			//$("<a href='www.google.com' target='_blank'></a>").trigger('click');
 		});
@@ -197,75 +173,57 @@ function init() {
     });
 
     // enable all popups for mobile div top menu
-    $('.show-code-popup').each(function(index) {
-		$(this).popup({
-			position   : 'bottom center',
-			content : Blockly.Msg['SHOW_CODE']
-		});
-	});
-    $('.run-code-popup').each(function(index) {
-		$(this).popup({
-			position   : 'bottom center',
-			content : Blockly.Msg['RUN']
-    	});
-	});
-    $('.stop-code-popup').each(function(index) {
-		$(this).popup({
-			position   : 'bottom center',
-			content : Blockly.Msg['STOP']
-		});
-	});
-    $('.bluetooth-popup').each(function(index) {
-		$(this).popup({
-			position   : 'bottom center',
-			content : Blockly.Msg['BLUETOOTH_CONNECTION']
-		});
-	});
-    $('.code-lang-popup').each(function(index) {
-		$(this).popup({
-			position   : 'bottom center',
-			content : Blockly.Msg['SELECT_LANGUAGE']
-		});
-	});
-    $('.download-popup').each(function(index) {
-		$(this).popup({
-			position   : 'bottom right',
-			content : Blockly.Msg['ROOBIN_DOWNLOAD']
-		});
-	});
-    $('.upload-popup').each(function(index) {
-		$(this).popup({
-			position   : 'bottom right',
-			content : Blockly.Msg['ROOBIN_UPLOAD']
-		});
-	});
+    $('.show-code-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['SHOW_CODE']
+    });
+    $('.run-code-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['RUN']
+    });
+    $('.stop-code-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['STOP']
+    });
+    $('.bluetooth-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['BLUETOOTH_CONNECTION']
+    });
+    $('.code-lang-popup').popup({
+        position   : 'bottom center',
+        content : Blockly.Msg['SELECT_LANGUAGE']
+    });
+    $('.download-popup').popup({
+        position   : 'bottom right',
+        content : Blockly.Msg['ROOBIN_DOWNLOAD']
+    });
+    $('.upload-popup').popup({
+        position   : 'bottom right',
+        content : Blockly.Msg['ROOBIN_UPLOAD']
+    });
 
     // upload button click handler
-    $('.upload-action').each(function(index) {
-		$(this).click(function() {
-			$(this).parent().find("input:file").click();
-		});
+    $('.upload-action').on("click", function() {
+        $(this).parent().find("input:file").trigger("click");
     });
       
     // upload button action handler
-	$('input:file', '.ui.action.input').each(function(index){
-		$(this).on('change', function(e) {
-			var file = e.target.files[0];
-			if(file && file.type.match('text')){
-				var reader = new FileReader();
-				reader.onload = (function(theFile) {
-					return function(e) {
-                        debugger
-                        var text = e.target.result;
-                        e.target.value = '';
-                        $('.ui.action.input').form('reset');
-						blockTextToWorkspace(text);
-					};
-				})(file);
-				reader.readAsText(file);
-			}
-		});
-	});    
+	$('input:file', '.ui.action.input').on('change', function(e) {
+        var file = e.target.files[0];
+        if(file && file.type.match('text')){
+            var reader = new FileReader();
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    debugger
+                    var text = e.target.result;
+                    e.target.value = '';
+                    $('.ui.action.input').form('reset');
+                    blockTextToWorkspace(text);
+                };
+            })(file);
+            reader.readAsText(file);
+        }
+    });    
 
     initLanguage();
 
@@ -646,20 +604,16 @@ function changeServerIndicatorColor(){
         if(serverIndicatorIcons[i].classList.contains(serverOnIndicatorColor)){
             serverIndicatorIcons[i].classList.remove(serverOnIndicatorColor);
             serverIndicatorIcons[i].classList.add(serverOffIndicatorColor);
-            $('.server-indicator-popup').each(function(index) {
-                $(this).popup({
-                    position   : 'bottom center',
-                    content : Blockly.Msg['SERVER_INDICATOR_PENDING']
-                });
+            $('.server-indicator-popup').popup({
+                position   : 'bottom center',
+                content : Blockly.Msg['SERVER_INDICATOR_PENDING']
             });
         }else if(serverIndicatorIcons[i].classList.contains(serverOffIndicatorColor)){
             serverIndicatorIcons[i].classList.remove(serverOffIndicatorColor);
             serverIndicatorIcons[i].classList.add(serverOnIndicatorColor);
-            $('.server-indicator-popup').each(function(index) {
-                $(this).popup({
-                    position   : 'bottom center',
-                    content : Blockly.Msg['SERVER_INDICATOR_ONLINE']
-                });
+            $('.server-indicator-popup').popup({
+                position   : 'bottom center',
+                content : Blockly.Msg['SERVER_INDICATOR_ONLINE']
             });
         }
     }
@@ -777,24 +731,20 @@ function loadWorkspace(){
 }
 
 function addEventsToBluetoothButton(){
-    $('.connect-bluetooth-device').each(function(index){
-        $(this).on('click', function(evnet){
-            if(!deviceArray || deviceArray.length === 0){
-                populateBluetoothDevicesForm();
-            }else{
-                var bluetoothDeviceSelected = $(this).parent().find(".select-bluetooth-device").dropdown('get value');
-                if(!bluetoothDeviceSelected || bluetoothDeviceSelected === Blockly.Msg['BLUETOOTH_SELECT_DEVICE']){
-                    return;
-                }
-                if(isAndroidUserAgent()){
-                    Android.connectBluetooth(bluetoothDeviceSelected);
-                }
+    $('.connect-bluetooth-device').on('click', function(evnet){
+        if(!deviceArray || deviceArray.length === 0){
+            populateBluetoothDevicesForm();
+        }else{
+            var bluetoothDeviceSelected = $(this).parent().find(".select-bluetooth-device").dropdown('get value');
+            if(!bluetoothDeviceSelected || bluetoothDeviceSelected === Blockly.Msg['BLUETOOTH_SELECT_DEVICE']){
+                return;
             }
-        });
+            if(isAndroidUserAgent()){
+                Android.connectBluetooth(bluetoothDeviceSelected);
+            }
+        }
     });
-	$('.select-bluetooth-device').each(function(index){
-        $(this).on('click', populateBluetoothDevicesForm);
-    });
+	$('.select-bluetooth-device').on('click', populateBluetoothDevicesForm);
 }
 
 function populateBluetoothDevicesForm(){
@@ -929,7 +879,7 @@ function adjustFlyoutPostion(waitForDomLoad){
     var scrollbarEl = document.querySelectorAll('.blocklyScrollbarVertical.blocklyFlyoutScrollbar')[1];
 
     if(waitForDomLoad){
-        $(document).ready(function() {
+        $(function() {
             flyoutEl.style.transform = 'translate(' + blocklyFlyoutNewTranslateX + 'px, ' + blocklyFlyoutTranslateY + 'px)';
             scrollbarEl.style.transform = 'translate(' + (blocklyFlyoutScrollbarTranslateX) + 'px, '
                 + blocklyFlyoutScrollbarTranslateY + 'px)';
