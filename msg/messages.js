@@ -1631,7 +1631,7 @@ Blockly.Msg.COLLAPSED_WARNINGS_WARNING = 'Collapsed blocks contain warnings.';
 
 /** @type {string} */
 /// %1 is the text which will be converted to speech. only works on android os!!
-Blockly.Msg.ROOBIN_TTS = 'convert text: %1 to speech';
+Blockly.Msg.ROOBIN_TTS = 'Say %1';
 
 /** @type {string} */
 /// opens a google speech recognition window and listens for a while, if a word was recognized, returns it as a string. only works on android os!!
@@ -1679,9 +1679,9 @@ Blockly.Msg.ROOBIN_SET_LANG_FA = 'persian';
 /** @type {string} */
 Blockly.Msg.ROOBIN_SET_LANG_EN = 'english';
 /** @type {string} */
-Blockly.Msg.ROOBIN_SET_SPEAK_SPEED = 'set speaking speed to %1';
+Blockly.Msg.ROOBIN_SET_SPEAK_SPEED = 'speaking speed = %1';
 /** @type {string} */
-Blockly.Msg.ROOBIN_SET_SPEAK_PITCH = 'set speaking pitch to %1';
+Blockly.Msg.ROOBIN_SET_SPEAK_PITCH = 'speaking pitch = %1';
 /** @type {string} */
 Blockly.Msg.ROOBIN_CHANGE_SPEAK_PITCH = 'change speaking pitch by %1';
 /** @type {string} */
@@ -1841,15 +1841,15 @@ Blockly.Msg.STOP = 'stop';
 /** @type {string} */
 Blockly.Msg.SHOW_CODE = 'show code';
 /** @type {string} */
-Blockly.Msg.BLUETOOTH_CONNECTION = 'bluetooth connection';
+Blockly.Msg.BLUETOOTH_CONNECTION = 'bluetooth';
 /** @type {string} */
 Blockly.Msg.BLUETOOTH_SELECT_DEVICE = 'select a device to connect';
 /** @type {string} */
 Blockly.Msg.SELECT_LANGUAGE = 'select language';
 /** @type {string} */
-Blockly.Msg.JAVASCRIPT = 'javaScript';
+Blockly.Msg.JAVASCRIPT = 'Javascript';
 /** @type {string} */
-Blockly.Msg.PYTHON = 'python';
+Blockly.Msg.PYTHON = 'Python';
 /** @type {string} */
 Blockly.Msg.ENGLISH = 'English';
 /** @type {string} */
@@ -1860,3 +1860,23 @@ Blockly.Msg.PERSIAN = 'Persian';
 Blockly.Msg.TIMEOUT = 'Maximum execution iterations exceeded.';
 /** @type {string} */
 Blockly.Msg.BAD_CODE = 'Program error: %1';
+/** @type {string} */
+Blockly.Msg.LOOP_FOREVER = 'repeat forever';
+/** @type {string} */
+Blockly.Msg.ROOBIN_WHEN_KEY_PRESSED = 'when %1 key pressed';
+/** @type {string} */
+Blockly.Msg.ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS = 'You\'d better have Roobin and its software to use these blocks!!';
+/** @type {string} */
+Blockly.Msg.ROOBIN_DOWNLOAD = 'Download Code';
+/** @type {string} */
+Blockly.Msg.ROOBIN_UPLOAD = 'Upload Code';
+/** @type {string} */
+Blockly.Msg.SERVER_INDICATOR_PENDING = 'pending';
+/** @type {string} */
+Blockly.Msg.SERVER_INDICATOR_ONLINE = 'online';
+/** @type {string} */
+Blockly.Msg.ROOBIN_TTS_TEXT = 'Hello';
+/** @type {string} */
+Blockly.Msg.ROOBIN_WIKI_SEARCH = 'Iran';
+/** @type {string} */
+Blockly.Msg.ROOBIN_ASK_WAIT_TEXT = 'How are you?';

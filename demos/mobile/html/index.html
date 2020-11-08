@@ -37,6 +37,11 @@
 		.ui.action.input input[type="file"] {
 			display: none;
 		}
+		/* This is to solve the problem that Menu Dropdown goes behind blocklydiv segment */
+		.ui.menu {
+			opacity: 1;
+			z-index: 1;
+		}
 	</style>
 	<title>Roobin</title>
 	<script src="static/js/common-functions.js"></script>
@@ -48,12 +53,6 @@
 				<div class="ui orange borderless top inverted menu">
 					<div class="item">
 						<button id='showCode' class="large ui button show-code-translate" onclick="showCode()"></button>
-					</div>
-					<div class="item">
-						<button id='runBtn' class="large ui button run-button-translate" onclick="runCode()"></button>
-					</div>
-					<div class="item">
-						<button id='stopBtn' class="large ui button stop-button-translate" onclick="stopCode()"></button>
 					</div>
 					<div class="item">
 						<div class="large ui floating top left pointing dropdown icon button">
@@ -68,6 +67,12 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="item">
+						<button id='runBtn' class="large ui button run-button-translate" onclick="runCode()"></button>
+					</div>
+					<div class="item">
+						<button id='stopBtn' class="large ui button stop-button-translate" onclick="stopCode()"></button>
 					</div>
 					<div class="right menu">
 						<div class="item">
@@ -118,6 +123,20 @@
 							<button id='showCode' class="Mini ui icon button show-code-popup" onclick="showCode()">
 								<i class="Mini code icon"></i>
 							</button>
+							<button class="Mini ui floating top left pointing dropdown icon button code-lang-popup">
+								<i class="dropdown icon"></i>
+								<div id="jsItem" class="text">
+									<i class="Mini js icon"></i>
+								</div>
+								<div class="menu">
+									<div id="jsItem" class="item" onclick="setCodingLang('js')">
+									<i class="Mini js icon"></i>
+									</div>
+									<div id="pythonItem" class="item" onclick="setCodingLang('py')">
+									<i class="Mini python icon"></i>
+									</div>
+								</div>
+							</button>
 							<button id='runBtn' class="Mini ui icon button run-code-popup" onclick="runCode()">
 								<i class="Mini green play icon"></i>
 							</button>
@@ -137,23 +156,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="item">
-						<div class="Mini ui floating top left pointing dropdown icon button code-lang-popup">
-							<i class="dropdown icon"></i>
-							<div id="jsItem" class="text">
-								<i class="Mini js icon"></i>
-							</div>
-							<div class="menu">
-								<div id="jsItem" class="item" onclick="setCodingLang('js')">
-								<i class="Mini js icon"></i>
-								</div>
-								<div id="pythonItem" class="item" onclick="setCodingLang('py')">
-								<i class="Mini python icon"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-
 					<div class="right menu">
 						<div class="item">
 							<div class="Mini ui language floating dropdown link">
@@ -204,12 +206,6 @@
 							<button id='showCode' class="Mini ui icon button show-code-popup" onclick="showCode()">
 								<i class="Mini code icon"></i>
 							</button>
-							<button id='runBtn' class="Mini ui icon button run-code-popup" onclick="runCode()">
-								<i class="Mini green play icon"></i>
-							</button>
-							<button id='stopBtn' class="Mini ui icon button stop-code-popup" onclick="stopCode()">
-								<i class="Mini red stop icon"></i>
-							</button>
 							<button class="Mini ui floating top left pointing dropdown icon button code-lang-popup">
 								<i class="dropdown icon"></i>
 								<div id="jsItem" class="text">
@@ -223,6 +219,12 @@
 									<i class="Mini python icon"></i>
 									</div>
 								</div>
+							</button>
+							<button id='runBtn' class="Mini ui icon button run-code-popup" onclick="runCode()">
+								<i class="Mini green play icon"></i>
+							</button>
+							<button id='stopBtn' class="Mini ui icon button stop-code-popup" onclick="stopCode()">
+								<i class="Mini red stop icon"></i>
 							</button>
 						</div>
 					</div>

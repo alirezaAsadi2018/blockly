@@ -56,7 +56,6 @@ Blockly.Msg["CONTROLS_IF_TOOLTIP_3"] = "إذا كانت القيمة الأول�
 Blockly.Msg["CONTROLS_IF_TOOLTIP_4"] = "إذا كانت القيمة الأولى تساوي \"صحيح\", إذن قم بتنفيذ القطعة الأولى من الأوامر. والا , إذا كانت القيمة الثانية تساوي \"صحيح\", قم بتنفيذ القطعة الثانية من الأوامر. إذا لم تكن هناك أي قيمة تساوي صحيح, قم بتنفيذ آخر قطعة من الأوامر.";
 Blockly.Msg["CONTROLS_REPEAT_HELPURL"] = "https://en.wikipedia.org/wiki/For_loop";
 Blockly.Msg["CONTROLS_REPEAT_INPUT_DO"] = "نفّذ";
-Blockly.Msg["LOOP_FOREVER"] = "كرر إلى الأبد";
 Blockly.Msg["CONTROLS_REPEAT_TITLE"] = "كرر  %1 مرات";
 Blockly.Msg["CONTROLS_REPEAT_TOOLTIP"] = "نفّذ بعض الأوامر عدة مرات.";
 Blockly.Msg["CONTROLS_WHILEUNTIL_HELPURL"] = "https://github.com/google/blockly/wiki/Loops#repeat";  // untranslated
@@ -208,6 +207,7 @@ Blockly.Msg["LOGIC_TERNARY_IF_FALSE"] = "إذا كانت العبارة خاطئ
 Blockly.Msg["LOGIC_TERNARY_IF_TRUE"] = "إذا كانت العبارة صحيحة";
 Blockly.Msg["LOGIC_TERNARY_TOOLTIP"] = "تحقق الشرط في 'الاختبار'. إذا كان الشرط صحيح، يقوم بإرجاع قيمة 'اذا كانت العبارة صحيحة'؛ خلاف ذلك يرجع قيمة 'اذا كانت العبارة خاطئة'.";
 Blockly.Msg["LOOPS_CATEGORY"] = "الحلقات";
+Blockly.Msg["LOOP_FOREVER"] = "كرر إلى الأبد";
 Blockly.Msg["MATH_ADDITION_SYMBOL"] = "+";
 Blockly.Msg["MATH_ARITHMETIC_HELPURL"] = "https://en.wikipedia.org/wiki/Arithmetic";
 Blockly.Msg["MATH_ARITHMETIC_TOOLTIP_ADD"] = "يرجع مجموع الرقمين.";
@@ -338,6 +338,7 @@ Blockly.Msg["ROOBIN_AMAZING_FACTS"] = "هل كنت تعلم؟";
 Blockly.Msg["ROOBIN_ANGRY_BIRD"] = "طير غاضب";
 Blockly.Msg["ROOBIN_ARROW_GAME"] = "لعبة الأسهم %1";
 Blockly.Msg["ROOBIN_ASK_WAIT"] = "اسأل %1 وانتظر الرد";
+Blockly.Msg["ROOBIN_ASK_WAIT_TEXT"] = "كيف حالك؟";
 Blockly.Msg["ROOBIN_BATMAN"] = "الرجل الوطواط";
 Blockly.Msg["ROOBIN_BLINK"] = "رمش";
 Blockly.Msg["ROOBIN_CATEGORY"] = "روبین";
@@ -356,6 +357,7 @@ Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_ONE"] = "مستوى 1";
 Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_THREE"] = "مستوى 3";
 Blockly.Msg["ROOBIN_DIFFICULTY_LEVEL_TWO"] = "مستوى 2";
 Blockly.Msg["ROOBIN_DIFFICULTY_MEDIUM"] = "متوسط";
+Blockly.Msg["ROOBIN_DOWNLOAD"] = "تنزیل الکود";
 Blockly.Msg["ROOBIN_DRAW_ON_EYES"] = "قلب %4 %1 عين في التعيينات %2 و %3";
 Blockly.Msg["ROOBIN_DRAW_ON_MOUTH"] = "أدر %3 فم في التعيينات %1 و %2";
 Blockly.Msg["ROOBIN_FIND_DAY"] = "في أي يوم كان ذلك اليوم";
@@ -422,8 +424,15 @@ Blockly.Msg["ROOBIN_SULLIVAN"] = "سوليفان";
 Blockly.Msg["ROOBIN_TODAY_DATE"] = "تاريخ اليوم";
 Blockly.Msg["ROOBIN_TRIANGULAR"] = "الثلاثي";
 Blockly.Msg["ROOBIN_TTS"] = "قل %1";
+Blockly.Msg["ROOBIN_TTS_TEXT"] = "مرحبا";
+Blockly.Msg["ROOBIN_UPLOAD"] = "تحميل الکود";
+Blockly.Msg["ROOBIN_WHEN_KEY_PRESSED"] = "عند الضغط على مفتاح %1";
+Blockly.Msg["ROOBIN_WIKI_SEARCH"] = "إيران";
+Blockly.Msg["ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS"] = "من الأفضل أن يكون لديك روبين وبرامجه لاستخدام هذه الكتل !!";
 Blockly.Msg["RUN"] = "يركض";
 Blockly.Msg["SELECT_LANGUAGE"] = "اختار اللغة";
+Blockly.Msg["SERVER_INDICATOR_ONLINE"] = "عبر الإنترنت";
+Blockly.Msg["SERVER_INDICATOR_PENDING"] = "معلق";
 Blockly.Msg["SHOW_CODE"] = "إظهار الكود";
 Blockly.Msg["STOP"] = "قف";
 Blockly.Msg["TEXT_APPEND_HELPURL"] = "https://github.com/google/blockly/wiki/Text#text-modification";  // untranslated
@@ -532,13 +541,6 @@ Blockly.Msg["PROCEDURES_DEFRETURN_PROCEDURE"] = Blockly.Msg["PROCEDURES_DEFNORET
 Blockly.Msg["PROCEDURES_DEFRETURN_TITLE"] = Blockly.Msg["PROCEDURES_DEFNORETURN_TITLE"];
 Blockly.Msg["TEXT_APPEND_VARIABLE"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
 Blockly.Msg["TEXT_CREATE_JOIN_ITEM_TITLE_ITEM"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
-Blockly.Msg['ROOBIN_WHEN_KEY_PRESSED'] = "عند الضغط على مفتاح %1";
-Blockly.Msg['ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS'] = "من الأفضل أن يكون لديك روبين وبرامجه لاستخدام هذه الكتل !!";
-Blockly.Msg['ROOBIN_DOWNLOAD'] = "تنزیل الکود";
-Blockly.Msg['ROOBIN_UPLOAD'] = "تحميل الکود";
-Blockly.Msg['SERVER_INDICATOR_PENDING'] = "معلق";
-Blockly.Msg['SERVER_INDICATOR_ONLINE'] = "عبر الإنترنت";
-
 
 Blockly.Msg["LOGIC_HUE"] = "210";
 Blockly.Msg["LOOPS_HUE"] = "120";

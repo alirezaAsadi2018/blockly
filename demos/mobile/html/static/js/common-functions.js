@@ -690,17 +690,22 @@ function isAndroidUserAgent(){
 
 function loadWorkspace(){
     defineRoobinTheme();
+    while(BLOCKLY_TOOLBOX_XML['standard'].indexOf('Blockly.Msg') !== -1){
+		BLOCKLY_TOOLBOX_XML['standard'] = BLOCKLY_TOOLBOX_XML['standard'].replace(/Blockly\.Msg\[\"(\w+)\"\]/, function(a, b){
+			return Blockly.Msg[b];
+		});
+	};
     // when language is switched between fa(persian) and en(english), another toolbox with different category names is loaded,
     // rtl is also turned on when language is fa and off when it is en, the rest is the same.
     var myWorkspace = Blockly.inject('blocklyDiv', {
         toolbox: BLOCKLY_TOOLBOX_XML['standard'],
         collapse : true, 
         comments : true, 
-        // disable : true, 
+        disable : true, 
         maxBlocks : Infinity, 
         trashcan : true,
-        // horizontalLayout : false, 
-        // toolboxPosition : 'start', 
+        horizontalLayout : false, 
+        toolboxPosition : 'start', 
         css : true, 
         rtl : true, 
         scrollbars : true,
