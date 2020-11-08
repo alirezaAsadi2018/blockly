@@ -280,3 +280,19 @@ Blockly.JavaScript['roobin_clean_matrices'] = function(block) {
 	var selection = block.getFieldValue('SEL_PART');
 	return 'roobin(\'turnOffEyeOrMouth\', \'' + selection + '\');\n';
 };
+
+Blockly.JavaScript['roobin_wait'] = function(block) {
+	var arg = Blockly.JavaScript.valueToCode(block, 'WAIT_INPUT',
+		Blockly.JavaScript.ORDER_NONE) || '0';
+	var code = 'var arg = ' + arg + ';\n';
+	code += 'if(arg || arg === 0)\n';
+	code += 'roobin(\'wait\', arg.toString());\n';
+	return code;
+};
+
+Blockly.JavaScript['roobin_weather'] = function(block) {
+	var text = Blockly.JavaScript.valueToCode(block, 'WEATHER_INPUT',
+		Blockly.JavaScript.ORDER_NONE) || '';
+	var code = 'roobin(\'weather\', ' + text + ')\n';
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};

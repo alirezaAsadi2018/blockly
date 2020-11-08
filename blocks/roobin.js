@@ -17,7 +17,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
   // block for tts
   {
     "type": "TTS",
-	"message0": "%{BKY_ROOBIN_TTS}",   //   Blockly.Msg['TTS'], -> not available yet!
+	"message0": "%{BKY_ROOBIN_TTS}",
 	"style": "roobin_blocks",
     //"message0": "تبدیل متن: %1 به صوت",
 	"args0": [{
@@ -32,7 +32,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
   // block for stt
   {
     "type": "STT",
-	"message0": "%{BKY_ROOBIN_STT}", //	Blockly.Msg['STT'], -> not available yet!
+	"message0": "%{BKY_ROOBIN_STT}",
 	"style": "roobin_blocks",
     //"message0": "تبدیل صوت به متن",
     "output": "String",
@@ -84,7 +84,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
   },
   {
 	"type": "roobin_keyBoard_event",
-	"message0": "%{BKY_ROOBIN_WHEN_KEY_PRESSED}",   //   Blockly.Msg['ROOBIN_SET_LANG'], -> not available yet!
+	"message0": "%{BKY_ROOBIN_WHEN_KEY_PRESSED}",
 	"style": "roobin_blocks",
 	"args0": [{
 		"type": "field_dropdown",
@@ -112,7 +112,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_set_lang",
-		"message0": "%{BKY_ROOBIN_SET_LANG}",   //   Blockly.Msg['ROOBIN_SET_LANG'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_SET_LANG}",
 		"style": "roobin_setup_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -128,7 +128,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_set_speak_speed",
-		"message0": "%{BKY_ROOBIN_SET_SPEAK_SPEED}",   //   Blockly.Msg['ROOBIN_SET_SPEAK_SPEED'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_SET_SPEAK_SPEED}",
 		"style": "roobin_setup_blocks",
 		"args0": [
 			{
@@ -143,7 +143,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_set_speak_pitch",
-		"message0": "%{BKY_ROOBIN_SET_SPEAK_PITCH}",   //   Blockly.Msg['ROOBIN_SET_SPEAK_PITCH'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_SET_SPEAK_PITCH}",
 		"style": "roobin_setup_blocks",
 		"args0": [
 			{
@@ -158,7 +158,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_change_speak_pitch",
-		"message0": "%{BKY_ROOBIN_CHANGE_SPEAK_PITCH}",   //   Blockly.Msg['ROOBIN_CHANGE_SPEAK_PITCH'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_CHANGE_SPEAK_PITCH}",
 		"style": "roobin_setup_blocks",
 		"args0": [
 			{
@@ -173,14 +173,14 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_set_stt_var",
-		"message0": "%{BKY_ROOBIN_SET_STT_VAR}",   //   Blockly.Msg['ROOBIN_SET_STT_VAR'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_SET_STT_VAR}",
 		"style": "roobin_blocks",
 		"output": "String"
 		// "tooltip": "صوت شما را به متن تبدیل می کند و آن را برمی گرداند."
 	},
 	{
 		"type": "roobin_change_eye",
-		"message0": "%{BKY_ROOBIN_CHANGE_EYE}",   //   Blockly.Msg['ROOBIN_CHANGE_EYE'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_CHANGE_EYE}",
 		"style": "roobin_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -212,7 +212,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_change_mouth",
-		"message0": "%{BKY_ROOBIN_CHANGE_MOUTH}",   //   Blockly.Msg['ROOBIN_CHANGE_MOUTH'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_CHANGE_MOUTH}",
 		"style": "roobin_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -228,7 +228,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_random_gen",
-		"message0": "%{BKY_ROOBIN_RANDOM_GEN}",   //   Blockly.Msg['ROOBIN_RANDOM_GEN'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_RANDOM_GEN}",
 		"style": "roobin_blocks",
 		"args0": [
 			{
@@ -247,7 +247,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_recovery",
-		"message0": "%{BKY_ROOBIN_RECOVERY}",   //   Blockly.Msg['ROOBIN_RECOVERY'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_RECOVERY}",
 		"style": "roobin_setup_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -255,7 +255,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_introduce",
-		"message0": "%{BKY_ROOBIN_INTRODUCE}",   //   Blockly.Msg['ROOBIN_INTRODUCE'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_INTRODUCE}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -263,7 +263,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_say_hello",
-		"message0": "%{BKY_ROOBIN_SAY_HELLO}",   //   Blockly.Msg['ROOBIN_SAY_HELLO'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_SAY_HELLO}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -271,7 +271,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_chuckle",
-		"message0": "%{BKY_ROOBIN_CHUCKLE}",   //   Blockly.Msg['ROOBIN_CHUCKLE'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_CHUCKLE}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -279,7 +279,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_ask_wait",
-		"message0": "%{BKY_ROOBIN_ASK_WAIT}",   //   Blockly.Msg['ROOBIN_ASK_WAIT'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_ASK_WAIT}",
 		"style": "roobin_blocks",
 		"args0": [
 			{
@@ -294,7 +294,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_search_in_wikipedia",
-		"message0": "%{BKY_ROOBIN_SEARCH_IN_WIKI}",   //   Blockly.Msg['ROOBIN_SEARCH_IN_WIKI'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_SEARCH_IN_WIKI}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -302,7 +302,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_search_word_in_wikipedia",
-		"message0": "%{BKY_ROOBIN_SEARCH_WORD_IN_WIKI}",   //   Blockly.Msg['ROOBIN_SEARCH_WORD_IN_WIKI'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_SEARCH_WORD_IN_WIKI}",
 		"style": "roobin_blocks",
 		"args0": [
 			{
@@ -317,7 +317,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_today_date",
-		"message0": "%{BKY_ROOBIN_TODAY_DATE}",   //   Blockly.Msg['ROOBIN_TODAY_DATE'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_TODAY_DATE}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -325,7 +325,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_find_day",
-		"message0": "%{BKY_ROOBIN_FIND_DAY}",   //   Blockly.Msg['ROOBIN_FIND_DAY'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_FIND_DAY}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -333,7 +333,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_riddle_game",
-		"message0": "%{BKY_ROOBIN_RIDDLE_GAME}",   //   Blockly.Msg['ROOBIN_RIDDLE_GAME'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_RIDDLE_GAME}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -341,7 +341,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_arrow_game",
-		"message0": "%{BKY_ROOBIN_ARROW_GAME}",   //   Blockly.Msg['ROOBIN_ARROW_GAME'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_ARROW_GAME}",
 		"style": "roobin_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -359,7 +359,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_pattern_game",
-		"message0": "%{BKY_ROOBIN_PATTERN_GAME}",   //   Blockly.Msg['ROOBIN_PATTERN_GAME'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_PATTERN_GAME}",
 		"style": "roobin_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -377,7 +377,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_numbers_game",
-		"message0": "%{BKY_ROOBIN_NUMBERS_GAME}",   //   Blockly.Msg['ROOBIN_NUMBERS_GAME'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_NUMBERS_GAME}",
 		"style": "roobin_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -402,7 +402,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_games_explanation",
-		"message0": "%{BKY_ROOBIN_GAMES_EXPLANATION}",   //   Blockly.Msg['ROOBIN_GAMES_EXPLANATION'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_GAMES_EXPLANATION}",
 		"style": "roobin_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -421,7 +421,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_story_telling",
-		"message0": "%{BKY_ROOBIN_STORY_TELLING}",   //   Blockly.Msg['ROOBIN_STORY_TELLING'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_STORY_TELLING}",
 		"style": "roobin_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -451,7 +451,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_move_motor",
-		"message0": "%{BKY_ROOBIN_MOVE_MOTOR}",   //   Blockly.Msg['ROOBIN_MOVE_MOTOR'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_MOVE_MOTOR}",
 		"style": "roobin_motor_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -472,7 +472,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_rotate_motor",
-		"message0": "%{BKY_ROOBIN_ROTATE_MOTOR}",   //   Blockly.Msg['ROOBIN_ROTATE_MOTOR'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_ROTATE_MOTOR}",
 		"style": "roobin_motor_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -493,7 +493,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_blink",
-		"message0": "%{BKY_ROOBIN_BLINK}",   //   Blockly.Msg['ROOBIN_BLINK'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_BLINK}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -501,7 +501,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_look_around",
-		"message0": "%{BKY_ROOBIN_LOOK_AROUND}",   //   Blockly.Msg['ROOBIN_LOOK_AROUND'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_LOOK_AROUND}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -509,7 +509,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_neutral",
-		"message0": "%{BKY_ROOBIN_LOOK_NEUTRAL}",   //   Blockly.Msg['ROOBIN_LOOK_NEUTRAL'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_LOOK_NEUTRAL}",
 		"style": "roobin_blocks",
 		"previousStatement": null,
 		"nextStatement": null
@@ -517,7 +517,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_draw_on_eyes",
-		"message0": "%{BKY_ROOBIN_DRAW_ON_EYES}",   //   Blockly.Msg['ROOBIN_DRAW_ON_EYES'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_DRAW_ON_EYES}",
 		"style": "roobin_setup_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -551,7 +551,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_draw_on_mouth",
-		"message0": "%{BKY_ROOBIN_DRAW_ON_MOUTH}",   //   Blockly.Msg['ROOBIN_DRAW_ON_MOUTH'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_DRAW_ON_MOUTH}",
 		"style": "roobin_setup_blocks",
 		"args0": [{
 			"type": "input_value",
@@ -577,7 +577,7 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 	},
 	{
 		"type": "roobin_clean_matrices",
-		"message0": "%{BKY_ROOBIN_CLEAN_MATRICES}",   //   Blockly.Msg['ROOBIN_CLEAN_MATRICES'], -> not available yet!
+		"message0": "%{BKY_ROOBIN_CLEAN_MATRICES}",
 		"style": "roobin_setup_blocks",
 		"args0": [{
 			"type": "field_dropdown",
@@ -591,5 +591,29 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 		"previousStatement": null,
 		"nextStatement": null,
 		"tooltip": ""
+	},
+	{
+		"type": "roobin_wait",
+		"message0": "%{BKY_ROOBIN_WAIT}",
+		"style": "roobin_blocks",
+		"args0": [{
+			"type": "input_value",
+			"name": "WAIT_INPUT",
+			"check": "Number"
+		}],
+		"previousStatement": null,
+		"nextStatement": null,
+		"tooltip": ""
+	},
+	{
+		"type": "roobin_weather",
+		"message0": "%{BKY_ROOBIN_WEATHER}",
+		"style": "roobin_blocks",
+		"args0": [{
+		  "type": "input_value",
+		  "name": "WEATHER_INPUT",
+		  "check": "String"
+		}],
+		"output": "String"
 	}
 ]);

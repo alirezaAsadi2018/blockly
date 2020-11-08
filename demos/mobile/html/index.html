@@ -328,7 +328,9 @@
 		'lookAhead' : 'roobinNeutral',
 		'drawOnEyes' : 'draw_on_eyes',
 		'drawOnMouth' : 'draw_on_mouth',
-		'turnOffEyeOrMouth' : 'clean_the_matrices'
+		'turnOffEyeOrMouth' : 'clean_the_matrices',
+		'wait' : 'wait_function',
+		'weather' : 'weather_temp'
 	}
 	function sendHttpRequestWithCallback(url, callback){
 		req = new XMLHttpRequest();
@@ -338,7 +340,12 @@
 		req.onreadystatechange = function() {
 			if (req.readyState == 4 && req.status == 200) {
 				if(req.response){
-					callback(req.response.string);
+					// return answer of weather
+					if(req.response.int){
+						callback(req.response.int);
+					}else{
+						callback(req.response.string);
+					}
 				}else{
 					callback('request sent successfully');
 				}
@@ -365,7 +372,6 @@
 		
 		// Add an API function for the callStt() block.
 		wrapper = function(callback) {
-			debugger
 			if(!navigator.userAgent.match(/Android/i)){
 				var url = href + '/set_stt_var';
 				sendHttpRequestWithCallback(url, callback);
@@ -494,7 +500,6 @@
 			// second condition is for when the result of stt is empty or it is cancelled by the user
 		}else if(data.stt_result || data.stt_result === ""){
 			if(sttCallback){
-				console.log(data.stt_result);
 				sttCallback(data.stt_result);
 			}
 		}else if(data.androidCallback){

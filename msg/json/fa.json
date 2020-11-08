@@ -466,5 +466,8 @@
 	"ROOBIN_TTS_TEXT": "سلام",
 	"ROOBIN_WIKI_SEARCH": "ایران",
 	"ROOBIN_ASK_WAIT_TEXT": "حالت چطوره؟",
-	"ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS": "برای بازکردن این بلوک بهتر است روبین و نرم افزار آن را داشته باشید!!"
+	"ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS": "برای بازکردن این بلوک بهتر است روبین و نرم افزار آن را داشته باشید!!",
+	"ROOBIN_WAIT": "%1 ثانیه صبر کن",
+	"ROOBIN_WEATHER": "پیش بینی آب و هوا برای %1",
+	"ROOBIN_WEATHER_TEXT": "تهران"
 }

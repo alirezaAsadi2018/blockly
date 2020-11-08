@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Ellen Spertus <ellen.spertus@gmail.com>",
-		"lastupdated": "2020-11-08 14:08:57.882600",
+		"lastupdated": "2020-11-08 15:44:55.715600",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -523,5 +523,8 @@
 	"SERVER_INDICATOR_ONLINE": "online",
 	"ROOBIN_TTS_TEXT": "Hello",
 	"ROOBIN_WIKI_SEARCH": "Iran",
-	"ROOBIN_ASK_WAIT_TEXT": "How are you?"
+	"ROOBIN_ASK_WAIT_TEXT": "How are you?",
+	"ROOBIN_WAIT": "wait %1 seconds",
+	"ROOBIN_WEATHER": "predict weather for %1",
+	"ROOBIN_WEATHER_TEXT": "tehran"
 }

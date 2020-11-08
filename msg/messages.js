@@ -1880,3 +1880,9 @@ Blockly.Msg.ROOBIN_TTS_TEXT = 'Hello';
 Blockly.Msg.ROOBIN_WIKI_SEARCH = 'Iran';
 /** @type {string} */
 Blockly.Msg.ROOBIN_ASK_WAIT_TEXT = 'How are you?';
+/** @type {string} */
+Blockly.Msg.ROOBIN_WAIT = 'wait %1 seconds';
+/** @type {string} */
+Blockly.Msg.ROOBIN_WEATHER = 'predict weather for %1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_WEATHER_TEXT = 'tehran';

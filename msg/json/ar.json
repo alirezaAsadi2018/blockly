@@ -488,5 +488,8 @@
 	"ROOBIN_TTS_TEXT": "مرحبا",
 	"ROOBIN_WIKI_SEARCH": "إيران",
 	"ROOBIN_ASK_WAIT_TEXT": "كيف حالك؟",
-	"ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS": "من الأفضل أن يكون لديك روبين وبرامجه لاستخدام هذه الكتل !!"
+	"ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS": "من الأفضل أن يكون لديك روبين وبرامجه لاستخدام هذه الكتل !!",
+	"ROOBIN_WAIT": "انتظر %1 ثوان",
+	"ROOBIN_WEATHER": "توقع الطقس ل%1",
+	"ROOBIN_WEATHER_TEXT": "تهران"
 }
