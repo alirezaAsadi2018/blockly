@@ -288,3 +288,20 @@ Blockly.Python['roobin_clean_matrices'] = function(block) {
 	var selection = block.getFieldValue('SEL_PART');
 	return 'roobin(\'turnOffEyeOrMouth\', \'' + selection + '\')\n';
 };
+
+Blockly.Python['roobin_wait'] = function(block) {
+	var arg = Blockly.Python.valueToCode(block, 'WAIT_INPUT',
+		Blockly.Python.ORDER_NONE) || '0';
+	var code = 'arg = ' + arg + '\n';
+	code += 'if arg or arg === 0:\n';
+	code += Blockly.Python.INDENT;
+	code += 'roobin(\'wait\', str(arg))\n';
+	return code;
+};
+
+Blockly.Python['roobin_weather'] = function(block) {
+	var text = Blockly.Python.valueToCode(block, 'WEATHER_INPUT',
+		Blockly.Python.ORDER_NONE) || '';
+	var code = 'roobin(\'weather\', ' + text + ')\n';
+	return [code, Blockly.Python.ORDER_ATOMIC];
+};
