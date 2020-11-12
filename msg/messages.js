@@ -1721,7 +1721,7 @@ Blockly.Msg.ROOBIN_PUCKER_MOUTH = 'pucker';
 /** @type {string} */
 Blockly.Msg.ROOBIN_RANDOM_GEN = 'make a random number between %1 and %2';
 /** @type {string} */
-Blockly.Msg.ROOBIN_RECOVERY = 'recovery';
+Blockly.Msg.ROOBIN_RECOVERY = 'Restart Roobin';
 /** @type {string} */
 Blockly.Msg.ROOBIN_INTRODUCE = 'introduce';
 /** @type {string} */
@@ -1886,3 +1886,5 @@ Blockly.Msg.ROOBIN_WAIT = 'wait %1 seconds';
 Blockly.Msg.ROOBIN_WEATHER = 'predict weather for %1';
 /** @type {string} */
 Blockly.Msg.ROOBIN_WEATHER_TEXT = 'tehran';
+/** @type {string} */
+Blockly.Msg.ROOBIN_INPUT_BLOCKS_NAME = 'download file name';

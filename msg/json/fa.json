@@ -387,7 +387,7 @@
 	"ROOBIN_ORIGINAL_MOUTH": "روبین",
 	"ROOBIN_PUCKER_MOUTH": "غنچه",
 	"ROOBIN_RANDOM_GEN": "عدد رندوم بین %1 و %2",
-	"ROOBIN_RECOVERY": "ریکاوری",
+	"ROOBIN_RECOVERY": "راه اندازی دوباره روبین",
 	"ROOBIN_INTRODUCE": "معرفی",
 	"ROOBIN_SAY_HELLO": "سلام کن",
 	"ROOBIN_CHUCKLE": "بخند",
@@ -469,5 +469,6 @@
 	"ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS": "برای بازکردن این بلوک بهتر است روبین و نرم افزار آن را داشته باشید!!",
 	"ROOBIN_WAIT": "%1 ثانیه صبر کن",
 	"ROOBIN_WEATHER": "پیش بینی آب و هوا برای %1",
-	"ROOBIN_WEATHER_TEXT": "تهران"
+	"ROOBIN_WEATHER_TEXT": "تهران",
+	"ROOBIN_INPUT_BLOCKS_NAME": "نام فایل دانلودشده"
 }

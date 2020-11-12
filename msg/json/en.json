@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Ellen Spertus <ellen.spertus@gmail.com>",
-		"lastupdated": "2020-11-08 15:44:55.715600",
+		"lastupdated": "2020-11-12 13:42:35.219384",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -444,7 +444,7 @@
 	"ROOBIN_ORIGINAL_MOUTH": "roobin",
 	"ROOBIN_PUCKER_MOUTH": "pucker",
 	"ROOBIN_RANDOM_GEN": "make a random number between %1 and %2",
-	"ROOBIN_RECOVERY": "recovery",
+	"ROOBIN_RECOVERY": "Restart Roobin",
 	"ROOBIN_INTRODUCE": "introduce",
 	"ROOBIN_SAY_HELLO": "Say hello",
 	"ROOBIN_CHUCKLE": "Chckle",
@@ -526,5 +526,6 @@
 	"ROOBIN_ASK_WAIT_TEXT": "How are you?",
 	"ROOBIN_WAIT": "wait %1 seconds",
 	"ROOBIN_WEATHER": "predict weather for %1",
-	"ROOBIN_WEATHER_TEXT": "tehran"
+	"ROOBIN_WEATHER_TEXT": "tehran",
+	"ROOBIN_INPUT_BLOCKS_NAME": "download file name"
 }

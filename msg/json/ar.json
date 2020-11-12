@@ -409,7 +409,7 @@
 	"ROOBIN_ORIGINAL_MOUTH": "روبين",
 	"ROOBIN_PUCKER_MOUTH": "تجعد",
 	"ROOBIN_RANDOM_GEN": "قم بعمل رقم عشوائي بين %1 و %2",
-	"ROOBIN_RECOVERY": "التعافي",
+	"ROOBIN_RECOVERY": "أعد تشغيل روبن",
 	"ROOBIN_INTRODUCE": "تقديم",
 	"ROOBIN_SAY_HELLO": "قل مرحبا",
 	"ROOBIN_CHUCKLE": "تشكل",
@@ -491,5 +491,6 @@
 	"ROOBIN_YOU_SHOULD_BUY_THESE_BLOCKS": "من الأفضل أن يكون لديك روبين وبرامجه لاستخدام هذه الكتل !!",
 	"ROOBIN_WAIT": "انتظر %1 ثوان",
 	"ROOBIN_WEATHER": "توقع الطقس ل%1",
-	"ROOBIN_WEATHER_TEXT": "تهران"
+	"ROOBIN_WEATHER_TEXT": "تهران",
+	"ROOBIN_INPUT_BLOCKS_NAME": "اسم ملف التحميل"
 }

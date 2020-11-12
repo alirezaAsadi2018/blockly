@@ -40,9 +40,14 @@ function download(filename, text) {
     document.body.removeChild(element);
 }
 
-function downloadCode(){
+function downloadCode(elem){
     var text = worspaceToBlockText();
-    download("RoobinBlocks.txt", text);
+    fileName = elem.previousElementSibling.value;
+    if(fileName){
+        download(fileName + '.txt', text);
+    }else{
+        download("RoobinBlocks.txt", text);
+    }
 }
 
 window.onload = function(){
@@ -130,6 +135,7 @@ function initLanguage() {
     $('.js-item-translate').html('<i class="js icon"></i>' + Blockly.Msg['JAVASCRIPT']);
     $('.python-item-translate').html('<i class="python icon"></i>' + Blockly.Msg['PYTHON']);
     $('.lang-button-translate').text(LANGUAGE_NAME[getLang()]);
+    $('.download-input-translate').attr("placeholder", Blockly.Msg['ROOBIN_INPUT_BLOCKS_NAME']);
 };
 
 function isRtl() {
@@ -214,7 +220,6 @@ function init() {
             var reader = new FileReader();
             reader.onload = (function(theFile) {
                 return function(e) {
-                    debugger
                     var text = e.target.result;
                     e.target.value = '';
                     $('.ui.action.input').form('reset');
