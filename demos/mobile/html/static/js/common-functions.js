@@ -1,3 +1,4 @@
+var isDesktopApp = false;
 var LANGUAGE_NAME = {
     'ar': 'عربی',
     'en': 'English',
@@ -13,7 +14,6 @@ var myInterpreter = null;
 var runner;
 var code;
 var runButtons;
-var serverIndicatorIcons;
 var serverIndicatorInterval;
 var serverOnIndicatorColor = 'green';
 var serverOffIndicatorColor = 'yellow';
@@ -54,8 +54,12 @@ window.onload = function(){
     init();
     loadLastWorkspaceBlocks();
     runButtons = document.querySelectorAll('#runBtn');
-    serverIndicatorIcons = document.querySelectorAll('#serverIndicator');
-    // serverIndicatorInterval = setInterval(checkServerConnected, 5000);
+    if(isDesktopApp){
+        $('.server-indicator-icon').show();
+        serverIndicatorInterval = setInterval(checkServerConnected, 5000);
+    }else{
+        $('.server-indicator-icon').hide();
+    }
 }
 window.addEventListener('resize', onresizeFunc, false);
 
@@ -179,6 +183,12 @@ function init() {
     });
 
     // enable all popups for mobile div top menu
+    if(isDesktopApp){
+        $('.server-indicator-popup').popup({
+            position   : 'bottom center',
+            content : Blockly.Msg['SERVER_INDICATOR_PENDING']
+        });
+    }
     $('.show-code-popup').popup({
         position   : 'bottom center',
         content : Blockly.Msg['SHOW_CODE']
@@ -605,23 +615,17 @@ function stopCode(){
 }
 
 function changeServerIndicatorColor(){
-    for(var i = 0; i < serverIndicatorIcons.length; ++i){
-        if(serverIndicatorIcons[i].classList.contains(serverOnIndicatorColor)){
-            serverIndicatorIcons[i].classList.remove(serverOnIndicatorColor);
-            serverIndicatorIcons[i].classList.add(serverOffIndicatorColor);
-            $('.server-indicator-popup').popup({
-                position   : 'bottom center',
-                content : Blockly.Msg['SERVER_INDICATOR_PENDING']
-            });
-        }else if(serverIndicatorIcons[i].classList.contains(serverOffIndicatorColor)){
-            serverIndicatorIcons[i].classList.remove(serverOffIndicatorColor);
-            serverIndicatorIcons[i].classList.add(serverOnIndicatorColor);
-            $('.server-indicator-popup').popup({
-                position   : 'bottom center',
-                content : Blockly.Msg['SERVER_INDICATOR_ONLINE']
-            });
-        }
+    $('.server-indicator-icon').toggleClass([serverOnIndicatorColor, serverOffIndicatorColor]);
+    popupMsg = undefined;
+    if($('.server-indicator-icon').hasClass(serverOffIndicatorColor)){
+        popupMsg = Blockly.Msg['SERVER_INDICATOR_PENDING'];
+    }else{
+        popupMsg = Blockly.Msg['SERVER_INDICATOR_ONLINE'];
     }
+    $('.server-indicator-popup').popup({
+        position   : 'bottom center',
+        content : popupMsg
+    });
 }
 
 function checkServerConnected(){
@@ -699,7 +703,13 @@ function loadWorkspace(){
 		BLOCKLY_TOOLBOX_XML['standard'] = BLOCKLY_TOOLBOX_XML['standard'].replace(/Blockly\.Msg\[\"(\w+)\"\]/, function(a, b){
 			return Blockly.Msg[b];
 		});
-	};
+    };
+    // enable blocks that have disalbed = "true" in Desktop version
+    if(isDesktopApp){
+        while(BLOCKLY_TOOLBOX_XML['standard'].indexOf('disabled = "true"') !== -1){
+            BLOCKLY_TOOLBOX_XML['standard'] = BLOCKLY_TOOLBOX_XML['standard'].replace('disabled = "true"', '');
+        }
+    }
     // when language is switched between fa(persian) and en(english), another toolbox with different category names is loaded,
     // rtl is also turned on when language is fa and off when it is en, the rest is the same.
     var myWorkspace = Blockly.inject('blocklyDiv', {
