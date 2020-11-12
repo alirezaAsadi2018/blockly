@@ -481,8 +481,6 @@ BLOCKLY_TOOLBOX_XML['standard'] =
 +	'</block>'
 +   '<block type="roobin_look_around">'
 +	'</block>'
-+   '<block type="roobin_neutral">'
-+	'</block>'
 +   '<block type="roobin_draw_on_eyes">'
 +     '<field name="SEL_LEFT_RIGHT">راست</field>'
 +     '<value name="X">'
