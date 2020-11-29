@@ -1,4 +1,4 @@
-var isDesktopApp = false;
+var isDesktopApp = true;
 var LANGUAGE_NAME = {
     'ar': 'عربی',
     'en': 'English',
@@ -67,6 +67,9 @@ if(workspaceLang === 'ar'){
     document.write('<style type="text/css">\n.ui {\nfont-family: "Helvetica Neue", "Segoe UI", Helvetica, sans-serif !important;\n}\n</style>');
 }
 document.write('<script src="static/js/jquery.min.js" type="text/javascript"></script>\n');
+document.write('<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js"></script>\n');
+document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>\n');
+document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/8.1.0/Dropbox-sdk.min.js" integrity="sha512-6lG/X4EEk3do5AhSI9MgmzZ/o/Lz4oVcjPINpZkAZtGiEulYjeoB4TNJvPp857VHdCExtO9NrOFmcnjvUMhsxw==" crossorigin="anonymous"></script>\n');
 document.write('<script src="static/js/jalaali.min.js" type="text/javascript"></script>\n');
 document.write('<link rel="stylesheet" type="text/css" href="static/css/semantic' + (isRtl()?'.rtl':'') + '.min.css">\n');
 document.write('<script src="static/js/semantic.min.js" type="text/javascript"></script>\n');
@@ -78,6 +81,7 @@ document.write('<script src="static/js/toolbox_standard.js"></script>\n');
 document.write('<script src="static/msg/js/' + workspaceLang + '.js"></script>\n');
 document.write('<script src="static/js/acorn_interpreter.js"></script>\n');
 document.write('<script src="static/js/roobin_controller.js"></script>\n');
+document.write('<script src="static/js/config.js"></script>\n');
 
 function onresizeFunc(){
     var blocklyDiv = document.getElementById('blocklyDiv');
@@ -710,9 +714,10 @@ function loadWorkspace(){
             BLOCKLY_TOOLBOX_XML['standard'] = BLOCKLY_TOOLBOX_XML['standard'].replace('disabled = "true"', '');
         }
     }
+
     // when language is switched between fa(persian) and en(english), another toolbox with different category names is loaded,
     // rtl is also turned on when language is fa and off when it is en, the rest is the same.
-    var myWorkspace = Blockly.inject('blocklyDiv', {
+    myWorkspace = Blockly.inject('blocklyDiv', {
         toolbox: BLOCKLY_TOOLBOX_XML['standard'],
         collapse : true, 
         comments : true, 
@@ -747,7 +752,78 @@ function loadWorkspace(){
         }
     });
     onresizeFunc();
+
+
+    roobinProjectsList = {};
+    dbx = new Dropbox.Dropbox({
+        accessToken: config.accessToken
+    });
+
+    dbx.filesListFolder({path: ''})
+        .then(function(response){ return response.result.entries})
+        .then(function(files) {
+            const promises = [];
+            for (let i = 0; i < files.length; ++i) {
+                if(files[i]['.tag'] == 'file'){ // if it is a file not a folder
+                    var file_path_in_cloud = files[i]['path_display'];
+                    promises.push(getFileFromCloud(file_path_in_cloud));
+                }
+            }
+            Promise.all(promises)
+                .then(function(){
+                    //console.log(roobinProjectsList);
+                    myWorkspace.registerToolboxCategoryCallback('ROOBIN_PROJECTS', roobinProjectsCallback);
+                })
+                .catch(function(e){
+                    console.log(e);
+                });
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+    myWorkspace.registerToolboxCategoryCallback('ROOBIN_PROJECTS', function(){
+        var blockText = '<label text="' + Blockly.Msg['ROOBIN_PROJECTS_LOADING'] + '" categorystyle="colour_category"></label>';
+        var block = Blockly.Xml.textToDom(blockText);
+        return [block];
+    });
     return myWorkspace;
+}
+
+function roobinProjectsCallback(workspace) {         
+    var xmlList = [];
+    Object.entries(roobinProjectsList).forEach(function(entry){
+        var name = entry[0];
+        var content = entry[1];
+        var blockText = '<button text="' + name + '" callbackKey="' + name + '"></button>';
+        workspace.registerButtonCallback(name, roobinProjectButtonCallback);
+        var block = Blockly.Xml.textToDom(blockText);
+        xmlList.push(block);
+    })
+    return xmlList;
+};
+
+function roobinProjectButtonCallback(btn){
+    var content = roobinProjectsList[btn.text_];
+    blockTextToWorkspace(content);
+}
+
+function getFileFromCloud(path){
+    return new Promise(function(resolve, reject){
+        dbx.filesDownload({
+            path: path
+        }).then(function (response) {
+            var blob = response.result.fileBlob;
+            reader = new FileReader();
+            reader.addEventListener("loadend", function() {
+                roobinProjectsList[response.result.name] = reader.result;
+                resolve();
+            });
+            reader.readAsText(blob);
+        }).catch(function (error) {
+            console.log(error);
+            reject();
+        });
+    });
 }
 
 function addEventsToBluetoothButton(){
@@ -842,7 +918,9 @@ function convertCategoriesTosemantic(){
 	// functions is the ninth item in the menu
 	convertCategoryToSemantic('#blockly-9', Blockly.Msg['FUNCTIONS_CATEGORY'], 'percentage icon', observer);
 	// roobin is the tenth item in the menu
-	convertCategoryToSemantic('#blockly-a', Blockly.Msg['ROOBIN_CATEGORY'], 'robot icon', observer);
+    convertCategoryToSemantic('#blockly-a', Blockly.Msg['ROOBIN_CATEGORY'], 'robot icon', observer);
+    // roobin projects is the eleventh in the menu
+	convertCategoryToSemantic('#blockly-b', Blockly.Msg['ROOBIN_PROJECTS_CATEGORY'], 'archive icon', observer);
 }
 
 function convertCategoryToSemantic(id, categoryName, iconName, observer){
@@ -944,6 +1022,9 @@ function defineRoobinTheme(){
         roobin_category: {
             colour: "#F2711C"
         },
+        roobin_projects_category: {
+            colour: "#f8c471"
+        },
     };
     Blockly.Themes.Roobin_Theme.defaultBlockStyles = {
         colour_blocks: {
@@ -1013,9 +1094,14 @@ function defineRoobinTheme(){
             hat: "cap"
         }
     };
+
+    Blockly.Themes.Roobin_Theme.componentStyles = {
+        flyoutForegroundColour: '#ffffff',
+    }
     Blockly.Themes.Roobin_Theme = new Blockly.Theme("Roobin_Theme",  
         Blockly.Themes.Roobin_Theme.defaultBlockStyles,
-        Blockly.Themes.Roobin_Theme.categoryStyles);
+        Blockly.Themes.Roobin_Theme.categoryStyles,
+        Blockly.Themes.Roobin_Theme.componentStyles);
 
     if(workspaceLang === 'ar'){
         Blockly.Themes.Roobin_Theme.setFontStyle ({

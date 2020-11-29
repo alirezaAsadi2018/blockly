@@ -512,4 +512,5 @@ BLOCKLY_TOOLBOX_XML['standard'] =
 +     '<field name="SEL_PART">چشم راست</field>'
 +	'</block>'
 + '</category>'
++ '<category name="projects" custom="ROOBIN_PROJECTS" categorystyle="roobin_projects_category" disabled="true"></category>'
 +'</xml>'
