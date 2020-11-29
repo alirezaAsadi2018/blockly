@@ -68,9 +68,9 @@ if(workspaceLang === 'ar'){
     document.write('<style type="text/css">\n.ui {\nfont-family: "Helvetica Neue", "Segoe UI", Helvetica, sans-serif !important;\n}\n</style>');
 }
 document.write('<script src="static/js/jquery.min.js" type="text/javascript"></script>\n');
-document.write('<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js"></script>\n');
-document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>\n');
-document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/8.1.0/Dropbox-sdk.min.js" integrity="sha512-6lG/X4EEk3do5AhSI9MgmzZ/o/Lz4oVcjPINpZkAZtGiEulYjeoB4TNJvPp857VHdCExtO9NrOFmcnjvUMhsxw==" crossorigin="anonymous"></script>\n');
+document.write('<script src="static/js/polyfill.min.js"></script>\n');
+document.write('<script src="static/js/fetch.js"></script>\n');
+document.write('<script src="static/js/Dropbox-sdk.min.js"></script>\n');
 document.write('<script src="static/js/jalaali.min.js" type="text/javascript"></script>\n');
 document.write('<link rel="stylesheet" type="text/css" href="static/css/semantic' + (isRtl()?'.rtl':'') + '.min.css">\n');
 document.write('<script src="static/js/semantic.min.js" type="text/javascript"></script>\n');
@@ -816,7 +816,8 @@ function getFileFromCloud(path){
             var blob = response.result.fileBlob;
             reader = new FileReader();
             reader.addEventListener("loadend", function() {
-                roobinProjectsList[response.result.name] = reader.result;
+                const projName = response.result.name.replace(/\.[^/.]+$/, "");
+                roobinProjectsList[projName] = reader.result;
                 resolve();
             });
             reader.readAsText(blob);
