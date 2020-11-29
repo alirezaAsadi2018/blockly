@@ -19,7 +19,7 @@ var serverOnIndicatorColor = 'green';
 var serverOffIndicatorColor = 'yellow';
 var keyEventBlocksOnWorkspace = {};
 var deviceArray;
-var roobinFileFormat = 'xml'
+var roobinFileFormat = 'rbn'
 
 function getWorkspace(){
     if (!myWorkspace) {
@@ -30,7 +30,7 @@ function getWorkspace(){
 
 function download(filename, text) {
     var element = document.createElement('a');
-    element.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('href', 'data:text/rbn;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
   
     element.style.display = 'none';
@@ -231,7 +231,7 @@ function init() {
     // upload button action handler
 	$('input:file', '.ui.action.input').on('change', function(e) {
         var file = e.target.files[0];
-        if(file && file.type.match('text')){
+        if(file){
             var reader = new FileReader();
             reader.onload = (function(theFile) {
                 return function(e) {
