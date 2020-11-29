@@ -19,6 +19,7 @@ var serverOnIndicatorColor = 'green';
 var serverOffIndicatorColor = 'yellow';
 var keyEventBlocksOnWorkspace = {};
 var deviceArray;
+var roobinFileFormat = 'xml'
 
 function getWorkspace(){
     if (!myWorkspace) {
@@ -29,7 +30,7 @@ function getWorkspace(){
 
 function download(filename, text) {
     var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(text));
     element.setAttribute('download', filename);
   
     element.style.display = 'none';
@@ -44,9 +45,9 @@ function downloadCode(elem){
     var text = worspaceToBlockText();
     fileName = elem.previousElementSibling.value;
     if(fileName){
-        download(fileName + '.txt', text);
+        download(fileName + '.' + roobinFileFormat, text);
     }else{
-        download("RoobinBlocks.txt", text);
+        download("RoobinBlocks." + roobinFileFormat, text);
     }
 }
 
