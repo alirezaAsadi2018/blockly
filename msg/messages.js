@@ -1888,3 +1888,9 @@ Blockly.Msg.ROOBIN_WEATHER = 'predict weather for %1';
 Blockly.Msg.ROOBIN_WEATHER_TEXT = 'tehran';
 /** @type {string} */
 Blockly.Msg.ROOBIN_INPUT_BLOCKS_NAME = 'download file name';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PROJECTS_CATEGORY = 'projects';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PROJECTS_LOADING = 'loading projects';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PROJECTS_EMPTY = 'no projects found';

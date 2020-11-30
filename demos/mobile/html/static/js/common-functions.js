@@ -770,14 +770,21 @@ function loadWorkspace(){
                     promises.push(getFileFromCloud(file_path_in_cloud));
                 }
             }
-            Promise.all(promises)
+            if(promises.length !== 0){
+                Promise.all(promises)
                 .then(function(){
-                    //console.log(roobinProjectsList);
                     myWorkspace.registerToolboxCategoryCallback('ROOBIN_PROJECTS', roobinProjectsCallback);
                 })
                 .catch(function(e){
                     console.log(e);
                 });
+            }else{
+                myWorkspace.registerToolboxCategoryCallback('ROOBIN_PROJECTS', function(){
+                    var blockText = '<label text="' + Blockly.Msg['ROOBIN_PROJECTS_EMPTY'] + '" categorystyle="colour_category"></label>';
+                    var block = Blockly.Xml.textToDom(blockText);
+                    return [block];
+                });
+            }
         })
         .catch(function(error) {
             console.error(error);

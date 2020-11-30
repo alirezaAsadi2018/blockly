@@ -385,6 +385,9 @@ Blockly.Msg["ROOBIN_ON"] = "تشغيل";
 Blockly.Msg["ROOBIN_ORIGINAL"] = "أصلي";
 Blockly.Msg["ROOBIN_ORIGINAL_MOUTH"] = "روبين";
 Blockly.Msg["ROOBIN_PATTERN_GAME"] = "لعبة الأنماط دون اتصال %1";
+Blockly.Msg["ROOBIN_PROJECTS_CATEGORY"] = "المشاريع";
+Blockly.Msg["ROOBIN_PROJECTS_EMPTY"] = "لم يتم العثور على مشاريع";
+Blockly.Msg["ROOBIN_PROJECTS_LOADING"] = "تحميل المشاريع";
 Blockly.Msg["ROOBIN_PUCKER_MOUTH"] = "تجعد";
 Blockly.Msg["ROOBIN_RANDOM_GEN"] = "قم بعمل رقم عشوائي بين %1 و %2";
 Blockly.Msg["ROOBIN_RECOVERY"] = "أعد تشغيل روبن";
@@ -545,9 +548,6 @@ Blockly.Msg["PROCEDURES_DEFRETURN_PROCEDURE"] = Blockly.Msg["PROCEDURES_DEFNORET
 Blockly.Msg["PROCEDURES_DEFRETURN_TITLE"] = Blockly.Msg["PROCEDURES_DEFNORETURN_TITLE"];
 Blockly.Msg["TEXT_APPEND_VARIABLE"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
 Blockly.Msg["TEXT_CREATE_JOIN_ITEM_TITLE_ITEM"] = Blockly.Msg["VARIABLES_DEFAULT_NAME"];
-Blockly.Msg["ROOBIN_PROJECTS_CATEGORY"] = "المشاريع";
-Blockly.Msg["ROOBIN_PROJECTS_LOADING"] = "تحميل المشاريع";
-
 
 Blockly.Msg["LOGIC_HUE"] = "210";
 Blockly.Msg["LOOPS_HUE"] = "120";

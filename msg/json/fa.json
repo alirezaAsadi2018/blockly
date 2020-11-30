@@ -470,5 +470,8 @@
 	"ROOBIN_WAIT": "%1 ثانیه صبر کن",
 	"ROOBIN_WEATHER": "پیش بینی آب و هوا برای %1",
 	"ROOBIN_WEATHER_TEXT": "تهران",
-	"ROOBIN_INPUT_BLOCKS_NAME": "نام فایل دانلودشده"
+	"ROOBIN_INPUT_BLOCKS_NAME": "نام فایل دانلودشده",
+	"ROOBIN_PROJECTS_CATEGORY": "پروژه ها",
+	"ROOBIN_PROJECTS_LOADING": "درحال آماده سازی پروژه ها",
+	"ROOBIN_PROJECTS_EMPTY": "پروژه ای پیدا نشد"
 }

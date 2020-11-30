@@ -492,5 +492,8 @@
 	"ROOBIN_WAIT": "انتظر %1 ثوان",
 	"ROOBIN_WEATHER": "توقع الطقس ل%1",
 	"ROOBIN_WEATHER_TEXT": "تهران",
-	"ROOBIN_INPUT_BLOCKS_NAME": "اسم ملف التحميل"
+	"ROOBIN_INPUT_BLOCKS_NAME": "اسم ملف التحميل",
+	"ROOBIN_PROJECTS_CATEGORY": "المشاريع",
+	"ROOBIN_PROJECTS_LOADING": "تحميل المشاريع",
+	"ROOBIN_PROJECTS_EMPTY": "لم يتم العثور على مشاريع"
 }
