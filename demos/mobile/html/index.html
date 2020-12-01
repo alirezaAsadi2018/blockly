@@ -527,5 +527,99 @@
 		}
 	};
 </script>
+<script>
+	Blockly.Blocks['roobin_eye_mouth_matrix'] = {
+	  init: function() {
+	    this.appendDummyInput()
+			.appendField('     ').appendField('1').appendField(' ').appendField('2').appendField('  ').appendField('3')
+			.appendField(' ').appendField('4').appendField(' ').appendField('5').appendField(' ').appendField('6')
+			.appendField(' ').appendField('7').appendField(' ').appendField('8');
+	   Blockly.FieldCheckbox.CHECK_CHAR= '▉';
+	    this.appendDummyInput().appendField('1 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel7')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel6')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel5')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel4')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel3')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel2')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel1')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel0');
+	    this.appendDummyInput().appendField('2 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel15')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel14')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel13')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel12')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel11')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel10')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel9')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel8');
+	    this.appendDummyInput().appendField('3 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel23')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel22')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel21')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel20')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel19')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel18')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel17')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel16');
+	    this.appendDummyInput().appendField('4 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel31')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel30')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel29')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel28')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel27')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel26')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel25')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel24');
+	    this.appendDummyInput().appendField('5 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel39')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel38')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel37')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel36')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel35')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel34')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel33')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel32');
+	        this.appendDummyInput().appendField('6 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel47')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel46')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel45')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel44')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel43')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel42')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel41')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel40');
+	        this.appendDummyInput().appendField('7 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel55')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixe54')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel53')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel52')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel51')
+	        .appendField(new Blockly.FieldCheckbox("TRUE"), 'pixel50')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel49')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel48');
+	        this.appendDummyInput().appendField('8 ')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel63')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel62')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel61')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel60')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel59')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel58')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel57')
+	        .appendField(new Blockly.FieldCheckbox("FALSE"), 'pixel56');
+	    this.setInputsInline(false);
+		this.setOutput("String"),
+	    this.setColour("#32D900");
+	  }
+	};
+	Blockly.JavaScript['roobin_eye_mouth_matrix'] = function(block) {
+	  var code = '';
+	  for (var i=0; i<64; i++){
+		if (this.getFieldValue('pixel' + i) == 'TRUE')code += '1';else code +='0';
+	  }
+	  code = Blockly.JavaScript.quote_(code);
+  	  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+	};
+</script>
 </body>
 </html>

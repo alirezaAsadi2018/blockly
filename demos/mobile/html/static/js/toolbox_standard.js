@@ -511,6 +511,8 @@ BLOCKLY_TOOLBOX_XML['standard'] =
 +   '<block type="roobin_clean_matrices" disabled = "true">'
 +     '<field name="SEL_PART">چشم راست</field>'
 +	'</block>'
++   '<block type="roobin_eye_mouth_matrix" disabled = "true">'
++	'</block>'
 + '</category>'
 + '<category name="projects" custom="ROOBIN_PROJECTS" categorystyle="roobin_projects_category" disabled="true"></category>'
 +'</xml>'
