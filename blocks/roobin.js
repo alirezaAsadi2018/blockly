@@ -616,4 +616,89 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
 		}],
 		"output": "String"
 	}
-]);
+]);  // END JSON EXTRACT (Do not delete this comment.)
+
+Blockly.Blocks['roobin_eye_mouth_matrix'] = {
+	/**
+	 * Block for roobin eye and mouth matrix
+	 * @this {Blockly.Block}
+	 */
+	init: function() {
+		Blockly.FieldCheckbox.CHECK_CHAR= '▉';
+		 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL00'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL01'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL02'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL03'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL04'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL05'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL06'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL07']);
+		 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL10'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL11'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL12'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL13'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL14'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL15'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL16'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL17']);
+		 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL20'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL21'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL22'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL23'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL24'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL25'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL26'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL27']);
+		 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL30'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL31'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL32'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL33'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL34'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL35'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL36'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL37']);
+		 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL40'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL41'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL42'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL43'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL44'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL45'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL46'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL47']);
+			 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL50'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL51'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL52'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL53'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL54'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL55'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL56'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL57']);
+			 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL60'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL61'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL62'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL63'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL64'])
+			 .appendField(new Blockly.FieldCheckbox("TRUE"), Blockly.Msg['ROOBIN_PIXEL65'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL66'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL67']);
+			 this.appendDummyInput()
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL70'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL71'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL72'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL73'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL74'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL75'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL76'])
+			 .appendField(new Blockly.FieldCheckbox("FALSE"), Blockly.Msg['ROOBIN_PIXEL77']);
+		 this.setInputsInline(false);
+		 this.setOutput("String"),
+		 this.setColour("#32D900");
+	   }
+}

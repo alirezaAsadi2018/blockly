@@ -305,3 +305,12 @@ Blockly.Python['roobin_weather'] = function(block) {
 	var code = 'roobin(\'weather\', ' + text + ')\n';
 	return [code, Blockly.Python.ORDER_ATOMIC];
 };
+
+Blockly.Python['roobin_eye_mouth_matrix'] = function(block) {
+	var code = '';
+	for (var i=0; i<64; i++){
+	  if (this.getFieldValue('pixel' + i) == 'TRUE')code += '1';else code +='0';
+	}
+	code = Blockly.Python.quote_(code);
+	return [code, Blockly.Python.ORDER_ATOMIC];
+};

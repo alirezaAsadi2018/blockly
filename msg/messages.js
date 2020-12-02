@@ -1894,3 +1894,140 @@ Blockly.Msg.ROOBIN_PROJECTS_CATEGORY = 'projects';
 Blockly.Msg.ROOBIN_PROJECTS_LOADING = 'loading projects';
 /** @type {string} */
 Blockly.Msg.ROOBIN_PROJECTS_EMPTY = 'no projects found';
+
+// eye_mouth matrix field names 
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL00 = 'pixel0';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL01 = 'pixel1';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL02 = 'pixel2';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL03 = 'pixel3';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL04 = 'pixel4';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL05 = 'pixel5';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL06 = 'pixel6';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL07 = 'pixel7';
+
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL10 = 'pixel8';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL11 = 'pixel9';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL12 = 'pixel10';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL13 = 'pixel11';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL14 = 'pixel12';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL15 = 'pixel13';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL16 = 'pixel14';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL17 = 'pixel15';
+
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL20 = 'pixel16';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL21 = 'pixel17';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL22 = 'pixel18';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL23 = 'pixel19';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL24 = 'pixel20';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL25 = 'pixel21';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL26 = 'pixel22';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL27 = 'pixel23';
+
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL30 = 'pixel24';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL31 = 'pixel25';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL32 = 'pixel26';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL33 = 'pixel27';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL34 = 'pixel28';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL35 = 'pixel29';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL36 = 'pixel30';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL37 = 'pixel31';
+
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL40 = 'pixel32';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL41 = 'pixel33';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL42 = 'pixel34';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL43 = 'pixel35';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL44 = 'pixel36';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL45 = 'pixel37';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL46 = 'pixel38';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL47 = 'pixel39';
+
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL50 = 'pixel40';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL51 = 'pixel41';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL52 = 'pixel42';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL53 = 'pixel43';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL54 = 'pixel44';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL55 = 'pixel45';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL56 = 'pixel46';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL57 = 'pixel47';
+
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL60 = 'pixel48';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL61 = 'pixel49';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL62 = 'pixel50';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL63 = 'pixel51';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL64 = 'pixel52';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL65 = 'pixel53';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL66 = 'pixel54';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL67 = 'pixel55';
+
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL70 = 'pixel56';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL71 = 'pixel57';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL72 = 'pixel58';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL73 = 'pixel59';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL74 = 'pixel60';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL75 = 'pixel61';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL76 = 'pixel62';
+/** @type {string} */
+Blockly.Msg.ROOBIN_PIXEL77 = 'pixel63';

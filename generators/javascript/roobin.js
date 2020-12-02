@@ -296,3 +296,12 @@ Blockly.JavaScript['roobin_weather'] = function(block) {
 	var code = 'roobin(\'weather\', ' + text + ')\n';
 	return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
+
+Blockly.JavaScript['roobin_eye_mouth_matrix'] = function(block) {
+	var code = '';
+	for (var i=0; i<64; i++){
+	  if (this.getFieldValue('pixel' + i) == 'TRUE')code += '1';else code +='0';
+	}
+	code = Blockly.JavaScript.quote_(code);
+	return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
