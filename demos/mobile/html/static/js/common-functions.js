@@ -633,15 +633,39 @@ function changeServerIndicatorColor(){
     });
 }
 
+function turnOnServerIndicatorColor(){
+    // Jquery will addclass if it already does not exit, so no if statement required before addClass.
+    $('.server-indicator-icon').removeClass(serverOffIndicatorColor).addClass(serverOnIndicatorColor);
+    popupMsg = Blockly.Msg['SERVER_INDICATOR_ONLINE'];;
+    $('.server-indicator-popup').popup({
+        position   : 'bottom center',
+        content : popupMsg
+    });
+}
+
+function turnOffServerIndicatorColor(){
+    // Jquery will addclass if it already does not exit, so no if statement required before addClass.
+    $('.server-indicator-icon').removeClass(serverOnIndicatorColor).addClass(serverOffIndicatorColor);
+    popupMsg = Blockly.Msg['SERVER_INDICATOR_PENDING'];;
+    $('.server-indicator-popup').popup({
+        position   : 'bottom center',
+        content : popupMsg
+    });
+}
+
 function checkServerConnected(){
     href = 'http://localhost:1234';
     req = new XMLHttpRequest();
     req.open('GET', href, true);
     
     req.onreadystatechange = function() {
-        if(req.readyState == 4 && req.status == 200){
-            clearInterval(serverIndicatorInterval);
-            changeServerIndicatorColor();
+        if(req.readyState === 4){
+            if(req.status === 200){
+                //clearInterval(serverIndicatorInterval);
+                turnOnServerIndicatorColor();
+            }else{
+                turnOffServerIndicatorColor();
+            }
         }
     };
     req.send(null);
